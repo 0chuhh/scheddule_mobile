@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:schedule_mobile/screens/bell_schedule_screen.dart';
+import 'package:schedule_mobile/screens/my_schedule_screen.dart';
+import 'package:schedule_mobile/screens/notifications_screen.dart';
+import 'package:schedule_mobile/screens/schedules_screen.dart';
+import 'package:schedule_mobile/screens/settings_screen.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -10,10 +15,11 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
   static final List<Widget> _screens = <Widget>[
-    const Text("Notifications"),
-    const Text("My Schedule"),
-    const Text("Schedule"),
-    const Text("Settings"),
+    const NotificationScreen(),
+    const BellScheduleScreen(),
+    const MyScheduleScreen(),
+    const SchedulesScreen(),
+    const SettingsScreen(),
   ];
 
   void _onItemTapped(int index) {
@@ -36,6 +42,10 @@ class _MainScreenState extends State<MainScreen> {
           BottomNavigationBarItem(
             icon: Icon(Icons.notifications),
             label: "notifications",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.timer),
+            label: "alarm schedule",
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.schedule),
