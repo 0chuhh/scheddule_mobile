@@ -2,24 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class BaseCalendar extends StatelessWidget {
-  const BaseCalendar(this.changeFormat, this.selectedDay, this.changeDay, this.format,
-      this.headerVisible,
+  const BaseCalendar(this.changeFormat, this.selectedDay, this.changeDay,
+      this.format, this.headerVisible,
       {super.key});
 
   final Function(DateTime day) changeDay;
 
   final DateTime selectedDay;
-  
+
   final CalendarFormat format;
-  
+
   final VoidCallback changeFormat;
-  
+
   final bool headerVisible;
-  
+
   @override
   Widget build(BuildContext context) {
     return TableCalendar(
-        // locale: 'ru_RU',
+        locale: 'ru_RU',
         firstDay: DateTime.utc(2010, 10, 16),
         lastDay: DateTime.utc(2030, 3, 14),
         calendarFormat: format,
@@ -37,12 +37,15 @@ class BaseCalendar extends StatelessWidget {
             Duration(milliseconds: format == CalendarFormat.month ? 400 : 200),
         headerVisible: headerVisible,
         focusedDay: selectedDay,
+        rowHeight: 40,
+        sixWeekMonthsEnforced: true,
         daysOfWeekStyle: const DaysOfWeekStyle(
             weekdayStyle: TextStyle(color: Color.fromRGBO(148, 163, 184, 1)),
             weekendStyle: TextStyle(color: Color.fromRGBO(148, 163, 184, 1))),
         calendarStyle: CalendarStyle(
+            tablePadding: const EdgeInsets.all(10),
             weekendTextStyle:
-                const TextStyle(color: Color.fromRGBO(251, 173, 57, 1)),
+                const TextStyle(color: Color.fromRGBO(218, 21, 21, 1)),
             todayTextStyle:
                 const TextStyle(color: Color.fromRGBO(251, 173, 57, 1)),
             selectedDecoration: const BoxDecoration(

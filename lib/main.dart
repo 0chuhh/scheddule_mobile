@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:schedule_mobile/widgets/collapsible-calendar/callapsible-calendar.dart';
+import 'package:schedule_mobile/widgets/collapsible-calendar/collapsible-calendar.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 void main() {
-  runApp(const MainApp());
+  initializeDateFormatting().then((_) => runApp(const MainApp()));
 }
 
 class MainApp extends StatelessWidget {
