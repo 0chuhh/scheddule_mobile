@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
-class BottomBar extends StatefulWidget {
-  const BottomBar({Key? key}) : super(key: key);
+class MainScreen extends StatefulWidget {
+  const MainScreen({Key? key}) : super(key: key);
 
   @override
-  State<BottomBar> createState() => _BottomBarState();
+  State<MainScreen> createState() => _MainScreenState();
 }
 
-class _BottomBarState extends State<BottomBar> {
+class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
-  static final List<Widget> _widgetOptions = <Widget>[
+  static final List<Widget> _screens = <Widget>[
     const Text("Notifications"),
     const Text("My Schedule"),
     const Text("Schedule"),
@@ -26,7 +26,7 @@ class _BottomBarState extends State<BottomBar> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: _widgetOptions[_selectedIndex],
+        child: _screens[_selectedIndex],
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
