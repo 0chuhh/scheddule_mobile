@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:schedule_mobile/widgets/collapsible-calendar/collapsible-calendar.dart';
 import 'package:schedule_mobile/screens/main_screen.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 void main() {
-  runApp(const MainApp());
+  initializeDateFormatting().then((_) => runApp(const MainApp()));
 }
 
 class MainApp extends StatelessWidget {
@@ -10,10 +12,15 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
+      theme: ThemeData(fontFamily: 'Montserrat'),
+      home: const Scaffold(
       debugShowCheckedModeBanner: false,
       title: 'Schedule ZabGU',
       home: MainScreen(),
+          child: CollapsibleCalendar(),
+        ),
+      ),
     );
   }
 }
