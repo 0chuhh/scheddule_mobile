@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:schedule_mobile/utils/styles.dart';
 import 'package:schedule_mobile/widgets/week.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -30,15 +31,15 @@ class CalendarCollapseButton extends StatelessWidget {
               children: <Widget>[
                 Text(
                   '${selectedDay.day} $monthName ',
-                  style: const TextStyle(
-                      fontSize: 12, color: Color.fromRGBO(96, 109, 224, 1)),
+                  style: TextStyle(
+                      fontSize: 12, color: Styles.primaryColor),
                 ),
                 week,
                 Icon(
                   format == CalendarFormat.week
                       ? Icons.keyboard_arrow_down
                       : Icons.keyboard_arrow_up,
-                  color: const Color.fromRGBO(96, 109, 224, 1),
+                  color: Styles.primaryColor,
                   size: 15,
                 )
               ],

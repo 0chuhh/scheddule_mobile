@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:schedule_mobile/utils/months-localizaition.dart';
+import 'package:schedule_mobile/utils/styles.dart';
 import 'package:schedule_mobile/widgets/collapsible-calendar/base-calendar.dart';
 import 'package:schedule_mobile/widgets/collapsible-calendar/calendar-animated-container.dart';
 import 'package:schedule_mobile/widgets/collapsible-calendar/calendar-collapse-button.dart';
@@ -39,7 +40,7 @@ class _CollapsibleCalendarState extends State<CollapsibleCalendar> {
   bool _headerVisible = false;
 
   final TextStyle _weekStyle =
-      const TextStyle(fontSize: 12, color: Color.fromRGBO(96, 109, 224, 1));
+       TextStyle(fontSize: 12, color: Styles.primaryColor);
 
   late Week _week = Week(
     date: DateTime.now(),

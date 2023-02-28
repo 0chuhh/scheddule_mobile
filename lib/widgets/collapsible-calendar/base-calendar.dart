@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:schedule_mobile/utils/styles.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class BaseCalendar extends StatelessWidget {
@@ -46,18 +47,18 @@ class BaseCalendar extends StatelessWidget {
             weekdayStyle: TextStyle(color: Color.fromRGBO(148, 163, 184, 1)),
             weekendStyle: TextStyle(color: Color.fromRGBO(148, 163, 184, 1))),
         calendarStyle: CalendarStyle(
-            defaultTextStyle: const TextStyle(color: Color.fromRGBO(30, 30, 30, 1), fontWeight: FontWeight.w500),
+            defaultTextStyle: TextStyle(color: Styles.textColor, fontWeight: FontWeight.w500),
             tablePadding: const EdgeInsets.all(10),
             outsideTextStyle: const TextStyle(color: Color.fromRGBO(148, 163, 184, 1), fontWeight: FontWeight.w500),
             disabledTextStyle: const TextStyle(color: Color.fromRGBO(148, 163, 184, 1), fontWeight: FontWeight.w500),
             weekendTextStyle:
                 const TextStyle(color: Color.fromRGBO(218, 21, 21, 1), fontWeight: FontWeight.w500),
             todayTextStyle:
-                const TextStyle(color: Color.fromRGBO(251, 173, 57, 1)),
+                TextStyle(color: Styles.accentColor),
                 selectedTextStyle: const TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
-            selectedDecoration: const BoxDecoration(
+            selectedDecoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: Color.fromRGBO(251, 173, 57, 1),
+              color: Styles.accentColor,
             ),
             todayDecoration: const BoxDecoration(
                 color: Colors.transparent, shape: BoxShape.circle),
