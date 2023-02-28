@@ -6,8 +6,23 @@ import 'package:schedule_mobile/widgets/collapsible-calendar/calendar-collapse-b
 import 'package:schedule_mobile/widgets/week.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+/// `OnDayChanged` - функция, которая выполнится после смены текущего дня на другой.
+typedef OnDayChanged = void Function(DateTime selectedDay);
+
+/// `OnFormatChanged` - функция, которая вызовется после смены формата календаря.
+typedef OnFormatChanged = void Function(CalendarFormat format);
+
 class CollapsibleCalendar extends StatefulWidget {
-  const CollapsibleCalendar({this.align = Alignment.topCenter, super.key});
+  const CollapsibleCalendar(
+      {this.align = Alignment.topCenter,
+      this.onDayChanged,
+      this.onFormatChanged,
+      super.key});
+
+  final OnDayChanged? onDayChanged;
+
+  final OnFormatChanged? onFormatChanged;
+
   final Alignment align;
 
   @override
@@ -44,6 +59,8 @@ class _CollapsibleCalendarState extends State<CollapsibleCalendar> {
         textStyle: _weekStyle,
       );
     });
+
+    widget.onDayChanged?.call(day);
   }
 
   void changeFormat() {
@@ -53,13 +70,13 @@ class _CollapsibleCalendarState extends State<CollapsibleCalendar> {
         _headerVisible = false;
       } else {
         _format = CalendarFormat.month;
-        var future = Future.delayed(const Duration(milliseconds: 100), () {
-          setState(() {
-            _headerVisible = true;
-          });
+        setState(() {
+          _headerVisible = true;
         });
       }
     });
+
+    widget.onFormatChanged?.call(_format);
   }
 
   @override
@@ -70,28 +87,23 @@ class _CollapsibleCalendarState extends State<CollapsibleCalendar> {
           clipBehavior: Clip.none,
           children: <Widget>[
             SizedBox(
-              width: 350,
-              child: CalendarAnimatedContainer(
-                format: _format,
-                child: SingleChildScrollView(
-                    child: Stack(
-                  clipBehavior: Clip.none,
-                  alignment: Alignment.bottomCenter,
-                  children: <Widget>[
-                    BaseCalendar(changeFormat, _selectedDay, changeDay, _format,
-                        _headerVisible),
-                    Positioned(
-                        bottom: 0,
-                        child: CalendarCollapseButton(
-                          changeFormat: changeFormat,
-                          monthName: _monthName,
-                          selectedDay: _selectedDay,
-                          week: _week,
-                          format: _format,
-                        ))
-                  ],
-                )),
-              ),
+              width: MediaQuery.of(context).size.width - 50,
+              child:
+                  CalendarAnimatedContainer(
+                    format: _format, 
+                    children: <Widget>[
+                      BaseCalendar(changeFormat, _selectedDay, changeDay, _format,
+                          _headerVisible),
+                      Positioned(
+                          bottom: 0,
+                          child: CalendarCollapseButton(
+                            changeFormat: changeFormat,
+                            monthName: _monthName,
+                            selectedDay: _selectedDay,
+                            week: _week,
+                            format: _format,
+                          ))
+              ]),
             ),
           ],
         ));

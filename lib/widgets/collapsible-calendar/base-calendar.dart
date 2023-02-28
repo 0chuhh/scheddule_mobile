@@ -26,15 +26,18 @@ class BaseCalendar extends StatelessWidget {
         startingDayOfWeek: StartingDayOfWeek.monday,
         availableCalendarFormats: const {
           CalendarFormat.month: 'month',
-          CalendarFormat.week: 'week'
+          CalendarFormat.week: 'week',
+          CalendarFormat.twoWeeks: 'twoWeeks'
         },
         headerStyle: const HeaderStyle(
+            leftChevronIcon: Icon(Icons.keyboard_arrow_left, color: Color.fromRGBO(148, 163, 184, 1)),
+            rightChevronIcon: Icon(Icons.keyboard_arrow_right, color: Color.fromRGBO(148, 163, 184, 1)),
             formatButtonVisible: false,
             titleCentered: true,
             titleTextStyle: TextStyle(color: Color.fromRGBO(148, 163, 184, 1))),
         formatAnimationCurve: Curves.ease,
         formatAnimationDuration:
-            Duration(milliseconds: format == CalendarFormat.month ? 400 : 200),
+           const Duration(milliseconds:200),
         headerVisible: headerVisible,
         focusedDay: selectedDay,
         rowHeight: 40,
@@ -43,11 +46,15 @@ class BaseCalendar extends StatelessWidget {
             weekdayStyle: TextStyle(color: Color.fromRGBO(148, 163, 184, 1)),
             weekendStyle: TextStyle(color: Color.fromRGBO(148, 163, 184, 1))),
         calendarStyle: CalendarStyle(
+            defaultTextStyle: const TextStyle(color: Color.fromRGBO(30, 30, 30, 1), fontWeight: FontWeight.w500),
             tablePadding: const EdgeInsets.all(10),
+            outsideTextStyle: const TextStyle(color: Color.fromRGBO(148, 163, 184, 1), fontWeight: FontWeight.w500),
+            disabledTextStyle: const TextStyle(color: Color.fromRGBO(148, 163, 184, 1), fontWeight: FontWeight.w500),
             weekendTextStyle:
-                const TextStyle(color: Color.fromRGBO(218, 21, 21, 1)),
+                const TextStyle(color: Color.fromRGBO(218, 21, 21, 1), fontWeight: FontWeight.w500),
             todayTextStyle:
                 const TextStyle(color: Color.fromRGBO(251, 173, 57, 1)),
+                selectedTextStyle: const TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
             selectedDecoration: const BoxDecoration(
               shape: BoxShape.circle,
               color: Color.fromRGBO(251, 173, 57, 1),

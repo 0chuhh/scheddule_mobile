@@ -3,10 +3,10 @@ import 'package:table_calendar/table_calendar.dart';
 
 class CalendarAnimatedContainer extends StatelessWidget {
   const CalendarAnimatedContainer(
-      {required this.format, required this.child, super.key});
+      {required this.format, required this.children, super.key});
 
   final CalendarFormat format;
-  final Widget child;
+  final List<Widget> children;
 
   @override
   Widget build(BuildContext context) {
@@ -27,23 +27,11 @@ class CalendarAnimatedContainer extends StatelessWidget {
             color: Colors.white,
             borderRadius: BorderRadius.all(Radius.circular(50))),
         height: format == CalendarFormat.week ? 80 : 350,
-        margin: const EdgeInsets.only(top: 20),
-        child: child
-
-        // SingleChildScrollView(
-        //     child: Column(
-        //   children: <Widget>[
-        //     SingleChildScrollView(
-        //         child: Expanded(
-        //             flex: 0,
-        //             child: SizedBox(
-        //               child: MyCalendar(changeFormat, _selectedDay,
-        //                   changeDay, _format, _headerVisible),
-        //             ))),
-        //     ExpandCalendarButton(changeFormat, _format, _monthName,
-        //         _selectedDay, _week)
-        //   ],
-        // ))
-        );
+        margin: const EdgeInsets.only(top: 40),
+        child: SingleChildScrollView(
+            child: Stack(
+                clipBehavior: Clip.none,
+                alignment: Alignment.bottomCenter,
+                children: children)));
   }
 }
