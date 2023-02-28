@@ -5,6 +5,7 @@ import 'package:schedule_mobile/screens/reminders_screen.dart';
 import 'package:schedule_mobile/screens/schedules_screen.dart';
 import 'package:schedule_mobile/screens/settings_screen.dart';
 import 'package:schedule_mobile/utils/styles.dart';
+import 'package:schedule_mobile/widgets/custom_app_bar.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -32,6 +33,9 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: const CustomAppBar(
+          title: Text('AppBar'),
+        ),
         backgroundColor: Styles.bgColor,
         body: Center(
           child: _screens[_selectedIndex],
