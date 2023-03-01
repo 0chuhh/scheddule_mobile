@@ -53,7 +53,6 @@ class AppBarPainter extends CustomPainter {
       end: Alignment.bottomCenter,
       colors: [
         Styles.bgColor,
-        Styles.bgColor,
         Colors.white,
       ],
     ).createShader(rect);

@@ -30,7 +30,7 @@ class ScheduleList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.7,
+      height: MediaQuery.of(context).size.height * 1,
       child: Expanded(
           flex: 1,
           child: Timeline.tileBuilder(

@@ -33,6 +33,15 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+<<<<<<< HEAD
+      backgroundColor: Styles.bgColor,
+=======
+        extendBodyBehindAppBar: true,
+        appBar: const CustomAppBar(
+          body: Text('AppBar'),
+        ),
+        backgroundColor: Styles.bgColor,
+>>>>>>> origin/strukovvv/appbar
         body: Center(
           child: _screens[_selectedIndex],
         ),
