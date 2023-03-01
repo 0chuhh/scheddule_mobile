@@ -1,41 +1,25 @@
 class Couple {
-  int? number;
-  DateTime? time;
+  int number;
+  DateTime time;
 
-  Couple({this.number, this.time});
+  Couple({required this.number, required this.time});
 }
 
-enum ScheduleItemFormat {
-  lection,
-  practice,
-  laboratory
-}
-
-extension ScheduleItemFormatExtension on ScheduleItemFormat {
-
-  String get name {
-    switch (this) {
-      case ScheduleItemFormat.lection:
-        return 'Лекция';
-      case ScheduleItemFormat.practice:
-        return 'Практика';
-      case ScheduleItemFormat.laboratory:
-        return 'Лабораторная';
-      default:
-        return 'Лекция';
-    }
-  }
-
-}
+enum ScheduleItemFormat { lection, practice, laboratory }
 
 class ScheduleItem {
-  Couple? couple;
-  String? name;
-  ScheduleItemFormat ? format;
-  String? lecturer;
-  String? cathedra;
-  String? classroom;
+  Couple couple;
+  String name;
+  ScheduleItemFormat format;
+  String lecturer;
+  String cathedra;
+  String classroom;
 
   ScheduleItem(
-      {this.couple, this.name, this.lecturer, this.cathedra, this.classroom});
+      {required this.couple,
+      required this.name,
+      required this.lecturer,
+      required this.cathedra,
+      required this.classroom,
+      required this.format});
 }
