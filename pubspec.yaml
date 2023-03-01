@@ -15,6 +15,7 @@ dependencies:
   table_calendar: ^3.0.8
   gap: ^2.0.0
   timelines: ^0.1.0
+  intl: ^0.17.0
 
 dev_dependencies:
   flutter_test:

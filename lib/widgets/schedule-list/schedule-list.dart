@@ -1,32 +1,55 @@
 import 'package:flutter/material.dart';
 import 'package:schedule_mobile/widgets/schedule-list/schedule-list-item.dart';
 import 'package:timelines/timelines.dart';
-
-final List<ScheduleItem> schedule = [
-  ScheduleItem(couple: Couple(number: 1, time: DateTime.now()), name: 'Администрирование и конфигурирование системы 1С:Предприятия', lecturer: 'Иванов Александр Владимирович')
-];
+import 'package:intl/intl.dart';
+import '../../models/schedule.dart';
 
 
-class Couple {
-  int ? number;
-  DateTime ? time;
 
-  Couple({this.number, this.time});
-}
-
-
-class ScheduleItem {
-  Couple ? couple;
-  String ? name;
-  String ? lecturer;
-  String ? cathedra;
-  String ? classroom;
-
-  ScheduleItem({this.couple, this.name, this.lecturer, this.cathedra, this.classroom });
-}
 
 class ScheduleList extends StatelessWidget {
-  List<String> schedule = ['1', '2', '3', '4', '5', '6,', '7', '8', '9', '10'];
+final List<ScheduleItem> schedule = [
+  ScheduleItem(
+      couple: Couple(number: 1, time: DateTime(2023,1,1,8,30)),
+      name: 'Администрирование и конфигурирование системы 1С:Предприятия',
+      lecturer: 'Иванов Александр Владимирович',
+      cathedra: 'ПиМ',
+      classroom: '03-401',
+      format: ScheduleItemFormat.lection),
+  ScheduleItem(
+      couple: Couple(number: 2, time: DateTime(2023,1,1,10,15)),
+      name: 'Администрирование и конфигурирование системы 1С:Предприятия',
+      lecturer: 'Иванов Александр Владимирович',
+      cathedra: 'ПиМ',
+      classroom: '03-401',
+      format: ScheduleItemFormat.practice),
+  ScheduleItem(
+      couple: Couple(number: 3, time: DateTime(2023,1,1,12,00)),
+      name: 'Администрирование и конфигурирование системы 1С:Предприятия',
+      lecturer: 'Иванов Александр Владимирович',
+      cathedra: 'ПиМ',
+      classroom: '03-401',
+      format: ScheduleItemFormat.laboratory),
+  ScheduleItem(
+      couple: Couple(number: 4, time: DateTime(2023,1,1,14,35)),
+      name: 'Администрирование и конфигурирование системы 1С:Предприятия',
+      lecturer: 'Иванов Александр Владимирович',
+      cathedra: 'ПиМ',
+      classroom: '03-401',
+      format: ScheduleItemFormat.laboratory),
+  ScheduleItem(
+      couple: Couple(number: 5, time: DateTime(2023,1,1,16,20)),
+      name: 'Администрирование и конфигурирование системы 1С:Предприятия',
+      lecturer: 'Иванов Александр Владимирович',
+      cathedra: 'ПиМ',
+      classroom: '03-401',
+      format: ScheduleItemFormat.laboratory)
+];
+
+String getCoupleTime(DateTime date){
+  return DateFormat.Hm().format(date);
+}
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -37,12 +60,14 @@ class ScheduleList extends StatelessWidget {
             builder: TimelineTileBuilder(
               nodePositionBuilder: (context, index) => 0.14,
               oppositeContentsBuilder: (context, index) => TimelineNode(
-                indicator: Text('10:50'),
-                startConnector: index == 0? null : const DashedLineConnector(),
-                endConnector: index == schedule.length? null : const DashedLineConnector(),
+                indicator: Text(getCoupleTime(schedule[index].couple.time)),
+                startConnector: index == 0 ? null : const DashedLineConnector(),
+                endConnector: index == schedule.length-1
+                    ? null
+                    : const DashedLineConnector(),
               ),
               contentsBuilder: (context, index) => Padding(
-                  padding: const EdgeInsets.all(24.0),
+                  padding: const EdgeInsets.only(left:5.0, right: 24, bottom: 24),
                   child: ScheduleListItem(
                     item: schedule[index],
                   )),
@@ -52,7 +77,7 @@ class ScheduleList extends StatelessWidget {
             theme: TimelineThemeData(
               connectorTheme: ConnectorThemeData(indent: 5),
             ),
-          )),
+          ))
     );
   }
 }
