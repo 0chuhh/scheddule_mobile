@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:schedule_mobile/models/schedule.dart';
 import 'package:schedule_mobile/utils/styles.dart';
 
 class ScheduleListItem extends StatelessWidget {
   ScheduleListItem({super.key, required this.item});
 
-  final String item;
+  final ScheduleItem item;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.all(Radius.circular(7))
       ),
@@ -27,7 +28,7 @@ class ScheduleListItem extends StatelessWidget {
                   color: Styles.primaryColor,
                   borderRadius: BorderRadius.only(topRight: Radius.circular(10), bottomRight: Radius.circular(10))
                 ),
-                child: Text(item, style: TextStyle(color: Colors.white),)
+                child: Text(item.couple!.number.toString(), style: TextStyle(color: Colors.white),)
               )
             ],
             )
