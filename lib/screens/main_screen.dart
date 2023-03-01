@@ -35,7 +35,7 @@ class _MainScreenState extends State<MainScreen> {
     return Scaffold(
         extendBodyBehindAppBar: true,
         appBar: const CustomAppBar(
-          title: Text('AppBar'),
+          body: Text('AppBar'),
         ),
         backgroundColor: Styles.bgColor,
         body: Center(
