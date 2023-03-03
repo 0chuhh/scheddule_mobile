@@ -15,20 +15,23 @@ class MyScheduleScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Styles.bgColor,
       extendBodyBehindAppBar: true,
-      body: Stack(children:<Widget>[
-        ScheduleList(),
-
-        CustomPaint(
-          painter: AppBarPainter(),
-          child: Container(
-            width: MediaQuery.of(context).size.width,
-            height: 200,
+      body: Column(children: <Widget>[
+        Stack(children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(top: 170),
+            child:  ScheduleList(),
           ),
-        ),
-        CollapsibleCalendar(),
+          CustomPaint(
+            painter: AppBarPainter(),
+            child: Container(
+              color: Colors.transparent,
+              width: MediaQuery.of(context).size.width,
+              height: 200,
+            ),
+          ),
+          CollapsibleCalendar(),
+        ]),
       ]),
     );
   }
 }
-
-
