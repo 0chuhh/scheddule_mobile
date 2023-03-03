@@ -4,12 +4,15 @@ import 'package:schedule_mobile/screens/main_screen.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 void main() {
-  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+  
+  initializeDateFormatting().then((_) => {
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarBrightness: Brightness.dark,
     statusBarIconBrightness: Brightness.dark,
     statusBarColor: Colors.transparent,
-  ));
-  initializeDateFormatting().then((_) => runApp(const MainApp()));
+  )),
+    runApp(const MainApp())
+  });
 }
 
 class MainApp extends StatelessWidget {

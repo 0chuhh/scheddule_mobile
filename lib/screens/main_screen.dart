@@ -5,7 +5,7 @@ import 'package:schedule_mobile/screens/reminders_screen.dart';
 import 'package:schedule_mobile/screens/schedules_screen.dart';
 import 'package:schedule_mobile/screens/settings_screen.dart';
 import 'package:schedule_mobile/utils/styles.dart';
-import 'package:schedule_mobile/widgets/custom_app_bar.dart';
+import 'package:schedule_mobile/widgets/app_bar_painter.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -17,11 +17,11 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
   static final List<Widget> _screens = <Widget>[
-    const RemindersScreen(),
+    // const RemindersScreen(),
     const BellScheduleScreen(),
     const MyScheduleScreen(),
     const SchedulesScreen(),
-    const SettingsScreen(),
+    // const SettingsScreen(),
   ];
 
   void _onItemTapped(int index) {
@@ -61,26 +61,26 @@ class _MainScreenState extends State<MainScreen> {
           onTap: _onItemTapped,
           type: BottomNavigationBarType.fixed,
           items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.notifications),
-              label: "notifications",
-            ),
+            // BottomNavigationBarItem(
+            //   icon: Icon(Icons.notifications),
+            //   label: "notifications",
+            // ),
             BottomNavigationBarItem(
               icon: Icon(Icons.timer),
-              label: "alarm schedule",
+              label: "Расписание звонков",
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.schedule),
-              label: "my schedule",
+              label: "Мое расписание",
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.schedule),
-              label: "schedule",
+              label: "Расписание",
             ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.settings),
-              label: "settings",
-            ),
+            // BottomNavigationBarItem(
+            //   icon: Icon(Icons.settings),
+            //   label: "settings",
+            // ),
           ],
         ),
       ),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:schedule_mobile/widgets/schedule-list/schedule-list-item.dart';
+import 'package:schedule_mobile/widgets/schedule_list/schedule_list_item.dart';
 import 'package:timelines/timelines.dart';
 import 'package:intl/intl.dart';
 import '../../models/schedule.dart';

@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:schedule_mobile/widgets/collapsible-calendar/collapsible-calendar.dart';
-import 'package:schedule_mobile/widgets/custom_app_bar.dart';
-import 'package:schedule_mobile/widgets/schedule-list/schedule-list.dart';
+import 'package:schedule_mobile/widgets/collapsible_calendar/collapsible_calendar.dart';
+import 'package:schedule_mobile/widgets/app_bar_painter.dart';
+import 'package:schedule_mobile/widgets/schedule_list/schedule_list.dart';
 
 import '../utils/styles.dart';
 
@@ -15,11 +15,20 @@ class MyScheduleScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Styles.bgColor,
       extendBodyBehindAppBar: true,
-      appBar: const CustomAppBar(
-        body: CollapsibleCalendar(),
-        height: 200,
-      ),
-      body: ScheduleList(),
+      body: Stack(children:<Widget>[
+        ScheduleList(),
+
+        CustomPaint(
+          painter: AppBarPainter(),
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            height: 200,
+          ),
+        ),
+        CollapsibleCalendar(),
+      ]),
     );
   }
 }
+
+

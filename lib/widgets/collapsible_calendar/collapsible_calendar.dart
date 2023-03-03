@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:schedule_mobile/utils/months-localizaition.dart';
+import 'package:schedule_mobile/utils/months_localizaition.dart';
 import 'package:schedule_mobile/utils/styles.dart';
-import 'package:schedule_mobile/widgets/collapsible-calendar/base-calendar.dart';
-import 'package:schedule_mobile/widgets/collapsible-calendar/calendar-animated-container.dart';
-import 'package:schedule_mobile/widgets/collapsible-calendar/calendar-collapse-button.dart';
+import 'package:schedule_mobile/widgets/collapsible_calendar/base_calendar.dart';
+import 'package:schedule_mobile/widgets/collapsible_calendar/calendar_animated_container.dart';
+import 'package:schedule_mobile/widgets/collapsible_calendar/calendar_collapse-button.dart';
 import 'package:schedule_mobile/widgets/week.dart';
 import 'package:table_calendar/table_calendar.dart';
 

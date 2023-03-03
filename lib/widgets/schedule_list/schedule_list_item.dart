@@ -46,7 +46,7 @@ class ScheduleListItem extends StatelessWidget {
                             topRight: Radius.circular(10),
                             bottomRight: Radius.circular(10))),
                     child: Text(
-                      item.couple!.number.toString(),
+                      item.couple.number.toString(),
                       style: const TextStyle(color: Colors.white),
                     )),
                 Padding(

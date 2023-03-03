@@ -20,7 +20,7 @@ class BaseCalendar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TableCalendar(
-        locale: 'ru_RU',
+        locale: 'ru_RU', 
         firstDay: DateTime.utc(2010, 10, 16),
         lastDay: DateTime.utc(2030, 3, 14),
         calendarFormat: format,

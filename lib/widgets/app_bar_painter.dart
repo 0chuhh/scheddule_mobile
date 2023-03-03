@@ -1,50 +1,12 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
-import 'package:schedule_mobile/utils/styles.dart';
 
-class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
-  const CustomAppBar({
-    Key? key,
-    required this.body,
-    this.height = 80.0,
-  }) : super(key: key);
-
-  final Widget body;
-  final double height;
-
-  @override
-  State<CustomAppBar> createState() => _CustomAppBarState();
-
-  @override
-  Size get preferredSize => Size(double.maxFinite, height);
-}
-
-class _CustomAppBarState extends State<CustomAppBar> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.transparent,
-      body: CustomPaint(
-        painter: AppBarPainter(),
-        child: _appBarContent(),
-      ),
-    );
-  }
-
-  Widget _appBarContent() {
-    return Container(
-      height: widget.preferredSize.height,
-      width: 400,
-      margin: const EdgeInsets.symmetric(vertical: 40, horizontal: 20),
-      child: Column(
-        children: [widget.body],
-      ),
-    );
-  }
-}
+import '../utils/styles.dart';
 
 class AppBarPainter extends CustomPainter {
   @override
-  void paint(Canvas canvas, Size size) {
+  void paint(Canvas canvas, size ) {
     var rect = Offset.zero & size;
     Paint paint = Paint();
     Path path = Path();
