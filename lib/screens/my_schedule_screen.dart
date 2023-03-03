@@ -13,25 +13,28 @@ class MyScheduleScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: Styles.bgColor,
       extendBodyBehindAppBar: true,
-      body: Column(children: <Widget>[
-        Stack(children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(top: 170),
-            child:  ScheduleList(),
-          ),
-          CustomPaint(
-            painter: AppBarPainter(),
-            child: Container(
-              color: Colors.transparent,
-              width: MediaQuery.of(context).size.width,
-              height: 200,
+      body: SingleChildScrollView(
+        child: Column(children: <Widget>[
+          Stack(children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(top: 170),
+              child: ScheduleList(),
             ),
-          ),
-          CollapsibleCalendar(),
+            CustomPaint(
+              painter: AppBarPainter(),
+              child: Container(
+                color: Colors.transparent,
+                width: MediaQuery.of(context).size.width,
+                height: 200,
+              ),
+            ),
+            CollapsibleCalendar(),
+          ]),
         ]),
-      ]),
+      ),
     );
   }
 }
