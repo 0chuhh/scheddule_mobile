@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
-import 'package:schedule_mobile/widgets/custom_autocomplete.dart';
 
 import '../utils/styles.dart';
 import '../widgets/app_bar_painter.dart';
-import '../widgets/collapsible_calendar/collapsible_calendar.dart';
-import '../widgets/schedule_list/schedule_list.dart';
 import '../widgets/schedule_search_cards.dart';
 
 class SchedulesScreen extends StatelessWidget {

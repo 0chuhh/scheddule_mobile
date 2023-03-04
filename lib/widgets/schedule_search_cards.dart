@@ -6,6 +6,8 @@ import 'package:schedule_mobile/widgets/custom_button_group.dart';
 import 'package:vector_math/vector_math_64.dart' as vector;
 
 class ScheduleSearchCards extends StatefulWidget {
+  const ScheduleSearchCards({super.key});
+
   @override
   State<StatefulWidget> createState() {
     return _ScheduleSearchCardsState();
@@ -34,14 +36,14 @@ class _ScheduleSearchCardsState extends State<ScheduleSearchCards> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Container(
-      margin: EdgeInsets.only(top: 15),
+      margin: const EdgeInsets.only(top: 15),
       height: MediaQuery.of(context).size.height - 200,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           AnimatedContainer(
             curve: Curves.easeInBack,
-            duration: Duration(milliseconds: 700),
+            duration: const Duration(milliseconds: 700),
             transform: Matrix4.compose(
                 vector.Vector3(
                     0,
@@ -67,7 +69,7 @@ class _ScheduleSearchCardsState extends State<ScheduleSearchCards> {
                 ),
                 const Gap(5),
                 CustomAutocomplete(
-                    list: ['пи-20', 'пи-21', 'пи-22'],
+                    list: const ['пи-20', 'пи-21', 'пи-22'],
                     label: 'группа',
                     onTap: (focusNode) {
                       onAutocompleteTap(0);
@@ -89,7 +91,7 @@ class _ScheduleSearchCardsState extends State<ScheduleSearchCards> {
           ),
           AnimatedContainer(
             curve: Curves.easeInBack,
-            duration: Duration(milliseconds: 700),
+            duration: const Duration(milliseconds: 700),
             transform: Matrix4.compose(
                 vector.Vector3(
                     0,
@@ -112,7 +114,7 @@ class _ScheduleSearchCardsState extends State<ScheduleSearchCards> {
                 ),
                 const Gap(5),
                 CustomAutocomplete(
-                  list: ['пи-20', 'пи-21', 'пи-22'],
+                  list: const ['пи-20', 'пи-21', 'пи-22'],
                   label: 'Преподаватель',
                   onTap: (focusNode) {
                     onAutocompleteTap(1);
@@ -123,7 +125,7 @@ class _ScheduleSearchCardsState extends State<ScheduleSearchCards> {
                   },
                 ),
                 const Gap(5),
-                CustomButtonGroup(
+                const CustomButtonGroup(
                   items: [
                     Text('Очная форма'),
                     Text('Заочная форма'),
@@ -158,7 +160,7 @@ class _ScheduleSearchCardsState extends State<ScheduleSearchCards> {
             decoration: BoxDecoration(
                 color: Colors.white, borderRadius: BorderRadius.circular(15)),
             width: MediaQuery.of(context).size.width - 20,
-            duration: Duration(milliseconds: 700),
+            duration: const Duration(milliseconds: 700),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -169,8 +171,8 @@ class _ScheduleSearchCardsState extends State<ScheduleSearchCards> {
                 ),
                 const Gap(5),
                 CustomAutocomplete(
-                  list: ['пи-20', 'пи-21', 'пи-22'],
-                  label: 'группа',
+                  list: const [],
+                  label: 'Аудитория',
                   onTap: (focusNode) {
                     onAutocompleteTap(2);
                     FocusScope.of(context).requestFocus(focusNode);
