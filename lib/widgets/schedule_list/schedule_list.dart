@@ -53,7 +53,7 @@ String getCoupleTime(DateTime date){
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: MediaQuery.of(context).size.height * 1,
+      height: MediaQuery.of(context).size.height * 0.7,
       child: Expanded(
           flex: 1,
           child: Timeline.tileBuilder(
