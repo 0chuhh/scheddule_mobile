@@ -3,6 +3,7 @@ import 'package:gap/gap.dart';
 import 'package:schedule_mobile/utils/styles.dart';
 import 'package:schedule_mobile/widgets/custom_autocomplete.dart';
 import 'package:schedule_mobile/widgets/custom_button_group.dart';
+import 'package:vector_math/vector_math_64.dart' as vector;
 
 class ScheduleSearchCards extends StatefulWidget {
   @override
@@ -13,6 +14,21 @@ class ScheduleSearchCards extends StatefulWidget {
 
 class _ScheduleSearchCardsState extends State<ScheduleSearchCards> {
   final bool fullTimeFormat = false;
+  int selectedIndex = 0;
+  void onAutocompleteTap(int index) {
+    setState(() {
+      selectedIndex = 0;
+      selectedIndex = index;
+    });
+  }
+
+  void unfocusAutocomplete() {
+    setState(() {
+      selectedIndex = 0;
+    });
+
+    FocusScope.of(context).unfocus();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +39,20 @@ class _ScheduleSearchCardsState extends State<ScheduleSearchCards> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Container(
+          AnimatedContainer(
+            curve: Curves.easeInBack,
+            duration: Duration(milliseconds: 700),
+            transform: Matrix4.compose(
+                vector.Vector3(
+                    0,
+                    selectedIndex == 1
+                        ? MediaQuery.of(context).size.height / 3.7
+                        : selectedIndex == 2
+                            ? MediaQuery.of(context).size.height / 2
+                            : 0,
+                    0),
+                vector.Quaternion(0, 0, 0, 0),
+                vector.Vector3(1, 1, 1)),
             padding: const EdgeInsets.all(15),
             decoration: BoxDecoration(
                 color: Colors.white, borderRadius: BorderRadius.circular(15)),
@@ -37,8 +66,13 @@ class _ScheduleSearchCardsState extends State<ScheduleSearchCards> {
                   textAlign: TextAlign.left,
                 ),
                 const Gap(5),
-                const CustomAutocomplete(
-                    list: ['пи-20', 'пи-21', 'пи-22'], label: 'группа'),
+                CustomAutocomplete(
+                    list: ['пи-20', 'пи-21', 'пи-22'],
+                    label: 'группа',
+                    onTap: (focusNode) {
+                      onAutocompleteTap(0);
+                    },
+                    onTapOutside: () {}),
                 const Gap(5),
                 ElevatedButton(
                   onPressed: () {},
@@ -53,7 +87,18 @@ class _ScheduleSearchCardsState extends State<ScheduleSearchCards> {
               ],
             ),
           ),
-          Container(
+          AnimatedContainer(
+            curve: Curves.easeInBack,
+            duration: Duration(milliseconds: 700),
+            transform: Matrix4.compose(
+                vector.Vector3(
+                    0,
+                    selectedIndex == 1
+                        ? -MediaQuery.of(context).size.height / 4
+                        : 0,
+                    0),
+                vector.Quaternion(0, 0, 0, 0),
+                vector.Vector3(1, 1, 1)),
             padding: const EdgeInsets.all(15),
             decoration: BoxDecoration(
                 color: Colors.white, borderRadius: BorderRadius.circular(15)),
@@ -66,8 +111,17 @@ class _ScheduleSearchCardsState extends State<ScheduleSearchCards> {
                   textAlign: TextAlign.left,
                 ),
                 const Gap(5),
-                const CustomAutocomplete(
-                    list: ['пи-20', 'пи-21', 'пи-22'], label: 'Преподаватель'),
+                CustomAutocomplete(
+                  list: ['пи-20', 'пи-21', 'пи-22'],
+                  label: 'Преподаватель',
+                  onTap: (focusNode) {
+                    onAutocompleteTap(1);
+                    FocusScope.of(context).requestFocus(focusNode);
+                  },
+                  onTapOutside: () {
+                    unfocusAutocomplete();
+                  },
+                ),
                 const Gap(5),
                 CustomButtonGroup(
                   items: [
@@ -89,12 +143,24 @@ class _ScheduleSearchCardsState extends State<ScheduleSearchCards> {
               ],
             ),
           ),
-          Container(
+          AnimatedContainer(
+            curve: Curves.easeInBack,
+            transform: Matrix4.compose(
+                vector.Vector3(
+                    0,
+                    selectedIndex == 2
+                        ? -MediaQuery.of(context).size.height / 2
+                        : 0,
+                    0),
+                vector.Quaternion(0, 0, 0, 0),
+                vector.Vector3(1, 1, 1)),
             padding: const EdgeInsets.all(15),
             decoration: BoxDecoration(
                 color: Colors.white, borderRadius: BorderRadius.circular(15)),
             width: MediaQuery.of(context).size.width - 20,
+            duration: Duration(milliseconds: 700),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 const Text(
                   'Найти расписание занятий по аудитории:',
@@ -102,8 +168,17 @@ class _ScheduleSearchCardsState extends State<ScheduleSearchCards> {
                   textAlign: TextAlign.left,
                 ),
                 const Gap(5),
-                const CustomAutocomplete(
-                    list: ['пи-20', 'пи-21', 'пи-22'], label: 'аудитория'),
+                CustomAutocomplete(
+                  list: ['пи-20', 'пи-21', 'пи-22'],
+                  label: 'группа',
+                  onTap: (focusNode) {
+                    onAutocompleteTap(2);
+                    FocusScope.of(context).requestFocus(focusNode);
+                  },
+                  onTapOutside: () {
+                    unfocusAutocomplete();
+                  },
+                ),
                 const Gap(5),
                 ElevatedButton(
                   onPressed: () {},

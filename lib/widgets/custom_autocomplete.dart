@@ -2,19 +2,35 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:schedule_mobile/utils/styles.dart';
 
-class CustomAutocomplete extends StatelessWidget {
-  const CustomAutocomplete({super.key, this.list = const [], this.label = ''});
+typedef OnTap = void Function(FocusNode focusNode);
+typedef OnTapOutside = void Function();
 
+class CustomAutocomplete extends StatefulWidget {
+  const CustomAutocomplete(
+      {super.key,
+      this.list = const [],
+      this.label = '',
+      this.onTap,
+      this.onTapOutside});
+  final OnTap? onTap;
+  final OnTapOutside? onTapOutside;
   final String label;
   final List<String> list;
+  @override
+  State<StatefulWidget> createState() {
+    return _CustomAutocompleteState();
+  }
+}
 
+class _CustomAutocompleteState extends State<CustomAutocomplete> {
+  FocusNode _focusNode = new FocusNode();
   @override
   Widget build(BuildContext context) {
     return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            label,
+            widget.label,
             style: TextStyle(fontSize: 10, color: Styles.primaryColor),
             textAlign: TextAlign.left,
           ),
@@ -24,20 +40,38 @@ class CustomAutocomplete extends StatelessWidget {
               if (textEditingValue.text == '') {
                 return const Iterable<String>.empty();
               }
-              if (list.length > 0){
-                return list.where((String option) {
+              if (widget.list.length > 0) {
+                return widget.list.where((String option) {
                   return option.contains(textEditingValue.text.toLowerCase());
-              });
+                });
               }
               return [];
             },
             fieldViewBuilder:
                 (context, textEditingController, focusNode, onFieldSubmitted) =>
                     TextFormField(
+              onTapOutside: (onTapOut) {
+                widget.onTapOutside?.call();
+                onTapOut.down;
+              },
+              onEditingComplete: () {
+                setState(() {
+                  _focusNode = focusNode;
+                });
+                widget.onTapOutside?.call();
+              },
+              onTap: () {
+                setState(() {
+                  _focusNode = focusNode;
+                });
+                widget.onTap?.call(_focusNode);
+              },
               controller: textEditingController,
               decoration: InputDecoration(
                 contentPadding: const EdgeInsets.only(top: 0, left: 10),
-                constraints: const BoxConstraints(maxHeight: 30, maxWidth: 500),
+                constraints: const BoxConstraints(
+                  maxHeight: 30,
+                ),
                 focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Styles.accentColor, width: 1.0),
                 ),
@@ -52,7 +86,10 @@ class CustomAutocomplete extends StatelessWidget {
               focusNode: focusNode,
               onFieldSubmitted: (String value) {
                 onFieldSubmitted();
-                print('You just typed a new entry  $value');
+                setState(() {
+                  _focusNode = focusNode;
+                });
+                widget.onTapOutside?.call();
               },
             ),
             optionsViewBuilder: (context, onAutoCompleteSelect, options) {
@@ -75,7 +112,7 @@ class CustomAutocomplete extends StatelessWidget {
                             return Divider();
                           },
                           itemBuilder: (BuildContext context, int index) {
-                            return Text('${list[index]}');
+                            return Text('${widget.list[index]}');
                           },
                         )),
                   ));
