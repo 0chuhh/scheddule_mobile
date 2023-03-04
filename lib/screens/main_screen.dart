@@ -6,6 +6,7 @@ import 'package:schedule_mobile/screens/schedules_screen.dart';
 import 'package:schedule_mobile/screens/settings_screen.dart';
 import 'package:schedule_mobile/utils/styles.dart';
 import 'package:schedule_mobile/widgets/app_bar_painter.dart';
+import 'package:vector_math/vector_math_64.dart' as vector;
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -53,6 +54,11 @@ class _MainScreenState extends State<MainScreen> {
           topRight: Radius.circular(10),
         ),
         child: BottomNavigationBar(
+          unselectedIconTheme: IconThemeData(size: 20),
+          selectedIconTheme: IconThemeData(size: 25),
+          showSelectedLabels: false,
+          showUnselectedLabels: false,
+          unselectedLabelStyle: TextStyle(),
           unselectedItemColor: Styles.textColor,
           selectedItemColor: Styles.primaryColor,
           unselectedFontSize: 12,
@@ -61,22 +67,81 @@ class _MainScreenState extends State<MainScreen> {
           currentIndex: _selectedIndex,
           onTap: _onItemTapped,
           type: BottomNavigationBarType.fixed,
-          items: const [
+          items: [
             // BottomNavigationBarItem(
             //   icon: Icon(Icons.notifications),
             //   label: "notifications",
             // ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.timer),
-              label: "Расписание звонков",
+              icon: Column(
+                children: [
+                  Icon(Icons.watch_later_outlined),
+                  Container(
+                    width: 100,
+                    child: Text(
+                      "Расписание звонков",
+                      overflow: TextOverflow.visible,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          height: 1,
+                          fontSize: 10,
+                          color: _selectedIndex == 0
+                              ? Styles.primaryColor
+                              : Styles.textColor),
+                    ),
+                  )
+                ],
+              ),
+              label: "",
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.schedule),
-              label: "Мое расписание",
+              icon: Column(
+                children: [
+                  Icon(Icons.calendar_month_outlined),
+                  Container(
+                    width: 100,
+                    child: Text(
+                      "Мое расписание",
+                      overflow: TextOverflow.visible,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          height: 1,
+                          fontSize: 10,
+                          color: _selectedIndex == 1
+                              ? Styles.primaryColor
+                              : Styles.textColor),
+                    ),
+                  )
+                ],
+              ),
+              label: "",
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.schedule),
-              label: "Расписание",
+              icon: Container(
+                transform: Matrix4.compose(vector.Vector3(0, 0, 0),
+                    vector.Quaternion(0, 0, 0, 0), vector.Vector3(1, 1, 1)),
+                alignment: Alignment.topCenter,
+                child: Column(
+                  children: [
+                    Icon(Icons.calendar_today_outlined),
+                    Container(
+                      width: 100,
+                      child: Text(
+                        "Расписание",
+                        overflow: TextOverflow.visible,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            height: 1,
+                            fontSize: 10,
+                            color: _selectedIndex == 2
+                                ? Styles.primaryColor
+                                : Styles.textColor),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              label: "",
             ),
             // BottomNavigationBarItem(
             //   icon: Icon(Icons.settings),

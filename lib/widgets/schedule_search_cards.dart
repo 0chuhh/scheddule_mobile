@@ -149,7 +149,7 @@ class _ScheduleSearchCardsState extends State<ScheduleSearchCards> {
                 vector.Vector3(
                     0,
                     selectedIndex == 2
-                        ? -MediaQuery.of(context).size.height / 2
+                        ? -MediaQuery.of(context).size.height * 0.54
                         : 0,
                     0),
                 vector.Quaternion(0, 0, 0, 0),
