@@ -11,7 +11,9 @@ class CustomAutocomplete extends StatefulWidget {
       this.list = const [],
       this.label = '',
       this.onTap,
+      this.stopDetectingTapOutside = false,
       this.onTapOutside});
+  final bool? stopDetectingTapOutside;
   final OnTap? onTap;
   final OnTapOutside? onTapOutside;
   final String label;
@@ -51,14 +53,18 @@ class _CustomAutocompleteState extends State<CustomAutocomplete> {
                 (context, textEditingController, focusNode, onFieldSubmitted) =>
                     TextFormField(
               onTapOutside: (onTapOut) {
-                widget.onTapOutside?.call();
-                onTapOut.down;
+                if (!widget.stopDetectingTapOutside!) {
+                  widget.onTapOutside?.call();
+                  onTapOut.down;
+                }
               },
               onEditingComplete: () {
                 setState(() {
                   _focusNode = focusNode;
                 });
-                widget.onTapOutside?.call();
+                if (!widget.stopDetectingTapOutside!) {
+                  widget.onTapOutside?.call();
+                }
               },
               onTap: () {
                 setState(() {

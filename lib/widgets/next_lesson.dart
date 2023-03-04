@@ -16,7 +16,8 @@ class _NextLessonState extends State<NextLesson> {
     return Align(
       alignment: Alignment.bottomCenter,
       child: Container(
-        margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.17),
+        color: Colors.transparent,
+        margin: EdgeInsets.only(top: 140),
         padding: const EdgeInsets.only(left: 20, right: 20),
         alignment: Alignment.bottomCenter,
         child: Column(
@@ -42,7 +43,7 @@ class _NextLessonState extends State<NextLesson> {
                 )
               ],
             ),
-            Gap(10),
+            const Gap(10),
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -58,52 +59,52 @@ class _NextLessonState extends State<NextLesson> {
                           width: 40,
                           height: 40,
                           decoration: BoxDecoration(
-                              gradient: LinearGradient(
+                              gradient: const LinearGradient(
                                 colors: [Color(0xffdbdaff), Color(0x29dbdaff)],
                                 begin: Alignment.topLeft,
                                 end: Alignment.bottomRight,
                               ),
                               borderRadius: BorderRadius.circular(6)),
-                          child: Text(
+                          child: const Text(
                             '08',
                             style: TextStyle(
                                 fontWeight: FontWeight.w700, fontSize: 25),
                             textAlign: TextAlign.center,
                           ),
                         ),
-                        Gap(5),
+                        const Gap(5),
                         Column(
                           children: [
                             Container(
                               width: 6,
                               height: 6,
                               decoration: BoxDecoration(
-                                  color: Color(0xff1e1e1e),
+                                  color: const Color(0xff1e1e1e),
                                   borderRadius: BorderRadius.circular(50)),
                             ),
-                            Gap(3),
+                            const Gap(3),
                             Container(
                               width: 6,
                               height: 6,
                               decoration: BoxDecoration(
-                                  color: Color(0xff1e1e1e),
+                                  color: const Color(0xff1e1e1e),
                                   borderRadius: BorderRadius.circular(50)),
                             )
                           ],
                         ),
-                        Gap(5),
+                        const Gap(5),
                         Container(
                           alignment: Alignment.center,
                           width: 40,
                           height: 40,
                           decoration: BoxDecoration(
-                              gradient: LinearGradient(
+                              gradient: const LinearGradient(
                                 colors: [Color(0xffdbdaff), Color(0x29dbdaff)],
                                 begin: Alignment.topLeft,
                                 end: Alignment.bottomRight,
                               ),
                               borderRadius: BorderRadius.circular(6)),
-                          child: Text(
+                          child: const Text(
                             '30',
                             style: TextStyle(
                                 fontWeight: FontWeight.w700, fontSize: 25),
@@ -112,7 +113,7 @@ class _NextLessonState extends State<NextLesson> {
                         )
                       ],
                     ),
-                    Gap(10),
+                    const Gap(10),
                     GestureDetector(
                       onTap: () {},
                       child: Container(
@@ -127,13 +128,13 @@ class _NextLessonState extends State<NextLesson> {
                           children: [
                             Transform.rotate(
                               angle: 6.5,
-                              child: Icon(
+                              child: const Icon(
                                 Icons.notifications_outlined,
                                 size: 15,
                                 color: Colors.white,
                               ),
                             ),
-                            Text(
+                            const Text(
                               'Напомнить',
                               style:
                                   TextStyle(fontSize: 10, color: Colors.white),
@@ -144,32 +145,32 @@ class _NextLessonState extends State<NextLesson> {
                     )
                   ],
                 ),
-                Gap(7),
+                const Gap(7),
                 Container(
                   alignment: Alignment.topLeft,
                   width: MediaQuery.of(context).size.width * 0.6,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
+                      const Text(
                         'Информационные технологии в цифровой экономике',
                         style: TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
                             height: 1),
                       ),
-                      Text(
+                      const Text(
                         'Яковлева Лидия Леонидовна',
                         style: TextStyle(fontSize: 10),
                       ),
-                      Gap(10),
+                      const Gap(10),
                       Container(
                         alignment: Alignment.bottomCenter,
                         height: 20,
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
+                          children: const [
                             Text(
                               'Каф.ПиМ',
                               style: TextStyle(fontSize: 10),

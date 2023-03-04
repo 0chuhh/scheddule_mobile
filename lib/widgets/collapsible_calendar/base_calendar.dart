@@ -20,7 +20,7 @@ class BaseCalendar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TableCalendar(
-        locale: 'ru_RU', 
+        locale: 'ru_RU',
         firstDay: DateTime.utc(2010, 10, 16),
         lastDay: DateTime.utc(2030, 3, 14),
         calendarFormat: format,
@@ -31,14 +31,15 @@ class BaseCalendar extends StatelessWidget {
           CalendarFormat.twoWeeks: 'twoWeeks'
         },
         headerStyle: const HeaderStyle(
-            leftChevronIcon: Icon(Icons.keyboard_arrow_left, color: Color.fromRGBO(148, 163, 184, 1)),
-            rightChevronIcon: Icon(Icons.keyboard_arrow_right, color: Color.fromRGBO(148, 163, 184, 1)),
+            leftChevronIcon: Icon(Icons.keyboard_arrow_left,
+                color: Color.fromRGBO(148, 163, 184, 1)),
+            rightChevronIcon: Icon(Icons.keyboard_arrow_right,
+                color: Color.fromRGBO(148, 163, 184, 1)),
             formatButtonVisible: false,
             titleCentered: true,
             titleTextStyle: TextStyle(color: Color.fromRGBO(148, 163, 184, 1))),
         formatAnimationCurve: Curves.ease,
-        formatAnimationDuration:
-           const Duration(milliseconds:200),
+        formatAnimationDuration: const Duration(milliseconds: 200),
         headerVisible: headerVisible,
         focusedDay: selectedDay,
         rowHeight: 40,
@@ -47,15 +48,21 @@ class BaseCalendar extends StatelessWidget {
             weekdayStyle: TextStyle(color: Color.fromRGBO(148, 163, 184, 1)),
             weekendStyle: TextStyle(color: Color.fromRGBO(148, 163, 184, 1))),
         calendarStyle: CalendarStyle(
-            defaultTextStyle: TextStyle(color: Styles.textColor, fontWeight: FontWeight.w500),
+            defaultTextStyle:
+                TextStyle(color: Styles.textColor, fontWeight: FontWeight.w500),
             tablePadding: const EdgeInsets.all(10),
-            outsideTextStyle: const TextStyle(color: Color.fromRGBO(148, 163, 184, 1), fontWeight: FontWeight.w500),
-            disabledTextStyle: const TextStyle(color: Color.fromRGBO(148, 163, 184, 1), fontWeight: FontWeight.w500),
-            weekendTextStyle:
-                const TextStyle(color: Color.fromRGBO(218, 21, 21, 1), fontWeight: FontWeight.w500),
-            todayTextStyle:
-                TextStyle(color: Styles.accentColor),
-                selectedTextStyle: const TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
+            outsideTextStyle: const TextStyle(
+                color: Color.fromRGBO(148, 163, 184, 1),
+                fontWeight: FontWeight.w500),
+            disabledTextStyle: const TextStyle(
+                color: Color.fromRGBO(148, 163, 184, 1),
+                fontWeight: FontWeight.w500),
+            weekendTextStyle: const TextStyle(
+                color: Color.fromRGBO(218, 21, 21, 1),
+                fontWeight: FontWeight.w500),
+            todayTextStyle: TextStyle(color: Styles.accentColor),
+            selectedTextStyle: const TextStyle(
+                color: Colors.white, fontWeight: FontWeight.w500),
             selectedDecoration: BoxDecoration(
               shape: BoxShape.circle,
               color: Styles.accentColor,

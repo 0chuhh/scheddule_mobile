@@ -16,6 +16,7 @@ dependencies:
   gap: ^2.0.0
   timelines: ^0.1.0
   intl: ^0.17.0
+  indexed: ^0.0.8
 
 dev_dependencies:
   flutter_test:

@@ -40,7 +40,7 @@ class _CollapsibleCalendarState extends State<CollapsibleCalendar> {
   bool _headerVisible = false;
 
   final TextStyle _weekStyle =
-       TextStyle(fontSize: 12, color: Styles.primaryColor);
+      TextStyle(fontSize: 12, color: Styles.primaryColor);
 
   late Week _week = Week(
     date: DateTime.now(),
@@ -90,20 +90,18 @@ class _CollapsibleCalendarState extends State<CollapsibleCalendar> {
             SizedBox(
               width: MediaQuery.of(context).size.width - 50,
               child:
-                  CalendarAnimatedContainer(
-                    format: _format, 
-                    children: <Widget>[
-                      BaseCalendar(changeFormat, _selectedDay, changeDay, _format,
-                          _headerVisible),
-                      Positioned(
-                          bottom: 0,
-                          child: CalendarCollapseButton(
-                            changeFormat: changeFormat,
-                            monthName: _monthName,
-                            selectedDay: _selectedDay,
-                            week: _week,
-                            format: _format,
-                          ))
+                  CalendarAnimatedContainer(format: _format, children: <Widget>[
+                BaseCalendar(changeFormat, _selectedDay, changeDay, _format,
+                    _headerVisible),
+                Positioned(
+                    bottom: 0,
+                    child: CalendarCollapseButton(
+                      changeFormat: changeFormat,
+                      monthName: _monthName,
+                      selectedDay: _selectedDay,
+                      week: _week,
+                      format: _format,
+                    ))
               ]),
             ),
           ],

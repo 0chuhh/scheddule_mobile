@@ -3,6 +3,7 @@ import 'package:schedule_mobile/widgets/schedule_list/schedule_list_item.dart';
 import 'package:timelines/timelines.dart';
 import 'package:intl/intl.dart';
 import '../../models/schedule.dart';
+import 'package:vector_math/vector_math_64.dart' as vector;
 
 class ScheduleList extends StatelessWidget {
   final List<ScheduleItem> schedule = [
@@ -40,7 +41,63 @@ class ScheduleList extends StatelessWidget {
         lecturer: 'Иванов Александр Владимирович',
         cathedra: 'ПиМ',
         classroom: '03-401',
-        format: ScheduleItemFormat.laboratory)
+        format: ScheduleItemFormat.laboratory),
+    ScheduleItem(
+        couple: Couple(number: 5, time: DateTime(2023, 1, 1, 16, 20)),
+        name: 'Администрирование и конфигурирование системы 1С:Предприятия',
+        lecturer: 'Иванов Александр Владимирович',
+        cathedra: 'ПиМ',
+        classroom: '03-401',
+        format: ScheduleItemFormat.laboratory),
+    ScheduleItem(
+        couple: Couple(number: 5, time: DateTime(2023, 1, 1, 16, 20)),
+        name: 'Администрирование и конфигурирование системы 1С:Предприятия',
+        lecturer: 'Иванов Александр Владимирович',
+        cathedra: 'ПиМ',
+        classroom: '03-401',
+        format: ScheduleItemFormat.laboratory),
+    ScheduleItem(
+        couple: Couple(number: 5, time: DateTime(2023, 1, 1, 16, 20)),
+        name: 'Администрирование и конфигурирование системы 1С:Предприятия',
+        lecturer: 'Иванов Александр Владимирович',
+        cathedra: 'ПиМ',
+        classroom: '03-401',
+        format: ScheduleItemFormat.laboratory),
+    ScheduleItem(
+        couple: Couple(number: 5, time: DateTime(2023, 1, 1, 16, 20)),
+        name: 'Администрирование и конфигурирование системы 1С:Предприятия',
+        lecturer: 'Иванов Александр Владимирович',
+        cathedra: 'ПиМ',
+        classroom: '03-401',
+        format: ScheduleItemFormat.laboratory),
+    ScheduleItem(
+        couple: Couple(number: 5, time: DateTime(2023, 1, 1, 16, 20)),
+        name: 'Администрирование и конфигурирование системы 1С:Предприятия',
+        lecturer: 'Иванов Александр Владимирович',
+        cathedra: 'ПиМ',
+        classroom: '03-401',
+        format: ScheduleItemFormat.laboratory),
+    ScheduleItem(
+        couple: Couple(number: 5, time: DateTime(2023, 1, 1, 16, 20)),
+        name: 'Администрирование и конфигурирование системы 1С:Предприятия',
+        lecturer: 'Иванов Александр Владимирович',
+        cathedra: 'ПиМ',
+        classroom: '03-401',
+        format: ScheduleItemFormat.laboratory),
+    ScheduleItem(
+        couple: Couple(number: 5, time: DateTime(2023, 1, 1, 16, 20)),
+        name: 'Администрирование и конфигурирование системы 1С:Предприятия',
+        lecturer: 'Иванов Александр Владимирович',
+        cathedra: 'ПиМ',
+        classroom: '03-401',
+        format: ScheduleItemFormat.laboratory),
+    ScheduleItem(
+        couple: Couple(number: 5, time: DateTime(2023, 1, 1, 16, 20)),
+        name: 'Администрирование и конфигурирование системы 1С:Предприятия',
+        lecturer: 'Иванов Александр Владимирович',
+        cathedra: 'ПиМ',
+        classroom: '03-401',
+        format: ScheduleItemFormat.laboratory),
   ];
 
   String getCoupleTime(DateTime date) {
@@ -50,32 +107,31 @@ class ScheduleList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-        height: MediaQuery.of(context).size.height * 0.6,
-        child: Expanded(
-            flex: 1,
-            child: Timeline.tileBuilder(
-              builder: TimelineTileBuilder(
-                nodePositionBuilder: (context, index) => 0.14,
-                oppositeContentsBuilder: (context, index) => TimelineNode(
-                  indicator: Text(getCoupleTime(schedule[index].couple.time)),
-                  startConnector:
-                      index == 0 ? null : const DashedLineConnector(),
-                  endConnector: index == schedule.length - 1
-                      ? null
-                      : const DashedLineConnector(),
-                ),
-                contentsBuilder: (context, index) => Padding(
-                    padding:
-                        const EdgeInsets.only(left: 5.0, right: 24, bottom: 24),
-                    child: ScheduleListItem(
-                      item: schedule[index],
-                    )),
-                itemCount: schedule.length,
-              ),
-              shrinkWrap: true,
-              theme: TimelineThemeData(
-                connectorTheme: ConnectorThemeData(indent: 5),
-              ),
-            )));
+        child: Container(
+      padding: EdgeInsets.only(top: 250),
+      child: Timeline.tileBuilder(
+        padding: EdgeInsets.only(top: 20),
+        builder: TimelineTileBuilder(
+          nodePositionBuilder: (context, index) => 0.14,
+          oppositeContentsBuilder: (context, index) => TimelineNode(
+            indicator: Text(getCoupleTime(schedule[index].couple.time)),
+            startConnector: index == 0 ? null : const DashedLineConnector(),
+            endConnector: index == schedule.length - 1
+                ? null
+                : const DashedLineConnector(),
+          ),
+          contentsBuilder: (context, index) => Padding(
+              padding: const EdgeInsets.only(left: 5.0, right: 24, bottom: 24),
+              child: ScheduleListItem(
+                item: schedule[index],
+              )),
+          itemCount: schedule.length,
+        ),
+        shrinkWrap: true,
+        theme: TimelineThemeData(
+          connectorTheme: ConnectorThemeData(indent: 5),
+        ),
+      ),
+    ));
   }
 }

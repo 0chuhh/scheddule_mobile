@@ -4,7 +4,7 @@ import 'package:gap/gap.dart';
 import 'package:schedule_mobile/widgets/collapsible_calendar/collapsible_calendar.dart';
 import 'package:schedule_mobile/widgets/app_bar_painter.dart';
 import 'package:schedule_mobile/widgets/schedule_list/schedule_list.dart';
-
+import 'package:vector_math/vector_math_64.dart' as vector;
 import '../utils/styles.dart';
 import '../widgets/next_lesson.dart';
 
@@ -17,27 +17,21 @@ class MyScheduleScreen extends StatelessWidget {
       resizeToAvoidBottomInset: false,
       backgroundColor: Styles.bgColor,
       extendBodyBehindAppBar: true,
-      body: SingleChildScrollView(
-        child: Column(children: <Widget>[
-          Stack(children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(top: 230),
-              child: ScheduleList(),
+      body: Stack(children: <Widget>[
+        Positioned.fill(child: ScheduleList()),
+        Stack(children: <Widget>[
+          CustomPaint(
+            painter: AppBarPainter(),
+            child: Container(
+              color: Colors.transparent,
+              width: MediaQuery.of(context).size.width,
+              height: 260,
+              child: NextLesson(),
             ),
-            CustomPaint(
-              painter: AppBarPainter(),
-              child: Container(
-                alignment: Alignment.bottomCenter,
-                color: Colors.transparent,
-                width: MediaQuery.of(context).size.width,
-                height: 260,
-                child: NextLesson(),
-              ),
-            ),
-            CollapsibleCalendar(),
-          ]),
-        ]),
-      ),
+          ),
+          CollapsibleCalendar(),
+        ])
+      ]),
     );
   }
 }
