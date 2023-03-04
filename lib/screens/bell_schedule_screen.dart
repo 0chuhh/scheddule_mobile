@@ -58,6 +58,14 @@ class _BellScheduleScreenState extends State<BellScheduleScreen> {
     },
   ];
 
+  List<Map<String, dynamic>> _foundedFaculties = [];
+
+  @override
+  void initState() {
+    _foundedFaculties = _allFaculties;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,43 +79,44 @@ class _BellScheduleScreenState extends State<BellScheduleScreen> {
                 width: MediaQuery.of(context).size.width,
                 height: 130,
                 child: SafeArea(
-                  child: Container(
-                    margin: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-                    width: MediaQuery.of(context).size.width,
-                    decoration: const BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.all(Radius.circular(25)),
-                        boxShadow: [
-                          BoxShadow(color: Colors.black38, spreadRadius: 0, blurRadius: 5),
-                        ]),
-                    child: Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 20),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: const [
-                          Text("Название факультета"),
-                          Spacer(),
-                          Icon(Icons.search),
-                        ],
-                      ),
+                    child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                  child: TextField(
+                    cursorColor: Styles.primaryColor,
+                    cursorRadius: const Radius.circular(2),
+                    onChanged: (value) => _runFilter(value),
+                    decoration: InputDecoration(
+                      isDense: true,
+                      filled: true,
+                      fillColor: Colors.white,
+                      hintText: 'Название факультета...',
+                      focusColor: Styles.primaryColor,
+                      suffixIcon: const Icon(Icons.search),
+                      suffixIconColor: Styles.crossColor,
+                      enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(25),
+                          borderSide: BorderSide(color: Styles.crossColor)),
+                      focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(25),
+                          borderSide: BorderSide(color: Styles.primaryColor)),
                     ),
                   ),
-                ),
+                )),
               ),
             ),
           ]),
           Expanded(
             child: SizedBox(
                 child: ListView.builder(
-              itemCount: _allFaculties.length,
+              itemCount: _foundedFaculties.length,
               itemBuilder: (context, index) {
                 return Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                     child: _bellScheduleElevatedButton(
-                      _allFaculties[index]['id'],
-                      _allFaculties[index]['name'],
-                      _allFaculties[index]['icon'],
-                      _allFaculties[index]['bellSchedule'],
+                      _foundedFaculties[index]['id'],
+                      _foundedFaculties[index]['name'],
+                      _foundedFaculties[index]['icon'],
+                      _foundedFaculties[index]['bellSchedule'],
                     ));
               },
             )),
@@ -312,5 +321,20 @@ class _BellScheduleScreenState extends State<BellScheduleScreen> {
             Icon(icon),
           ],
         ));
+  }
+
+  void _runFilter(String value) {
+    List<Map<String, dynamic>> result = [];
+    if (value.isEmpty) {
+      result = _allFaculties;
+    } else {
+      result = _allFaculties
+          .where((faculty) => faculty['name'].toLowerCase().contains(value.toLowerCase()))
+          .toList();
+    }
+
+    setState(() {
+      _foundedFaculties = result;
+    });
   }
 }
