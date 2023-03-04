@@ -16,8 +16,7 @@ class _BellScheduleScreenState extends State<BellScheduleScreen> {
   final List<Map<String, dynamic>> _allFaculties = [
     {
       'id': 1,
-      'name': 'ФСиЭ',
-      'icon': Icons.build,
+      'name': 'Факультет строительства и экологии',
       'bellSchedule': {
         'big_break': '13:35 - 14:35',
         '1': '08:30 - 10:05',
@@ -30,8 +29,7 @@ class _BellScheduleScreenState extends State<BellScheduleScreen> {
     },
     {
       'id': 2,
-      'name': 'Энерегетический факультет',
-      'icon': Icons.build,
+      'name': 'Факультет экономики и управления',
       'bellSchedule': {
         'big_break': '13:35 - 14:35',
         '1': '08:30 - 10:05',
@@ -44,8 +42,124 @@ class _BellScheduleScreenState extends State<BellScheduleScreen> {
     },
     {
       'id': 3,
+      'name': 'Энергетический факультет',
+      'bellSchedule': {
+        'big_break': '13:35 - 14:35',
+        '1': '08:30 - 10:05',
+        '2': '10:15 - 11:50',
+        '3': '12:00 - 13:35',
+        '4': '14:35 - 16:10',
+        '5': '16:20 - 17:55',
+        '6': '18:05 - 19:40',
+      }
+    },
+    {
+      'id': 4,
       'name': 'Горный факультет',
-      'icon': Icons.build,
+      'bellSchedule': {
+        'big_break': '13:35 - 14:35',
+        '1': '08:30 - 10:05',
+        '2': '10:15 - 11:50',
+        '3': '12:00 - 13:35',
+        '4': '14:35 - 16:10',
+        '5': '16:20 - 17:55',
+        '6': '18:05 - 19:40',
+      }
+    },
+    {
+      'id': 5,
+      'name': 'Историко-филологический факультет',
+      'bellSchedule': {
+        'big_break': '13:35 - 14:35',
+        '1': '08:30 - 10:05',
+        '2': '10:15 - 11:50',
+        '3': '12:00 - 13:35',
+        '4': '14:35 - 16:10',
+        '5': '16:20 - 17:55',
+        '6': '18:05 - 19:40',
+      }
+    },
+    {
+      'id': 6,
+      'name': 'Факультет культуры и искусств',
+      'bellSchedule': {
+        'big_break': '13:35 - 14:35',
+        '1': '08:30 - 10:05',
+        '2': '10:15 - 11:50',
+        '3': '12:00 - 13:35',
+        '4': '14:35 - 16:10',
+        '5': '16:20 - 17:55',
+        '6': '18:05 - 19:40',
+      }
+    },
+    {
+      'id': 7,
+      'name': 'Факультет физической культуры и спорта',
+      'bellSchedule': {
+        'big_break': '13:35 - 14:35',
+        '1': '08:30 - 10:05',
+        '2': '10:15 - 11:50',
+        '3': '12:00 - 13:35',
+        '4': '14:35 - 16:10',
+        '5': '16:20 - 17:55',
+        '6': '18:05 - 19:40',
+      }
+    },
+    {
+      'id': 8,
+      'name': 'Факультет естественный наук, математики и технологий',
+      'bellSchedule': {
+        'big_break': '13:35 - 14:35',
+        '1': '08:30 - 10:05',
+        '2': '10:15 - 11:50',
+        '3': '12:00 - 13:35',
+        '4': '14:35 - 16:10',
+        '5': '16:20 - 17:55',
+        '6': '18:05 - 19:40',
+      }
+    },
+    {
+      'id': 9,
+      'name': 'Социологический факультет',
+      'bellSchedule': {
+        'big_break': '13:35 - 14:35',
+        '1': '08:30 - 10:05',
+        '2': '10:15 - 11:50',
+        '3': '12:00 - 13:35',
+        '4': '14:35 - 16:10',
+        '5': '16:20 - 17:55',
+        '6': '18:05 - 19:40',
+      }
+    },
+    {
+      'id': 10,
+      'name': 'Психолого-педагогический факультет',
+      'bellSchedule': {
+        'big_break': '13:35 - 14:35',
+        '1': '08:30 - 10:05',
+        '2': '10:15 - 11:50',
+        '3': '12:00 - 13:35',
+        '4': '14:35 - 16:10',
+        '5': '16:20 - 17:55',
+        '6': '18:05 - 19:40',
+      }
+    },
+    {
+      'id': 11,
+      'name': 'Психолого-педагогический факультет',
+      'bellSchedule': {
+        'big_break': '13:35 - 14:35',
+        '1': '08:30 - 10:05',
+        '2': '10:15 - 11:50',
+        '3': '12:00 - 13:35',
+        '4': '14:35 - 16:10',
+        '5': '16:20 - 17:55',
+        '6': '18:05 - 19:40',
+      }
+    },
+    {
+      'id': 12,
+      'name': 'Юридический факультет',
       'bellSchedule': {
         'big_break': '13:35 - 14:35',
         '1': '08:30 - 10:05',
@@ -138,7 +252,7 @@ class _BellScheduleScreenState extends State<BellScheduleScreen> {
                         color: Colors.white,
                         borderRadius: BorderRadius.only(
                             topRight: Radius.circular(10), topLeft: Radius.circular(10))),
-                    height: 280,
+                    height: 300,
                     width: MediaQuery.of(context).size.width,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 5.0),
@@ -157,12 +271,14 @@ class _BellScheduleScreenState extends State<BellScheduleScreen> {
                             children: [
                               const Icon(Icons.calendar_month_outlined),
                               const Gap(5),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Text('Расписание звонков'),
-                                  Text(name),
-                                ],
+                              Flexible(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text('Расписание звонков'),
+                                    Text(name,),
+                                  ],
+                                ),
                               )
                             ],
                           ),
@@ -313,12 +429,12 @@ class _BellScheduleScreenState extends State<BellScheduleScreen> {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Text(name),
+            Flexible(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Text(name),
+              ),
             ),
-            const Spacer(),
-            Icon(icon),
           ],
         ));
   }
