@@ -185,53 +185,52 @@ class _BellScheduleScreenState extends State<BellScheduleScreen> {
     return Scaffold(
       backgroundColor: Styles.bgColor,
       body: Stack(children: <Widget>[
-        SizedBox(
-            child: Container(
-          child: ListView.builder(
-        padding: EdgeInsets.only(top: 100),
-        itemCount: _foundedFaculties.length,
-        itemBuilder: (context, index) {
-          return Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-              child: _bellScheduleElevatedButton(
-                _foundedFaculties[index]['id'],
-                _foundedFaculties[index]['name'],
-                _foundedFaculties[index]['icon'],
-                _foundedFaculties[index]['bellSchedule'],
-              ));
-        },
-          ),
-        )),
+        ListView.builder(
+          padding: const EdgeInsets.only(top: 150, bottom: 10),
+          itemCount: _foundedFaculties.length,
+          itemBuilder: (context, index) {
+            return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                child: _bellScheduleElevatedButton(
+                  _foundedFaculties[index]['id'],
+                  _foundedFaculties[index]['name'],
+                  _foundedFaculties[index]['icon'],
+                  _foundedFaculties[index]['bellSchedule'],
+                ));
+          },
+        ),
         CustomPaint(
           painter: AppBarPainter(),
-          child: Container(
-              width: MediaQuery.of(context).size.width,
-              height: 100,
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                child: TextField(
-                  cursorColor: Styles.primaryColor,
-                  cursorRadius: const Radius.circular(2),
-                  onChanged: (value) => _runFilter(value),
-                  decoration: InputDecoration(
-                    isDense: true,
-                    filled: true,
-                    fillColor: Colors.white,
-                    hintText: 'Название факультета...',
-                    focusColor: Styles.primaryColor,
-                    suffixIcon: const Icon(Icons.search),
-                    suffixIconColor: Styles.crossColor,
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(25),
-                        borderSide: BorderSide(color: Styles.crossColor)),
-                    focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(25),
-                        borderSide: BorderSide(color: Styles.primaryColor)),
+          child: SafeArea(
+            child: SizedBox(
+                width: MediaQuery.of(context).size.width,
+                height: 100,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 25),
+                  child: Material(
+                    borderRadius: BorderRadius.circular(25),
+                    elevation: 5,
+                    child: TextField(
+                      cursorColor: Styles.primaryColor,
+                      cursorRadius: const Radius.circular(2),
+                      onChanged: (value) => _runFilter(value),
+                      decoration: InputDecoration(
+                        isDense: true,
+                        filled: true,
+                        fillColor: Colors.white,
+                        hintText: 'Название факультета...',
+                        focusColor: Styles.primaryColor,
+                        suffixIcon: const Icon(Icons.search),
+                        suffixIconColor: Styles.crossColor,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(25),
+                          borderSide: BorderSide.none,
+                        ),
+                      ),
+                    ),
                   ),
-                ),
-              )),
+                )),
+          ),
         ),
       ]),
     );
@@ -248,13 +247,11 @@ class _BellScheduleScreenState extends State<BellScheduleScreen> {
                     decoration: const BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.only(
-                            topRight: Radius.circular(10),
-                            topLeft: Radius.circular(10))),
+                            topRight: Radius.circular(10), topLeft: Radius.circular(10))),
                     height: 300,
                     width: MediaQuery.of(context).size.width,
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 15.0, vertical: 5.0),
+                      padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 5.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
@@ -263,8 +260,7 @@ class _BellScheduleScreenState extends State<BellScheduleScreen> {
                             width: MediaQuery.of(context).size.width * 0.30,
                             decoration: BoxDecoration(
                                 color: Styles.crossColor,
-                                borderRadius:
-                                    const BorderRadius.all(Radius.circular(5))),
+                                borderRadius: const BorderRadius.all(Radius.circular(5))),
                           ),
                           const Gap(10),
                           Row(
@@ -290,8 +286,7 @@ class _BellScheduleScreenState extends State<BellScheduleScreen> {
                               const Text('1 пара'),
                               Expanded(
                                   child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 8.0),
+                                padding: const EdgeInsets.symmetric(horizontal: 8.0),
                                 child: DashedLineConnector(
                                   thickness: 1,
                                   gap: 2,
@@ -309,8 +304,7 @@ class _BellScheduleScreenState extends State<BellScheduleScreen> {
                               const Text('2 пара'),
                               Expanded(
                                   child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 8.0),
+                                padding: const EdgeInsets.symmetric(horizontal: 8.0),
                                 child: DashedLineConnector(
                                   thickness: 1,
                                   gap: 2,
@@ -328,8 +322,7 @@ class _BellScheduleScreenState extends State<BellScheduleScreen> {
                               const Text('3 пара'),
                               Expanded(
                                   child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 8.0),
+                                padding: const EdgeInsets.symmetric(horizontal: 8.0),
                                 child: DashedLineConnector(
                                   thickness: 1,
                                   gap: 2,
@@ -345,9 +338,7 @@ class _BellScheduleScreenState extends State<BellScheduleScreen> {
                           Center(
                               child: Text(
                             'Большой перерыв ${bellSchedule['big_break']}',
-                            style: TextStyle(
-                                color: Styles.crossColor,
-                                fontWeight: FontWeight.bold),
+                            style: TextStyle(color: Styles.crossColor, fontWeight: FontWeight.bold),
                           )),
                           const Gap(15),
                           Row(
@@ -355,8 +346,7 @@ class _BellScheduleScreenState extends State<BellScheduleScreen> {
                               const Text('4 пара'),
                               Expanded(
                                   child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 8.0),
+                                padding: const EdgeInsets.symmetric(horizontal: 8.0),
                                 child: DashedLineConnector(
                                   thickness: 1,
                                   gap: 2,
@@ -374,8 +364,7 @@ class _BellScheduleScreenState extends State<BellScheduleScreen> {
                               const Text('5 пара'),
                               Expanded(
                                   child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 8.0),
+                                padding: const EdgeInsets.symmetric(horizontal: 8.0),
                                 child: DashedLineConnector(
                                   thickness: 1,
                                   gap: 2,
@@ -393,8 +382,7 @@ class _BellScheduleScreenState extends State<BellScheduleScreen> {
                               const Text('6 пара'),
                               Expanded(
                                   child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 8.0),
+                                padding: const EdgeInsets.symmetric(horizontal: 8.0),
                                 child: DashedLineConnector(
                                   thickness: 1,
                                   gap: 2,
@@ -413,8 +401,7 @@ class _BellScheduleScreenState extends State<BellScheduleScreen> {
         },
         style: ElevatedButton.styleFrom(
             padding: const EdgeInsets.only(left: 0, right: 20),
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             minimumSize: Size(MediaQuery.of(context).size.width, 50),
             maximumSize: Size(MediaQuery.of(context).size.width, 50),
             backgroundColor: Colors.white,
@@ -456,8 +443,7 @@ class _BellScheduleScreenState extends State<BellScheduleScreen> {
       result = _allFaculties;
     } else {
       result = _allFaculties
-          .where((faculty) =>
-              faculty['name'].toLowerCase().contains(value.toLowerCase()))
+          .where((faculty) => faculty['name'].toLowerCase().contains(value.toLowerCase()))
           .toList();
     }
 

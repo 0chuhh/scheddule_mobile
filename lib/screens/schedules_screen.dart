@@ -19,7 +19,7 @@ class SchedulesScreen extends StatelessWidget {
             CustomPaint(
               painter: AppBarPainter(),
               child: Container(
-                margin: EdgeInsets.only(top: 40),
+                margin: const EdgeInsets.only(top: 40),
                 width: MediaQuery.of(context).size.width,
                 height: 70,
                 child: const Text(
@@ -33,7 +33,7 @@ class SchedulesScreen extends StatelessWidget {
               ),
             ),
           ]),
-          ScheduleSearchCards()
+          const ScheduleSearchCards()
         ]),
       ),
     );
