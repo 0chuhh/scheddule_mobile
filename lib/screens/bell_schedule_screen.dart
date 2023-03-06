@@ -185,25 +185,24 @@ class _BellScheduleScreenState extends State<BellScheduleScreen> {
     return Scaffold(
       backgroundColor: Styles.bgColor,
       body: Stack(children: <Widget>[
-        Expanded(
-            child: SizedBox(
-                child: Container(
+        SizedBox(
+            child: Container(
           child: ListView.builder(
-            padding: EdgeInsets.only(top: 100),
-            itemCount: _foundedFaculties.length,
-            itemBuilder: (context, index) {
-              return Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-                  child: _bellScheduleElevatedButton(
-                    _foundedFaculties[index]['id'],
-                    _foundedFaculties[index]['name'],
-                    _foundedFaculties[index]['icon'],
-                    _foundedFaculties[index]['bellSchedule'],
-                  ));
-            },
+        padding: EdgeInsets.only(top: 100),
+        itemCount: _foundedFaculties.length,
+        itemBuilder: (context, index) {
+          return Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+              child: _bellScheduleElevatedButton(
+                _foundedFaculties[index]['id'],
+                _foundedFaculties[index]['name'],
+                _foundedFaculties[index]['icon'],
+                _foundedFaculties[index]['bellSchedule'],
+              ));
+        },
           ),
-        ))),
+        )),
         CustomPaint(
           painter: AppBarPainter(),
           child: Container(
