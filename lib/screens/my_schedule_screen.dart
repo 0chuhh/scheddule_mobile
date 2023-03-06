@@ -29,7 +29,7 @@ class _MyScheduleScreenState extends State<MyScheduleScreen> {
 
   @override
   void initState() {
-    daySchedule = schedule.where((element) => element.weekDay == DateTime.now().weekday).toList();
+    daySchedule = schedule.where((element) => element.weekDay == DateTime.now().weekday-1 && element.weekType == Week(date:DateTime.now()).getWeekType()).toList();
     print(daySchedule);
     super.initState();
   }
