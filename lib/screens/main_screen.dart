@@ -20,7 +20,7 @@ class _MainScreenState extends State<MainScreen> {
   static final List<Widget> _screens = <Widget>[
     // const RemindersScreen(),
     const BellScheduleScreen(),
-    const MyScheduleScreen(),
+    MyScheduleScreen(),
     const SchedulesScreen(),
     // const SettingsScreen(),
   ];
