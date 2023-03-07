@@ -4,12 +4,13 @@ import 'package:schedule_mobile/screens/main_screen.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 void main() {
-  
+
   initializeDateFormatting().then((_) => {
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarBrightness: Brightness.dark,
     statusBarIconBrightness: Brightness.dark,
     statusBarColor: Colors.transparent,
+    systemNavigationBarColor: Colors.white,
   )),
     runApp(const MainApp())
   });
@@ -23,7 +24,7 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Schedule ZabGU',
-      home: const MainScreen(),  
+      home: const MainScreen(),
       theme: ThemeData(fontFamily: 'Montserrat',),
     );
   }
