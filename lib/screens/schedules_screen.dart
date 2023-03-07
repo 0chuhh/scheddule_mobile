@@ -12,7 +12,6 @@ class SchedulesScreen extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Styles.bgColor,
-      extendBodyBehindAppBar: true,
       body: SingleChildScrollView(
         child: Column(mainAxisSize: MainAxisSize.max, children: <Widget>[
           Stack(children: <Widget>[

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:schedule_mobile/utils/styles.dart';
@@ -32,13 +34,11 @@ class _ScheduleSearchCardsState extends State<ScheduleSearchCards> {
   List<filterBlock> filterBlocks = [];
   List<filterBlock> _data = [];
 
-  FocusNode focusNodeByGroup = new FocusNode();
-  FocusNode focusNodeByLecturer = new FocusNode();
-  FocusNode focusNodeByclassroom = new FocusNode();
+
 
   @override
   void initState() {
-    // TODO: implement initState
+
     filterBlocks = [
       filterBlock(
         id: 0,
@@ -61,9 +61,8 @@ class _ScheduleSearchCardsState extends State<ScheduleSearchCards> {
                 key: _autocomleteByGroupKey,
                   list: const ['пи-20', 'пи-21', 'пи-22'],
                   label: 'группа',
-                  focusNode: focusNodeByGroup,
-                  onTap: (focusNode) {
-                    onAutocompleteTap(0, focusNode);
+                  onTap: () {
+                    onAutocompleteTap(0);
                   },
                   onTapOutside: () {}),
               const Gap(5),
@@ -101,12 +100,9 @@ class _ScheduleSearchCardsState extends State<ScheduleSearchCards> {
                 key: _autocomleteByLecturerKey,
                 list: const ['пи-20', 'пи-21', 'пи-22'],
                 label: 'Преподаватель',
-                focusNode: focusNodeByLecturer,
-                onTap: (focusNode) {
-                  setState(() {
-                    _focusNode = focusNode;
-                  });
-                  onAutocompleteTap(1,focusNode);
+                onTap: () {
+                
+                  onAutocompleteTap(1);
                   // FocusScope.of(context).requestFocus(focusNode);
                 },
                 onTapOutside: () {
@@ -159,9 +155,8 @@ class _ScheduleSearchCardsState extends State<ScheduleSearchCards> {
                 key: _autocomleteByClassromKey,
                 list: const [],
                 label: 'Аудитория',
-                focusNode: focusNodeByclassroom,
-                onTap: (focusNode) {
-                  onAutocompleteTap(2,focusNode);
+                onTap: () {
+                  onAutocompleteTap(2);
                   // FocusScope.of(context).requestFocus(focusNode);
                 },
                 onTapOutside: () {
@@ -188,15 +183,17 @@ class _ScheduleSearchCardsState extends State<ScheduleSearchCards> {
     super.initState();
   }
 
-  FocusNode _focusNode = new FocusNode();
-  void onAutocompleteTap(int index, FocusNode? focusNode) {
+  
+  void onAutocompleteTap(int index) {
     switch (index) {
       case 0:
         if (filterBlocks.indexOf(
                 filterBlocks.firstWhere((element) => element.id == 0)) !=
             0) {
+              var timer = Timer(const Duration(milliseconds: 250), (){
           removeItem(0);
           addItem(0, 0);
+          });
 
         }
         break;
@@ -204,27 +201,34 @@ class _ScheduleSearchCardsState extends State<ScheduleSearchCards> {
         if (filterBlocks.indexOf(
                 filterBlocks.firstWhere((element) => element.id == 1)) !=
             0) {
+              var timer = Timer(const Duration(milliseconds: 250), (){
           removeItem(1);
           addItem(1, 0);
-          
+              });
         }
         break;
       case 2:
         if (filterBlocks.indexOf(
                 filterBlocks.firstWhere((element) => element.id == 2)) !=
             0) {
+              var timer = Timer(const Duration(milliseconds: 250), (){
           removeItem(2);
           addItem(2, 0);
+              });
         }
         break;
     }
-    if(_autocomleteByGroupKey.currentWidget == filterBlocks.firstWhere((element) => element.id == index)){
-      _autocomleteByGroupKey.currentState?.getFocus();
-    }else if(_autocomleteByClassromKey.currentWidget == filterBlocks.firstWhere((element) => element.id == index)){
-      _autocomleteByClassromKey.currentState?.getFocus();
-    }else if(_autocomleteByLecturerKey.currentWidget == filterBlocks.firstWhere((element) => element.id == index)){
-      _autocomleteByLecturerKey.currentState?.getFocus();
-    }
+    
+    //   if(_autocomleteByGroupKey.currentWidget == filterBlocks.firstWhere((element) => element.id == index)){
+    //   _autocomleteByGroupKey.currentState?.getFocus();
+    // }else if(_autocomleteByClassromKey.currentWidget == filterBlocks.firstWhere((element) => element.id == index)){
+    //   _autocomleteByClassromKey.currentState?.getFocus();
+    // }else if(_autocomleteByLecturerKey.currentWidget == filterBlocks.firstWhere((element) => element.id == index)){
+    //   _autocomleteByLecturerKey.currentState?.getFocus();
+    // }
+    
+
+    
     
 
   }
@@ -233,57 +237,57 @@ class _ScheduleSearchCardsState extends State<ScheduleSearchCards> {
     final item = filterBlocks.firstWhere((element) => element.id == id);
     final index = filterBlocks.indexOf(item);
     filterBlocks.removeAt(index);
-    // _animatedListKey.currentState?.removeItem(
-    //     index,
-    //     duration: const Duration(milliseconds: 1000),
-    //     (context, animation) => SlideTransition(
-    //         position: animation
-    //             .drive(Tween(begin: const Offset(1.0, 0.0), end: const Offset(0.0, 0.0))),
-    //         child: Container(
-    //             height: 70,
-    //             padding: const EdgeInsets.all(15),
-    //             decoration: BoxDecoration(
-    //                 color: Colors.white,
-    //                 borderRadius: BorderRadius.circular(15)))));
+    _animatedListKey.currentState?.removeItem(
+        index,
+        duration: const Duration(milliseconds: 500),
+        (context, animation) => SlideTransition(
+            position: animation
+                .drive(Tween(begin: const Offset(1.0, 0.0), end: const Offset(0.0, 0.0))),
+            child: Container(
+                height: 70,
+                padding: const EdgeInsets.all(15),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(15)))));
   }
 
   void addItem(int id, int insertToIndex) {
     final item = _data.firstWhere((element) => element.id == id);
     final index = _data.indexOf(item);
-    setState(() {
-      filterBlocks.insert(insertToIndex, item);
-      // _animatedListKey.currentState?.insertItem(index);
-    });
+    
+    filterBlocks.insert(insertToIndex, item);
+    _animatedListKey.currentState?.insertItem(0);
+    
   }
 
   void unfocusAutocomplete() {
     
-    FocusScope.of(context).requestFocus(new FocusNode());
+    FocusScope.of(context).requestFocus(FocusNode());
   }
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return SingleChildScrollView(
-        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         child: Container(
             margin: const EdgeInsets.only(top: 15),
             height: MediaQuery.of(context).size.height - 200,
             child: AnimatedList(
               key: _animatedListKey,
+              
               initialItemCount: filterBlocks.length,
               itemBuilder: (context, index, animation) {
                 return SlideTransition(
                   position: animation.drive(
                     // Tween that slides from right to left.
-                    Tween(begin: const Offset(1.0, 0.0), end: const Offset(0.0, 0.0)),
+                    Tween(begin: const Offset(1.0, 1.0), end: const Offset(0.0, 0.0)),
                   ),
                   // Simply display the letter.
                   child: ListTile(
                     title: filterBlocks[index].widget,
                   ),
                 );
-                ;
+        
               },
             )));
   }

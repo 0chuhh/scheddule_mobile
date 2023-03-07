@@ -1,8 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:schedule_mobile/utils/styles.dart';
 
-typedef OnTap = void Function(FocusNode focusNode);
+typedef OnTap = void Function();
 typedef OnTapOutside = void Function();
 
 class CustomAutocomplete extends StatefulWidget {
@@ -31,8 +33,8 @@ class CustomAutocompleteState extends State<CustomAutocomplete> {
 
   void getFocus()
   {
+    
     FocusScope.of(context).requestFocus(_focusNode);
-
   }
 
   @override
@@ -68,9 +70,7 @@ class CustomAutocompleteState extends State<CustomAutocomplete> {
                   }
                 },
                 onEditingComplete: () {
-                  setState(() {
-                    _focusNode = focusNode;
-                  });
+                  
                   if (!widget.stopDetectingTapOutside!) {
                     widget.onTapOutside?.call();
                   }
@@ -79,7 +79,7 @@ class CustomAutocompleteState extends State<CustomAutocomplete> {
                   setState(() {
                     _focusNode = focusNode;
                   });
-                  widget.onTap?.call(_focusNode);
+                  widget.onTap?.call();
     
 
                 },
@@ -104,9 +104,7 @@ class CustomAutocompleteState extends State<CustomAutocomplete> {
                 focusNode: focusNode,
                 onFieldSubmitted: (String value) {
                   onFieldSubmitted();
-                  setState(() {
-                    _focusNode = focusNode;
-                  });
+                  
                   widget.onTapOutside?.call();
                 },
               );
