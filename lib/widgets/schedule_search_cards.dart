@@ -233,7 +233,18 @@ class _ScheduleSearchCardsState extends State<ScheduleSearchCards> {
     final item = filterBlocks.firstWhere((element) => element.id == id);
     final index = filterBlocks.indexOf(item);
     filterBlocks.removeAt(index);
-    
+    // _animatedListKey.currentState?.removeItem(
+    //     index,
+    //     duration: const Duration(milliseconds: 1000),
+    //     (context, animation) => SlideTransition(
+    //         position: animation
+    //             .drive(Tween(begin: const Offset(1.0, 0.0), end: const Offset(0.0, 0.0))),
+    //         child: Container(
+    //             height: 70,
+    //             padding: const EdgeInsets.all(15),
+    //             decoration: BoxDecoration(
+    //                 color: Colors.white,
+    //                 borderRadius: BorderRadius.circular(15)))));
   }
 
   void addItem(int id, int insertToIndex) {
