@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:schedule_mobile/screens/bell_schedule_screen.dart';
 import 'package:schedule_mobile/screens/my_schedule_screen.dart';
-import 'package:schedule_mobile/screens/reminders_screen.dart';
 import 'package:schedule_mobile/screens/schedules_screen.dart';
-import 'package:schedule_mobile/screens/settings_screen.dart';
 import 'package:schedule_mobile/utils/styles.dart';
-import 'package:schedule_mobile/widgets/app_bar_painter.dart';
 import 'package:vector_math/vector_math_64.dart' as vector;
 
 class MainScreen extends StatefulWidget {
@@ -16,7 +13,7 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  int _selectedIndex = 0;
+  int _selectedIndex = 1;
   static final List<Widget> _screens = <Widget>[
     // const RemindersScreen(),
     const BellScheduleScreen(),
