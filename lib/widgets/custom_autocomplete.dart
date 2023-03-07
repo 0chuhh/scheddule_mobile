@@ -12,20 +12,29 @@ class CustomAutocomplete extends StatefulWidget {
       this.label = '',
       this.onTap,
       this.stopDetectingTapOutside = false,
-      this.onTapOutside});
+      this.onTapOutside,
+      this.focusNode});
   final bool? stopDetectingTapOutside;
   final OnTap? onTap;
   final OnTapOutside? onTapOutside;
   final String label;
   final List<String> list;
+  final FocusNode? focusNode;
   @override
   State<StatefulWidget> createState() {
-    return _CustomAutocompleteState();
+    return CustomAutocompleteState();
   }
 }
 
-class _CustomAutocompleteState extends State<CustomAutocomplete> {
+class CustomAutocompleteState extends State<CustomAutocomplete> {
   FocusNode _focusNode = new FocusNode();
+
+  void getFocus()
+  {
+    FocusScope.of(context).requestFocus(_focusNode);
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -50,54 +59,58 @@ class _CustomAutocompleteState extends State<CustomAutocomplete> {
               return [];
             },
             fieldViewBuilder:
-                (context, textEditingController, focusNode, onFieldSubmitted) =>
-                    TextFormField(
-              onTapOutside: (onTapOut) {
-                if (!widget.stopDetectingTapOutside!) {
-                  widget.onTapOutside?.call();
-                  onTapOut.down;
-                }
-              },
-              onEditingComplete: () {
-                setState(() {
-                  _focusNode = focusNode;
-                });
-                if (!widget.stopDetectingTapOutside!) {
-                  widget.onTapOutside?.call();
-                }
-              },
-              onTap: () {
-                setState(() {
-                  _focusNode = focusNode;
-                });
-                widget.onTap?.call(_focusNode);
-              },
-              controller: textEditingController,
-              decoration: InputDecoration(
-                contentPadding: const EdgeInsets.only(top: 0, left: 10),
-                constraints: const BoxConstraints(
-                  maxHeight: 30,
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Styles.accentColor, width: 1.0),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  gapPadding: 0,
-                  borderSide: BorderSide(
-                    color: Styles.primaryColor,
-                    width: 1.0,
+                (context, textEditingController, focusNode, onFieldSubmitted) {
+              return TextFormField(
+                onTapOutside: (onTapOut) {
+                  if (!widget.stopDetectingTapOutside!) {
+                    widget.onTapOutside?.call();
+                    onTapOut.down;
+                  }
+                },
+                onEditingComplete: () {
+                  setState(() {
+                    _focusNode = focusNode;
+                  });
+                  if (!widget.stopDetectingTapOutside!) {
+                    widget.onTapOutside?.call();
+                  }
+                },
+                onTap: () {
+                  setState(() {
+                    _focusNode = focusNode;
+                  });
+                  widget.onTap?.call(_focusNode);
+    
+
+                },
+                controller: textEditingController,
+                decoration: InputDecoration(
+                  contentPadding: const EdgeInsets.only(top: 0, left: 10),
+                  constraints: const BoxConstraints(
+                    maxHeight: 30,
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide:
+                        BorderSide(color: Styles.accentColor, width: 1.0),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    gapPadding: 0,
+                    borderSide: BorderSide(
+                      color: Styles.primaryColor,
+                      width: 1.0,
+                    ),
                   ),
                 ),
-              ),
-              focusNode: focusNode,
-              onFieldSubmitted: (String value) {
-                onFieldSubmitted();
-                setState(() {
-                  _focusNode = focusNode;
-                });
-                widget.onTapOutside?.call();
-              },
-            ),
+                focusNode: focusNode,
+                onFieldSubmitted: (String value) {
+                  onFieldSubmitted();
+                  setState(() {
+                    _focusNode = focusNode;
+                  });
+                  widget.onTapOutside?.call();
+                },
+              );
+            },
             optionsViewBuilder: (context, onAutoCompleteSelect, options) {
               return Align(
                   alignment: Alignment.topLeft,
