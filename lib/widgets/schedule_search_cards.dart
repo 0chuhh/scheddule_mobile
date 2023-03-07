@@ -25,8 +25,16 @@ class _ScheduleSearchCardsState extends State<ScheduleSearchCards> {
   final bool fullTimeFormat = false;
   int selectedIndex = 0;
   final _animatedListKey = GlobalKey<AnimatedListState>();
+  final _autocomleteByGroupKey = GlobalKey<CustomAutocompleteState>();
+  final _autocomleteByLecturerKey = GlobalKey<CustomAutocompleteState>();
+  final _autocomleteByClassromKey = GlobalKey<CustomAutocompleteState>();
+ 
   List<filterBlock> filterBlocks = [];
   List<filterBlock> _data = [];
+
+  FocusNode focusNodeByGroup = new FocusNode();
+  FocusNode focusNodeByLecturer = new FocusNode();
+  FocusNode focusNodeByclassroom = new FocusNode();
 
   @override
   void initState() {
@@ -50,10 +58,12 @@ class _ScheduleSearchCardsState extends State<ScheduleSearchCards> {
               ),
               const Gap(5),
               CustomAutocomplete(
+                key: _autocomleteByGroupKey,
                   list: const ['пи-20', 'пи-21', 'пи-22'],
                   label: 'группа',
+                  focusNode: focusNodeByGroup,
                   onTap: (focusNode) {
-                    onAutocompleteTap(0);
+                    onAutocompleteTap(0, focusNode);
                   },
                   onTapOutside: () {}),
               const Gap(5),
@@ -88,13 +98,15 @@ class _ScheduleSearchCardsState extends State<ScheduleSearchCards> {
               ),
               const Gap(5),
               CustomAutocomplete(
+                key: _autocomleteByLecturerKey,
                 list: const ['пи-20', 'пи-21', 'пи-22'],
                 label: 'Преподаватель',
+                focusNode: focusNodeByLecturer,
                 onTap: (focusNode) {
                   setState(() {
                     _focusNode = focusNode;
                   });
-                  onAutocompleteTap(1);
+                  onAutocompleteTap(1,focusNode);
                   // FocusScope.of(context).requestFocus(focusNode);
                 },
                 onTapOutside: () {
@@ -108,7 +120,6 @@ class _ScheduleSearchCardsState extends State<ScheduleSearchCards> {
                   Text('Заочная форма'),
                 ],
                 onPressed: (selected, index) {
-                  onAutocompleteTap(1);
                   // FocusScope.of(context).requestFocus(_focusNode);
                 },
               ),
@@ -145,10 +156,12 @@ class _ScheduleSearchCardsState extends State<ScheduleSearchCards> {
               ),
               const Gap(5),
               CustomAutocomplete(
+                key: _autocomleteByClassromKey,
                 list: const [],
                 label: 'Аудитория',
+                focusNode: focusNodeByclassroom,
                 onTap: (focusNode) {
-                  onAutocompleteTap(2);
+                  onAutocompleteTap(2,focusNode);
                   // FocusScope.of(context).requestFocus(focusNode);
                 },
                 onTapOutside: () {
@@ -176,7 +189,7 @@ class _ScheduleSearchCardsState extends State<ScheduleSearchCards> {
   }
 
   FocusNode _focusNode = new FocusNode();
-  void onAutocompleteTap(int index) {
+  void onAutocompleteTap(int index, FocusNode? focusNode) {
     switch (index) {
       case 0:
         if (filterBlocks.indexOf(
@@ -184,7 +197,7 @@ class _ScheduleSearchCardsState extends State<ScheduleSearchCards> {
             0) {
           removeItem(0);
           addItem(0, 0);
-          filterBlocks.firstWhere((element) => element.id == 0);
+
         }
         break;
       case 1:
@@ -193,6 +206,7 @@ class _ScheduleSearchCardsState extends State<ScheduleSearchCards> {
             0) {
           removeItem(1);
           addItem(1, 0);
+          
         }
         break;
       case 2:
@@ -204,25 +218,22 @@ class _ScheduleSearchCardsState extends State<ScheduleSearchCards> {
         }
         break;
     }
-    unfocusAutocomplete();
+    if(_autocomleteByGroupKey.currentWidget == filterBlocks.firstWhere((element) => element.id == index)){
+      _autocomleteByGroupKey.currentState?.getFocus();
+    }else if(_autocomleteByClassromKey.currentWidget == filterBlocks.firstWhere((element) => element.id == index)){
+      _autocomleteByClassromKey.currentState?.getFocus();
+    }else if(_autocomleteByLecturerKey.currentWidget == filterBlocks.firstWhere((element) => element.id == index)){
+      _autocomleteByLecturerKey.currentState?.getFocus();
+    }
+    
+
   }
 
   void removeItem(int id) {
     final item = filterBlocks.firstWhere((element) => element.id == id);
     final index = filterBlocks.indexOf(item);
     filterBlocks.removeAt(index);
-    _animatedListKey.currentState?.removeItem(
-        index,
-        duration: Duration(milliseconds: 500),
-        (context, animation) => SlideTransition(
-            position: animation
-                .drive(Tween(begin: Offset(1.0, 0.0), end: Offset(0.0, 0.0))),
-            child: Container(
-                height: 70,
-                padding: const EdgeInsets.all(15),
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(15)))));
+    
   }
 
   void addItem(int id, int insertToIndex) {
@@ -230,16 +241,13 @@ class _ScheduleSearchCardsState extends State<ScheduleSearchCards> {
     final index = _data.indexOf(item);
     setState(() {
       filterBlocks.insert(insertToIndex, item);
-      _animatedListKey.currentState?.insertItem(index);
+      // _animatedListKey.currentState?.insertItem(index);
     });
   }
 
   void unfocusAutocomplete() {
-    setState(() {
-      selectedIndex = 0;
-    });
-
-    FocusScope.of(context).unfocus();
+    
+    FocusScope.of(context).requestFocus(new FocusNode());
   }
 
   @override
@@ -257,7 +265,7 @@ class _ScheduleSearchCardsState extends State<ScheduleSearchCards> {
                 return SlideTransition(
                   position: animation.drive(
                     // Tween that slides from right to left.
-                    Tween(begin: Offset(1.0, 0.0), end: Offset(0.0, 0.0)),
+                    Tween(begin: const Offset(1.0, 0.0), end: const Offset(0.0, 0.0)),
                   ),
                   // Simply display the letter.
                   child: ListTile(

@@ -12,20 +12,28 @@ class CustomAutocomplete extends StatefulWidget {
       this.label = '',
       this.onTap,
       this.stopDetectingTapOutside = false,
-      this.onTapOutside});
+      this.onTapOutside,
+      this.focusNode});
   final bool? stopDetectingTapOutside;
   final OnTap? onTap;
   final OnTapOutside? onTapOutside;
   final String label;
   final List<String> list;
+  final FocusNode? focusNode;
   @override
   State<StatefulWidget> createState() {
-    return _CustomAutocompleteState();
+    return CustomAutocompleteState();
   }
 }
 
-class _CustomAutocompleteState extends State<CustomAutocomplete> {
+class CustomAutocompleteState extends State<CustomAutocomplete> {
   FocusNode _focusNode = new FocusNode();
+
+  void getFocus()
+  {
+    FocusScope.of(context).requestFocus(_focusNode);
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,8 +60,6 @@ class _CustomAutocompleteState extends State<CustomAutocomplete> {
             },
             fieldViewBuilder:
                 (context, textEditingController, focusNode, onFieldSubmitted) {
-              _focusNode = focusNode;
-
               return TextFormField(
                 onTapOutside: (onTapOut) {
                   if (!widget.stopDetectingTapOutside!) {
@@ -74,6 +80,8 @@ class _CustomAutocompleteState extends State<CustomAutocomplete> {
                     _focusNode = focusNode;
                   });
                   widget.onTap?.call(_focusNode);
+    
+
                 },
                 controller: textEditingController,
                 decoration: InputDecoration(
