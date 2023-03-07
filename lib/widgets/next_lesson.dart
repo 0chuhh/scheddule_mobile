@@ -11,6 +11,14 @@ class NextLesson extends StatefulWidget {
 }
 
 class _NextLessonState extends State<NextLesson> {
+  bool notif = false;
+  @override
+  void initState() {
+    // TODO: implement initState
+    notif = false;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Align(
@@ -115,29 +123,33 @@ class _NextLessonState extends State<NextLesson> {
                     ),
                     const Gap(10),
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        setState(() {
+                          notif = !notif;
+                        });
+                      },
                       child: Container(
                         alignment: Alignment.center,
                         width: 95,
                         height: 25,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(3),
-                            color: Styles.primaryColor),
+                            color: !notif?Styles.primaryColor: Color.fromARGB(158, 209, 209, 209)),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Transform.rotate(
                               angle: 6.5,
-                              child: const Icon(
+                              child:  Icon(
                                 Icons.notifications_outlined,
                                 size: 15,
-                                color: Colors.white,
+                                color: !notif? Colors.white: Color.fromARGB(255, 104, 103, 103),
                               ),
                             ),
-                            const Text(
+                             Text(
                               'Напомнить',
                               style:
-                                  TextStyle(fontSize: 10, color: Colors.white),
+                                  TextStyle(fontSize: 10, color: !notif? Colors.white: Color.fromARGB(255, 68, 68, 68)),
                             )
                           ],
                         ),
