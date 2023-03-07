@@ -55,7 +55,8 @@ class _BellScheduleScreenState extends State<BellScheduleScreen> {
                 child: _bellScheduleElevatedButton(
                   _foundedFaculties[index].id,
                   _foundedFaculties[index].name,
-                  BellScheduleRepository().getBellScheduleById(_foundedFaculties[index].bellScheduleId),
+                  BellScheduleRepository()
+                      .getBellScheduleById(_foundedFaculties[index].bellScheduleId),
                 ));
           },
         ),
@@ -142,85 +143,93 @@ class _BellScheduleScreenState extends State<BellScheduleScreen> {
               ),
             ),
           ],
-        ));
+        )
+    );
   }
 
   Widget _modalSheet(String facultyName, BellScheduleModel bellSchedule) {
-    return Container(
-        decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius:
-                BorderRadius.only(topRight: Radius.circular(10), topLeft: Radius.circular(10))),
-        height: 300,
-        width: MediaQuery.of(context).size.width,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 5.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Container(
-                height: 4,
-                width: MediaQuery.of(context).size.width * 0.30,
-                decoration: BoxDecoration(
-                    color: Styles.crossColor,
-                    borderRadius: const BorderRadius.all(Radius.circular(5))),
-              ),
-              const Gap(10),
-              Row(
+    return Wrap(
+      children: [
+        // BottomSheet
+        Container(
+            width: MediaQuery.of(context).size.width,
+            decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(10), topLeft: Radius.circular(10)
+                )
+            ),
+            child: Padding(
+              padding: const EdgeInsets.only(left: 15.0, right: 15.0, top: 5.0, bottom: 15.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const Icon(Icons.calendar_month_outlined),
-                  const Gap(5),
-                  Flexible(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text('Расписание звонков'),
-                        Text(
-                          facultyName,
+                  Container(
+                    height: 4,
+                    width: MediaQuery.of(context).size.width * 0.30,
+                    decoration: BoxDecoration(
+                        color: Styles.crossColor,
+                        borderRadius: const BorderRadius.all(Radius.circular(5))),
+                  ),
+                  const Gap(10),
+                  Row(
+                    children: [
+                      const Icon(Icons.calendar_month_outlined),
+                      const Gap(5),
+                      Flexible(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text('Расписание звонков'),
+                            Text(
+                              facultyName,
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                  )
+                      )
+                    ],
+                  ),
+                  const Gap(10),
+                  _lessonRow(1, bellSchedule.firstLesson),
+                  const Gap(10),
+                  _lessonRow(2, bellSchedule.secondLesson),
+                  const Gap(10),
+                  _lessonRow(3, bellSchedule.thirdLesson),
+                  const Gap(15),
+                  Center(
+                      child: Text(
+                    'Большой перерыв ${bellSchedule.bigBreak.start} - ${bellSchedule.bigBreak.end}',
+                    style: TextStyle(color: Styles.crossColor, fontWeight: FontWeight.bold),
+                  )),
+                  const Gap(15),
+                  _lessonRow(4, bellSchedule.fourthLesson),
+                  const Gap(10),
+                  _lessonRow(5, bellSchedule.fifthLesson),
+                  const Gap(10),
+                  _lessonRow(6, bellSchedule.sixthLesson),
                 ],
               ),
-              const Gap(10),
-              _lessonRow(1, bellSchedule.firstLesson),
-              const Gap(10),
-              _lessonRow(2, bellSchedule.secondLesson),
-              const Gap(10),
-              _lessonRow(3, bellSchedule.thirdLesson),
-              const Gap(15),
-              Center(
-                  child: Text(
-                'Большой перерыв ${bellSchedule.bigBreak.start} - ${bellSchedule.bigBreak.end}',
-                style: TextStyle(color: Styles.crossColor, fontWeight: FontWeight.bold),
-              )),
-              const Gap(15),
-              _lessonRow(4, bellSchedule.fourthLesson),
-              const Gap(10),
-              _lessonRow(5, bellSchedule.fifthLesson),
-              const Gap(10),
-              _lessonRow(6, bellSchedule.sixthLesson),
-            ],
-          ),
-        ));
+            )
+        ),
+      ],
+    );
   }
 
-  Widget _lessonRow(int lessonOrder, TimeRange lesson){
+  Widget _lessonRow(int lessonOrder, TimeRange lesson) {
     return Row(
       children: [
         Text('${lessonOrder.toString()} пара'),
         Expanded(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: DashedLineConnector(
-                thickness: 1,
-                gap: 2,
-                dash: 3,
-                direction: Axis.horizontal,
-                color: Styles.crossColor,
-              ),
-            )),
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: DashedLineConnector(
+            thickness: 1,
+            gap: 2,
+            dash: 3,
+            direction: Axis.horizontal,
+            color: Styles.crossColor,
+          ),
+        )),
         Text('${lesson.start} - ${lesson.end}'),
       ],
     );
