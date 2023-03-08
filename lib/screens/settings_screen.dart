@@ -20,85 +20,98 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Styles.bgColor,
-      body: Column(
-        children: [
-          // AppBar
-          Stack(children: <Widget>[
-            CustomPaint(
-              painter: AppBarPainter(),
-              child: Container(
-                margin: const EdgeInsets.only(top: 40),
-                width: MediaQuery.of(context).size.width,
-                height: 70,
-                child: const Text(
-                  'Настройки',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      color: Color(0xFF979CB7), fontSize: 20, fontWeight: FontWeight.w800),
+      body: Container(
+        width: double.infinity,
+        child: Column(
+          children: [
+            // AppBar
+            Stack(children: <Widget>[
+              CustomPaint(
+                painter: AppBarPainter(),
+                child: Container(
+                  margin: const EdgeInsets.only(top: 40),
+                  width: MediaQuery.of(context).size.width,
+                  height: 70,
+                  child: const Text(
+                    'Настройки',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: Color(0xFF979CB7),
+                        fontSize: 20,
+                        fontWeight: FontWeight.w800),
+                  ),
                 ),
               ),
-            ),
-          ]),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-            child: Column(
-              children: [
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  decoration: const BoxDecoration(
-                      color: Colors.white, borderRadius: BorderRadius.all(Radius.circular(10.0))),
-                  child: Padding(
-                    padding: const EdgeInsets.all(15),
-                    child: Column(
-                      children: [
-                        Row(
-                          children: const [Icon(Icons.group), Text('Группа')],
-                        ),
-                        Gap(5),
-                        DropdownButtonFormField(
-                          focusColor: Styles.accentColor,
-                            borderRadius: const BorderRadius.all(Radius.circular(10.0)),
-                            items: groups.map((e) {
-                              return DropdownMenuItem(
-                                value: e,
-                                child: Text(e),
-                              );
-                            }).toList(),
-                            onChanged: (value) => setState(() {}))
-                      ],
-                    ),
-                  ),
-                ),
-                const Gap(10),
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  decoration: const BoxDecoration(
-                      color: Colors.white, borderRadius: BorderRadius.all(Radius.circular(15.0))),
-                  child: Padding(
-                    padding: const EdgeInsets.all(15),
-                    child: Column(
-                      children: [
-                        Row(
+            ]),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+              child: Column(
+                children: [
+                  Material(
+                    elevation: 3,
+                    borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+                    child: Container(
+                      decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                      child: Padding(
+                        padding: const EdgeInsets.all(15),
+                        child: Column(
                           children: [
-                            Icon(Icons.dark_mode),
-                            Text('Темная тема'),
-                            Spacer(),
-                            CupertinoSwitch(
-                                activeColor: Styles.primaryColor,
-                                value: selectedTheme,
-                                onChanged: (value) => setState(() {
-                                      selectedTheme = value;
-                                    }))
+                            Row(
+                              children: const [Icon(Icons.group), Text('Группа')],
+                            ),
+                            const Gap(5),
+                            DropdownButtonFormField(
+                              items: groups.map((e) {
+                                return DropdownMenuItem(
+                                  value: e,
+                                  child: Text(e),
+                                );
+                              }).toList(),
+                              onChanged: (value) => setState(() {}))
                           ],
-                        )
-                      ],
+                        ),
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
-          )
-        ],
+                  const Gap(10),
+                  // Theme
+                  Material(
+                    elevation: 3,
+                    borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.all(Radius.circular(15.0))),
+                      child: Padding(
+                        padding: const EdgeInsets.all(15),
+                        child: Column(
+                          children: [
+                            Row(
+                              children: [
+                                const Icon(Icons.dark_mode),
+                                const Text('Темная тема'),
+                                const Spacer(),
+                                CupertinoSwitch(
+                                    activeColor: Styles.primaryColor,
+                                    value: selectedTheme,
+                                    onChanged: (value) => setState(() {
+                                          selectedTheme = value;
+                                        }))
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
