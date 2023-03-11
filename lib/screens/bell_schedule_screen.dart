@@ -3,8 +3,8 @@ import 'package:gap/gap.dart';
 import 'package:timelines/timelines.dart';
 import 'package:schedule_mobile/models/bell_schedule.dart';
 import 'package:schedule_mobile/models/faculty.dart';
-import 'package:schedule_mobile/repository/bell_schedule.dart';
-import 'package:schedule_mobile/repository/faculty.dart';
+import 'package:schedule_mobile/repositories/bell_schedule.dart';
+import 'package:schedule_mobile/repositories/faculty.dart';
 import 'package:schedule_mobile/utils/styles.dart';
 import 'package:schedule_mobile/widgets/app_bar_painter.dart';
 

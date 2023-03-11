@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:schedule_mobile/models/schedule.dart';
-import 'package:schedule_mobile/repository/schedule.dart';
+import 'package:schedule_mobile/repositories/schedule.dart';
 import 'package:schedule_mobile/widgets/collapsible_calendar/collapsible_calendar.dart';
 import 'package:schedule_mobile/widgets/app_bar_painter.dart';
 import 'package:schedule_mobile/widgets/schedule_list/schedule_list.dart';
