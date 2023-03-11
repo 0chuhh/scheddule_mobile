@@ -15,9 +15,8 @@ class GroupsRepository {
 
   Future<List<GroupModel>> getGroupsByName(String groupName) async {
     final response = await Dio().get(
-      'https://zabgu.ru/modules/raspisanie/api/groups.php',
-      queryParameters: {'groupName': groupName}
-    );
+        'https://zabgu.ru/modules/raspisanie/api/groups.php',
+        queryParameters: {'groupName': groupName});
     final data = jsonDecode(response.data) as List;
     final groupsList = data
         .map((e) => GroupModel(name: (e as Map<String, dynamic>)['group_name']))
