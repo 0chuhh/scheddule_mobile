@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:schedule_mobile/widgets/schedule_list/schedule_list_item.dart';
 import 'package:timelines/timelines.dart';
 import 'package:intl/intl.dart';
-import '../../models/schedule.dart';
-import 'package:vector_math/vector_math_64.dart' as vector;
+import '../../models/schedule_model.dart';
 
 class ScheduleList extends StatelessWidget {
   const ScheduleList({super.key, this.schedule = const []});
 
-  final List<ScheduleItem> schedule;
+  final List<ScheduleModel> schedule;
   String getCoupleTime(DateTime date) {
     return DateFormat.Hm().format(date);
   }

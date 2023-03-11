@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:schedule_mobile/models/schedule.dart';
+import 'package:schedule_mobile/models/schedule_model.dart';
 import 'package:schedule_mobile/utils/styles.dart';
 
 class ScheduleListItem extends StatelessWidget {
   const ScheduleListItem({super.key, required this.item});
 
-  final ScheduleItem item;
+  final ScheduleModel item;
 
   String getFormatName(ScheduleItemFormat? format) {
     switch (format) {

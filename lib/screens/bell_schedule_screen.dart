@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:timelines/timelines.dart';
-import 'package:schedule_mobile/models/bell_schedule.dart';
-import 'package:schedule_mobile/models/faculty.dart';
-import 'package:schedule_mobile/repository/bell_schedule.dart';
-import 'package:schedule_mobile/repository/faculty.dart';
+import 'package:schedule_mobile/models/bell_schedule_model.dart';
+import 'package:schedule_mobile/models/faculty_model.dart';
+import 'package:schedule_mobile/repositories/bell_schedules_repository.dart';
+import 'package:schedule_mobile/repositories/faculties_repository.dart';
 import 'package:schedule_mobile/utils/styles.dart';
 import 'package:schedule_mobile/widgets/app_bar_painter.dart';
 
@@ -16,7 +16,7 @@ class BellScheduleScreen extends StatefulWidget {
 }
 
 class _BellScheduleScreenState extends State<BellScheduleScreen> {
-  final List<FacultyModel> _allFaculties = FacultyRepository().getFaculties();
+  final List<FacultyModel> _allFaculties = FacultiesRepository().getFaculties();
   List<FacultyModel> _foundedFaculties = [];
 
   @override
@@ -55,7 +55,7 @@ class _BellScheduleScreenState extends State<BellScheduleScreen> {
                 child: _bellScheduleElevatedButton(
                   _foundedFaculties[index].id,
                   _foundedFaculties[index].name,
-                  BellScheduleRepository()
+                  BellSchedulesRepository()
                       .getBellScheduleById(_foundedFaculties[index].bellScheduleId),
                 ));
           },
