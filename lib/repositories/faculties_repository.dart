@@ -1,6 +1,6 @@
-import 'package:schedule_mobile/models/faculty.dart';
+import 'package:schedule_mobile/models/faculty_model.dart';
 
-class FacultyRepository {
+class FacultiesRepository {
   List<FacultyModel> getFaculties() {
     return faculties;
   }

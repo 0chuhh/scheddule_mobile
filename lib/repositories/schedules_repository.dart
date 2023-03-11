@@ -1,8 +1,8 @@
-import 'package:schedule_mobile/models/schedule.dart';
+import 'package:schedule_mobile/models/schedule_model.dart';
 
 
-  final List<ScheduleItem> schedule = [
-    ScheduleItem(
+  final List<ScheduleModel> schedule = [
+    ScheduleModel(
         weekType: WeekType.upper,
         weekDay: 0,
         couple: Couple(number: 2, time: DateTime(2023, 1, 1, 8, 30)),
@@ -11,7 +11,7 @@ import 'package:schedule_mobile/models/schedule.dart';
         cathedra: 'ПиМ',
         classroom: '03-401',
         format: ScheduleItemFormat.lection),
-    ScheduleItem(
+    ScheduleModel(
         weekType: WeekType.upper,
         weekDay: 0,
         couple: Couple(number: 2, time: DateTime(2023, 1, 1, 10, 15)),
@@ -20,7 +20,7 @@ import 'package:schedule_mobile/models/schedule.dart';
         cathedra: 'ПиМ',
         classroom: '03-401',
         format: ScheduleItemFormat.lection),
-    ScheduleItem(
+    ScheduleModel(
         weekType: WeekType.upper,
         weekDay: 0,
         couple: Couple(number: 3, time: DateTime(2023, 1, 1, 12, 00)),
@@ -30,7 +30,7 @@ import 'package:schedule_mobile/models/schedule.dart';
         classroom: '03-401',
         format: ScheduleItemFormat.laboratory),
     
-    ScheduleItem(
+    ScheduleModel(
         weekType: WeekType.upper,
         weekDay: 2,
         couple: Couple(number: 1, time: DateTime(2023, 1, 1, 8, 30)),
@@ -39,7 +39,7 @@ import 'package:schedule_mobile/models/schedule.dart';
         cathedra: 'ПиМ',
         classroom: '03-401',
         format: ScheduleItemFormat.lection),
-    ScheduleItem(
+    ScheduleModel(
         weekType: WeekType.upper,
         weekDay: 2,
         couple: Couple(number: 2, time: DateTime(2023, 1, 1, 10, 15)),
@@ -48,7 +48,7 @@ import 'package:schedule_mobile/models/schedule.dart';
         cathedra: 'ПиМ',
         classroom: '03-401',
         format: ScheduleItemFormat.practice),
-    ScheduleItem(
+    ScheduleModel(
         weekType: WeekType.upper,
         weekDay: 2,
         couple: Couple(number: 4, time: DateTime(2023, 1, 1, 16, 20)),
@@ -57,7 +57,7 @@ import 'package:schedule_mobile/models/schedule.dart';
         cathedra: 'ПиМ',
         classroom: '03-401',
         format: ScheduleItemFormat.laboratory),
-    ScheduleItem(
+    ScheduleModel(
         weekType: WeekType.upper,
         weekDay: 3,
         couple: Couple(number: 1, time: DateTime(2023, 1, 1, 8, 30)),
@@ -66,7 +66,7 @@ import 'package:schedule_mobile/models/schedule.dart';
         cathedra: 'ПиМ',
         classroom: '03-401',
         format: ScheduleItemFormat.laboratory),
-    ScheduleItem(
+    ScheduleModel(
         weekType: WeekType.upper,
         weekDay: 3,
         couple: Couple(number: 2, time: DateTime(2023, 1, 1, 10, 15)),
@@ -75,7 +75,7 @@ import 'package:schedule_mobile/models/schedule.dart';
         cathedra: 'ПиМ',
         classroom: '03-401',
         format: ScheduleItemFormat.lection),
-    ScheduleItem(
+    ScheduleModel(
         weekType: WeekType.upper,
         weekDay: 3,
         couple: Couple(number: 3, time: DateTime(2023, 1, 1, 12, 00)),
@@ -84,7 +84,7 @@ import 'package:schedule_mobile/models/schedule.dart';
         cathedra: 'ПиМ',
         classroom: '03-401',
         format: ScheduleItemFormat.laboratory),
-    ScheduleItem(
+    ScheduleModel(
         weekType: WeekType.upper,
         weekDay: 4,
         couple: Couple(number: 1, time: DateTime(2023, 1, 1, 8, 30)),
@@ -93,7 +93,7 @@ import 'package:schedule_mobile/models/schedule.dart';
         cathedra: 'ПиМ',
         classroom: '03-401',
         format: ScheduleItemFormat.laboratory),
-    ScheduleItem(
+    ScheduleModel(
         weekType: WeekType.upper,
         weekDay: 4,
         couple: Couple(number: 2, time: DateTime(2023, 1, 1, 10, 15)),
@@ -102,7 +102,7 @@ import 'package:schedule_mobile/models/schedule.dart';
         cathedra: 'ПиМ',
         classroom: '03-401',
         format: ScheduleItemFormat.lection),
-    ScheduleItem(
+    ScheduleModel(
         weekType: WeekType.upper,
         weekDay: 4,
         couple: Couple(number: 3, time: DateTime(2023, 1, 1, 12, 00)),
@@ -111,7 +111,7 @@ import 'package:schedule_mobile/models/schedule.dart';
         cathedra: 'ПиМ',
         classroom: '03-401',
         format: ScheduleItemFormat.laboratory),
-    ScheduleItem(
+    ScheduleModel(
         weekType: WeekType.upper,
         weekDay: 4,
         couple: Couple(number: 4, time: DateTime(2023, 1, 1, 16, 20)),
@@ -123,7 +123,7 @@ import 'package:schedule_mobile/models/schedule.dart';
 
 
 
-    ScheduleItem(
+    ScheduleModel(
         weekType: WeekType.lower,
         weekDay: 0,
         couple: Couple(number: 2, time: DateTime(2023, 1, 1, 8, 30)),
@@ -132,7 +132,7 @@ import 'package:schedule_mobile/models/schedule.dart';
         cathedra: 'ПиМ',
         classroom: '03-401',
         format: ScheduleItemFormat.lection),
-    ScheduleItem(
+    ScheduleModel(
         weekType: WeekType.lower,
         weekDay: 0,
         couple: Couple(number: 2, time: DateTime(2023, 1, 1, 10, 15)),
@@ -141,7 +141,7 @@ import 'package:schedule_mobile/models/schedule.dart';
         cathedra: 'ПиМ',
         classroom: '03-401',
         format: ScheduleItemFormat.lection),
-    ScheduleItem(
+    ScheduleModel(
         weekType: WeekType.lower,
         weekDay: 0,
         couple: Couple(number: 3, time: DateTime(2023, 1, 1, 12, 00)),
@@ -151,7 +151,7 @@ import 'package:schedule_mobile/models/schedule.dart';
         classroom: '03-401',
         format: ScheduleItemFormat.laboratory),
     
-    ScheduleItem(
+    ScheduleModel(
         weekType: WeekType.lower,
         weekDay: 2,
         couple: Couple(number: 1, time: DateTime(2023, 1, 1, 8, 30)),
@@ -161,7 +161,7 @@ import 'package:schedule_mobile/models/schedule.dart';
         classroom: '03-401',
         format: ScheduleItemFormat.lection),
     
-    ScheduleItem(
+    ScheduleModel(
         weekType: WeekType.lower,
         weekDay: 2,
         couple: Couple(number: 4, time: DateTime(2023, 1, 1, 16, 20)),
@@ -170,7 +170,7 @@ import 'package:schedule_mobile/models/schedule.dart';
         cathedra: 'ПиМ',
         classroom: '03-401',
         format: ScheduleItemFormat.laboratory),
-    ScheduleItem(
+    ScheduleModel(
         weekType: WeekType.lower,
         weekDay: 3,
         couple: Couple(number: 1, time: DateTime(2023, 1, 1, 8, 30)),
@@ -180,7 +180,7 @@ import 'package:schedule_mobile/models/schedule.dart';
         classroom: '03-401',
         format: ScheduleItemFormat.laboratory),
     
-    ScheduleItem(
+    ScheduleModel(
         weekType: WeekType.lower,
         weekDay: 3,
         couple: Couple(number: 3, time: DateTime(2023, 1, 1, 12, 00)),
@@ -189,7 +189,7 @@ import 'package:schedule_mobile/models/schedule.dart';
         cathedra: 'ПиМ',
         classroom: '03-401',
         format: ScheduleItemFormat.laboratory),
-    ScheduleItem(
+    ScheduleModel(
         weekType: WeekType.lower,
         weekDay: 4,
         couple: Couple(number: 1, time: DateTime(2023, 1, 1, 8, 30)),
@@ -199,7 +199,7 @@ import 'package:schedule_mobile/models/schedule.dart';
         classroom: '03-401',
         format: ScheduleItemFormat.laboratory),
     
-    ScheduleItem(
+    ScheduleModel(
         weekType: WeekType.lower,
         weekDay: 4,
         couple: Couple(number: 3, time: DateTime(2023, 1, 1, 12, 00)),
@@ -212,8 +212,8 @@ import 'package:schedule_mobile/models/schedule.dart';
   ];
 
 
-class ScheduleRepository{
-  List<ScheduleItem> getScheduleByGroup(){
+class SchedulesRepository{
+  List<ScheduleModel> getScheduleByGroup(){
     return schedule;
   }
 }

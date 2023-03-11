@@ -1,16 +1,12 @@
-import 'dart:math';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:gap/gap.dart';
-import 'package:schedule_mobile/models/schedule.dart';
-import 'package:schedule_mobile/repositories/schedule.dart';
+import 'package:schedule_mobile/models/schedule_model.dart';
+import 'package:schedule_mobile/repositories/schedules_repository.dart';
 import 'package:schedule_mobile/widgets/collapsible_calendar/collapsible_calendar.dart';
 import 'package:schedule_mobile/widgets/app_bar_painter.dart';
 import 'package:schedule_mobile/widgets/schedule_list/schedule_list.dart';
 import 'package:schedule_mobile/widgets/week.dart';
-import 'package:vector_math/vector_math_64.dart' as vector;
 import '../utils/styles.dart';
 import '../widgets/next_lesson.dart';
 
@@ -23,9 +19,9 @@ class MyScheduleScreen extends StatefulWidget {
 }
 
 class _MyScheduleScreenState extends State<MyScheduleScreen> {
-  final List<ScheduleItem> schedule = ScheduleRepository().getScheduleByGroup();
+  final List<ScheduleModel> schedule = SchedulesRepository().getScheduleByGroup();
 
-  List<ScheduleItem> daySchedule = [];
+  List<ScheduleModel> daySchedule = [];
 
   @override
   void initState() {

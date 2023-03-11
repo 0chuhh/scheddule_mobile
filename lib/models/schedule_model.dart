@@ -9,7 +9,7 @@ enum ScheduleItemFormat { lection, practice, laboratory }
 
 enum WeekType { upper, lower }
 
-class ScheduleItem {
+class ScheduleModel {
   int weekDay;
   WeekType weekType;
   Couple couple;
@@ -19,7 +19,7 @@ class ScheduleItem {
   String cathedra;
   String classroom;
 
-  ScheduleItem(
+  ScheduleModel(
       {required this.weekDay,
       required this.weekType,
       required this.couple,

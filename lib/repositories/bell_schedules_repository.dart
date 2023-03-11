@@ -1,6 +1,6 @@
-import 'package:schedule_mobile/models/bell_schedule.dart';
+import 'package:schedule_mobile/models/bell_schedule_model.dart';
 
-class BellScheduleRepository {
+class BellSchedulesRepository {
   BellScheduleModel getBellScheduleById(int id) {
     return bellSchedules.firstWhere((bellSchedule) => bellSchedule.id == id);
   }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../models/schedule.dart';
+import '../models/schedule_model.dart';
 
 class Week extends StatelessWidget {
   const Week({super.key, required this.date, this.textStyle});
