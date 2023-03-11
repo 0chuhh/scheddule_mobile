@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:schedule_mobile/screens/bell_schedule_screen.dart';
 import 'package:schedule_mobile/screens/my_schedule_screen.dart';
 import 'package:schedule_mobile/screens/schedules_screen.dart';
+import 'package:schedule_mobile/screens/settings_screen.dart';
 import 'package:schedule_mobile/utils/styles.dart';
 import 'package:vector_math/vector_math_64.dart' as vector;
 
@@ -19,7 +20,7 @@ class _MainScreenState extends State<MainScreen> {
     const BellScheduleScreen(),
     MyScheduleScreen(),
     const SchedulesScreen(),
-    // const SettingsScreen(),
+    const SettingsScreen(),
   ];
 
   void _onItemTapped(int index) {
@@ -51,11 +52,11 @@ class _MainScreenState extends State<MainScreen> {
           topRight: Radius.circular(10),
         ),
         child: BottomNavigationBar(
-          unselectedIconTheme: IconThemeData(size: 20),
-          selectedIconTheme: IconThemeData(size: 25),
+          unselectedIconTheme: const IconThemeData(size: 20),
+          selectedIconTheme: const IconThemeData(size: 25),
           showSelectedLabels: false,
           showUnselectedLabels: false,
-          unselectedLabelStyle: TextStyle(),
+          unselectedLabelStyle: const TextStyle(),
           unselectedItemColor: Styles.textColor,
           selectedItemColor: Styles.primaryColor,
           unselectedFontSize: 12,
@@ -72,7 +73,7 @@ class _MainScreenState extends State<MainScreen> {
             BottomNavigationBarItem(
               icon: Column(
                 children: [
-                  Icon(Icons.watch_later_outlined),
+                  const Icon(Icons.watch_later_outlined),
                   Container(
                     width: 100,
                     child: Text(
@@ -94,7 +95,7 @@ class _MainScreenState extends State<MainScreen> {
             BottomNavigationBarItem(
               icon: Column(
                 children: [
-                  Icon(Icons.calendar_month_outlined),
+                  const Icon(Icons.calendar_month_outlined),
                   Container(
                     width: 100,
                     child: Text(
@@ -120,7 +121,7 @@ class _MainScreenState extends State<MainScreen> {
                 alignment: Alignment.topCenter,
                 child: Column(
                   children: [
-                    Icon(Icons.calendar_today_outlined),
+                    const Icon(Icons.calendar_today_outlined),
                     Container(
                       width: 100,
                       child: Text(
@@ -140,10 +141,28 @@ class _MainScreenState extends State<MainScreen> {
               ),
               label: "",
             ),
-            // BottomNavigationBarItem(
-            //   icon: Icon(Icons.settings),
-            //   label: "settings",
-            // ),
+            BottomNavigationBarItem(
+              icon: Column(
+                children: [
+                  const Icon(Icons.settings),
+                  Container(
+                    width: 100,
+                    child: Text(
+                      "Настройки",
+                      overflow: TextOverflow.visible,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          height: 1,
+                          fontSize: 10,
+                          color: _selectedIndex == 1
+                              ? Styles.primaryColor
+                              : Styles.textColor),
+                    ),
+                  )
+                ],
+              ),
+              label: ""
+            ),
           ],
         ),
       ),

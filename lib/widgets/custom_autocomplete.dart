@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:schedule_mobile/utils/styles.dart';
 
-typedef OnTap = void Function();
+typedef OnTap = void Function(FocusNode focusNode);
 typedef OnTapOutside = void Function();
+typedef OnSelected = void Function(String value);
 
 class CustomAutocomplete extends StatefulWidget {
   const CustomAutocomplete(
@@ -15,9 +16,14 @@ class CustomAutocomplete extends StatefulWidget {
       this.onTap,
       this.stopDetectingTapOutside = false,
       this.onTapOutside,
+      this.onSelected,
+      this.initValue = '',
       this.focusNode});
+
   final bool? stopDetectingTapOutside;
+  final String initValue;
   final OnTap? onTap;
+  final OnSelected? onSelected;
   final OnTapOutside? onTapOutside;
   final String label;
   final List<String> list;
@@ -30,10 +36,9 @@ class CustomAutocomplete extends StatefulWidget {
 
 class CustomAutocompleteState extends State<CustomAutocomplete> {
   FocusNode _focusNode = new FocusNode();
+  bool _expanded = false;
 
-  void getFocus()
-  {
-    
+  void getFocus() {
     FocusScope.of(context).requestFocus(_focusNode);
   }
 
@@ -49,13 +54,22 @@ class CustomAutocompleteState extends State<CustomAutocomplete> {
           ),
           const Gap(5),
           Autocomplete<String>(
+            initialValue: TextEditingValue(text: widget.initValue),
             optionsBuilder: (TextEditingValue textEditingValue) {
               if (textEditingValue.text == '') {
+                setState(() {
+                  _expanded = false;
+                });
                 return const Iterable<String>.empty();
               }
               if (widget.list.length > 0) {
+                setState(() {
+                  _expanded = true;
+                });
                 return widget.list.where((String option) {
-                  return option.contains(textEditingValue.text.toLowerCase());
+                  return option
+                      .toLowerCase()
+                      .contains(textEditingValue.text.toLowerCase());
                 });
               }
               return [];
@@ -71,6 +85,9 @@ class CustomAutocompleteState extends State<CustomAutocomplete> {
                 },
                 onEditingComplete: () {
                   
+                  setState(() {
+                    _focusNode = focusNode;
+                  });
                   if (!widget.stopDetectingTapOutside!) {
                     widget.onTapOutside?.call();
                   }
@@ -79,13 +96,15 @@ class CustomAutocompleteState extends State<CustomAutocomplete> {
                   setState(() {
                     _focusNode = focusNode;
                   });
-                  widget.onTap?.call();
-    
-
+                  widget.onTap?.call(_focusNode);
                 },
                 controller: textEditingController,
                 decoration: InputDecoration(
                   contentPadding: const EdgeInsets.only(top: 0, left: 10),
+                  suffixIconColor: Styles.primaryColor,
+                  suffixIcon: Icon(_expanded
+                      ? Icons.keyboard_arrow_up
+                      : Icons.keyboard_arrow_down),
                   constraints: const BoxConstraints(
                     maxHeight: 30,
                   ),
@@ -104,7 +123,9 @@ class CustomAutocompleteState extends State<CustomAutocomplete> {
                 focusNode: focusNode,
                 onFieldSubmitted: (String value) {
                   onFieldSubmitted();
-                  
+                  setState(() {
+                    _focusNode = focusNode;
+                  });
                   widget.onTapOutside?.call();
                 },
               );
@@ -129,7 +150,14 @@ class CustomAutocompleteState extends State<CustomAutocomplete> {
                             return Divider();
                           },
                           itemBuilder: (BuildContext context, int index) {
-                            return Text('${widget.list[index]}');
+                            final option = options.elementAt(index);
+                            return InkWell(
+                              onTap: () {
+                                onAutoCompleteSelect(option);
+                                widget.onSelected?.call(option);
+                              },
+                              child: Text('${widget.list[index]}'),
+                            );
                           },
                         )),
                   ));
