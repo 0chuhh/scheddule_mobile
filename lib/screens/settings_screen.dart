@@ -1,8 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:schedule_mobile/repository/group.dart';
 import 'package:schedule_mobile/utils/styles.dart';
 import 'package:schedule_mobile/widgets/app_bar_painter.dart';
+import 'package:schedule_mobile/widgets/custom_autocomplete.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({Key? key}) : super(key: key);
@@ -13,7 +16,25 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
   bool selectedTheme = false;
-  final List<String> groups = ['ПИ-20', 'ИВТ-19'];
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  late Future<String> _selectedGroup;
+  final List<String> groups = GroupRepository().getGroups();
+  @override
+  void initState() {
+    super.initState();
+    _selectedGroup = _prefs.then((SharedPreferences prefs) {
+      return prefs.getString('myGroup') ?? '';
+    });
+  }
+
+  void setGroup(value) async {
+    final SharedPreferences prefs = await _prefs;
+    setState(() {
+      _selectedGroup = prefs.setString('myGroup', value).then((bool success) {
+        return value;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,25 +74,34 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     child: Container(
                       decoration: const BoxDecoration(
                           color: Colors.white,
-                          borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(10.0))),
                       child: Padding(
                         padding: const EdgeInsets.all(15),
-                        child: Column(
-                          children: [
-                            Row(
-                              children: const [Icon(Icons.group), Text('Группа')],
-                            ),
-                            const Gap(5),
-                            DropdownButtonFormField(
-                              items: groups.map((e) {
-                                return DropdownMenuItem(
-                                  value: e,
-                                  child: Text(e),
-                                );
-                              }).toList(),
-                              onChanged: (value) => setState(() {}))
-                          ],
-                        ),
+                        child: FutureBuilder<String>(
+                            future: _selectedGroup,
+                            builder: (BuildContext context,
+                                AsyncSnapshot<String> snapshot) {
+                              switch (snapshot.connectionState) {
+                                case ConnectionState.none:
+                                case ConnectionState.waiting:
+                                  return const CircularProgressIndicator();
+                                case ConnectionState.active:
+                                case ConnectionState.done:
+                                  if (snapshot.hasError) {
+                                    return Text('Error: ${snapshot.error}');
+                                  } else {
+                                    return CustomAutocomplete(
+                                      label: 'Группа',
+                                      list: groups,
+                                      initValue: snapshot.data ?? '',
+                                      onSelected: (value) {
+                                        setGroup(value);
+                                      },
+                                    );
+                                  }
+                              }
+                            }),
                       ),
                     ),
                   ),
@@ -84,7 +114,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       width: MediaQuery.of(context).size.width,
                       decoration: const BoxDecoration(
                           color: Colors.white,
-                          borderRadius: BorderRadius.all(Radius.circular(15.0))),
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(15.0))),
                       child: Padding(
                         padding: const EdgeInsets.all(15),
                         child: Column(
