@@ -1,11 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:schedule_mobile/repository/group.dart';
+import 'package:schedule_mobile/models/group_model.dart';
 import 'package:schedule_mobile/utils/styles.dart';
 import 'package:schedule_mobile/widgets/app_bar_painter.dart';
 import 'package:schedule_mobile/widgets/custom_autocomplete.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../repositories/groups_repository.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({Key? key}) : super(key: key);
@@ -18,17 +20,30 @@ class _SettingsScreenState extends State<SettingsScreen> {
   bool selectedTheme = false;
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   late Future<String> _selectedGroup;
-  final List<String> groups = GroupRepository().getGroups();
+  List<String> groups = [];
   @override
   void initState() {
     super.initState();
+    getGroups();
     _selectedGroup = _prefs.then((SharedPreferences prefs) {
       return prefs.getString('myGroup') ?? '';
     });
   }
 
+  void getGroups() async {
+    await GroupsRepository().getGroups().then((value) {
+      if (!mounted) return;
+
+      setState(() {
+        groups = value.map((e) => e.name).toList();
+      });
+    });
+  }
+
   void setGroup(value) async {
     final SharedPreferences prefs = await _prefs;
+    if (!mounted) return;
+
     setState(() {
       _selectedGroup = prefs.setString('myGroup', value).then((bool success) {
         return value;
