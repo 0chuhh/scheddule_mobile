@@ -1,8 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:schedule_mobile/models/group_model.dart';
-import 'package:schedule_mobile/utils/styles.dart';
+import 'package:schedule_mobile/themes/styles.dart';
 import 'package:schedule_mobile/widgets/app_bar_painter.dart';
 import 'package:schedule_mobile/widgets/custom_autocomplete.dart';
 import 'package:shared_preferences/shared_preferences.dart';

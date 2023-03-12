@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
-import '../utils/styles.dart';
+import '../themes/styles.dart';
 
 class NextLesson extends StatefulWidget {
   @override

@@ -1,9 +1,7 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:gap/gap.dart';
-import 'package:schedule_mobile/utils/styles.dart';
+import 'package:schedule_mobile/themes/styles.dart';
 
 typedef OnTap = void Function(FocusNode focusNode);
 typedef OnTapOutside = void Function();

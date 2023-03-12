@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
-import '../utils/styles.dart';
+import '../themes/styles.dart';
 
 class AppBarPainter extends CustomPainter {
   @override

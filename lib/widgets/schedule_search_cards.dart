@@ -4,10 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:schedule_mobile/repositories/groups_repository.dart';
 import 'package:schedule_mobile/repositories/lecturers_repository.dart';
-import 'package:schedule_mobile/utils/styles.dart';
+import 'package:schedule_mobile/themes/styles.dart';
 import 'package:schedule_mobile/widgets/custom_autocomplete.dart';
 import 'package:schedule_mobile/widgets/custom_button_group.dart';
-import 'package:vector_math/vector_math_64.dart' as vector;
 
 class filterBlock {
   int id;

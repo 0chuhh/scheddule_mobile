@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:schedule_mobile/models/schedule_model.dart';
-import 'package:schedule_mobile/utils/styles.dart';
+import 'package:schedule_mobile/themes/styles.dart';
 
 class ScheduleListItem extends StatelessWidget {
   const ScheduleListItem({super.key, required this.item});
