@@ -132,13 +132,8 @@ class CustomAutocompleteState extends State<CustomAutocomplete> {
                   alignment: Alignment.topLeft,
                   child: Material(
                     elevation: 4.0,
-                    // size works, when placed here below the Material widget
                     child: Container(
-                        // I have the text field wrapped in a container with
-                        // EdgeInsets.all(20) so subtract 40 from the width for the width
-                        // of the text box. You could also just use a padding widget
-                        // with EdgeInsets.only(right: 20)
-                        width: MediaQuery.of(context).size.width * 0.85,
+                        width: 250,
                         child: ListView.separated(
                           shrinkWrap: true,
                           padding: const EdgeInsets.all(8.0),
