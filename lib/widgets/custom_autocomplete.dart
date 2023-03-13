@@ -53,6 +53,7 @@ class CustomAutocompleteState extends State<CustomAutocomplete> {
           ),
           const Gap(5),
           Autocomplete<String>(
+            optionsMaxHeight: 50,
             initialValue: TextEditingValue(text: widget.initValue),
             optionsBuilder: (TextEditingValue textEditingValue) {
               if (textEditingValue.text == '') {
@@ -132,6 +133,7 @@ class CustomAutocompleteState extends State<CustomAutocomplete> {
                     elevation: 4.0,
                     child: Container(
                         width: 250,
+                        height: 200,
                         child: ListView.separated(
                           shrinkWrap: true,
                           padding: const EdgeInsets.all(8.0),

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:schedule_mobile/repositories/classrooms_repository.dart';
 import 'package:schedule_mobile/repositories/groups_repository.dart';
 import 'package:schedule_mobile/repositories/lecturers_repository.dart';
 import 'package:schedule_mobile/themes/styles.dart';
@@ -106,7 +107,7 @@ class _ScheduleSearchCardsState extends State<ScheduleSearchCards> {
     });
   }
 
-  Future getGroups() async {
+  Future<void> getGroups() async {
     await GroupsRepository().getGroups().then((value) {
       if (!mounted) return;
       setState(() {
@@ -159,15 +160,14 @@ class _ScheduleSearchCardsState extends State<ScheduleSearchCards> {
     });
   }
 
-  void init() async {
-    await getGroups().then((value) => getLecturers());
-  }
-
-  @override
-  void initState() {
-    init();
-    filterBlocks = [
-      filterBlock(
+  Future<void> getClassrooms() async {
+    await ClassroomsRepository().getClassrooms().then((value) {
+      if (!mounted) return;
+      setState(() {
+        classroms = value.map((e) => e.classroom).toList();
+        _data.insert(
+            0,
+            filterBlock(
         id: 2,
         widget: AnimatedContainer(
           curve: Curves.easeInBack,
@@ -186,7 +186,7 @@ class _ScheduleSearchCardsState extends State<ScheduleSearchCards> {
               const Gap(5),
               CustomAutocomplete(
                 key: _autocomleteByClassromKey,
-                list: const [],
+                list: classroms,
                 label: 'Аудитория',
                 onTap: (_focusNode) {
                   onAutocompleteTap(2);
@@ -210,8 +210,20 @@ class _ScheduleSearchCardsState extends State<ScheduleSearchCards> {
             ],
           ),
         ),
-      )
-    ];
+      ));
+      });
+      addItem(2, 2);
+    });
+  }
+
+  void init() async {
+    await getGroups().then((value) => getLecturers().then((value) => getClassrooms()));
+  }
+
+  @override
+  void initState() {
+    init();
+    filterBlocks = [];
     _data = [..._data, ...filterBlocks];
     super.initState();
   }
