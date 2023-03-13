@@ -28,11 +28,11 @@ class CollapsibleCalendar extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    return _CollapsibleCalendarState();
+    return CollapsibleCalendarState();
   }
 }
 
-class _CollapsibleCalendarState extends State<CollapsibleCalendar> {
+class CollapsibleCalendarState extends State<CollapsibleCalendar> {
   DateTime _selectedDay = DateTime.now();
 
   final DateTime _focusedDay = DateTime.now();

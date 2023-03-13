@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:schedule_mobile/themes/styles.dart';
 import 'package:schedule_mobile/widgets/schedule_list/schedule_list_item.dart';
 import 'package:timelines/timelines.dart';
 import 'package:intl/intl.dart';
@@ -22,11 +23,24 @@ class ScheduleList extends StatelessWidget {
         builder: TimelineTileBuilder(
           nodePositionBuilder: (context, index) => 0.14,
           oppositeContentsBuilder: (context, index) => TimelineNode(
-            indicator: Text(getCoupleTime(schedule[index].couple.time)),
-            startConnector: index == 0 ? null : const DashedLineConnector(),
+            indicator: Container(
+                padding: const EdgeInsets.only(top: 10, bottom: 10),
+                child: Text(
+                  getCoupleTime(schedule[index].couple.time),
+                  style: TextStyle(color: Styles.primaryColor),
+                )),
+            startConnector: index == 0
+                ? null
+                : DashedLineConnector(
+                    color: Styles.primaryColor,
+                    thickness: 1.5,
+                  ),
             endConnector: index == schedule.length - 1
                 ? null
-                : const DashedLineConnector(),
+                : DashedLineConnector(
+                    color: Styles.primaryColor,
+                    thickness: 1.5,
+                  ),
           ),
           contentsBuilder: (context, index) => Padding(
               padding: const EdgeInsets.only(left: 5.0, right: 24, bottom: 24),
@@ -36,9 +50,6 @@ class ScheduleList extends StatelessWidget {
           itemCount: schedule.length,
         ),
         shrinkWrap: true,
-        theme: TimelineThemeData(
-          connectorTheme: const ConnectorThemeData(indent: 5),
-        ),
       ),
     ));
   }

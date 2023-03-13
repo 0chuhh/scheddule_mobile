@@ -15,9 +15,9 @@ import 'package:auto_route/auto_route.dart' as _i7;
 import 'package:auto_route/empty_router_widgets.dart' as _i4;
 import 'package:flutter/material.dart' as _i8;
 
-import '../screens/root_screen.dart' as _i1;
 import '../screens/bell_schedule_screen.dart' as _i2;
 import '../screens/my_schedule_screen.dart' as _i3;
+import '../screens/root_screen.dart' as _i1;
 import '../screens/schedules_screen.dart' as _i6;
 import '../screens/settings_screen.dart' as _i5;
 
@@ -40,9 +40,13 @@ class AppRouter extends _i7.RootStackRouter {
       );
     },
     MyScheduleRouter.name: (routeData) {
+      final args = routeData.argsAs<MyScheduleRouterArgs>();
       return _i7.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: _i3.MyScheduleScreen(),
+        child: _i3.MyScheduleScreen(
+          key: args.key,
+          onGroupChanged: args.onGroupChanged,
+        ),
       );
     },
     SchedulesRouter.name: (routeData) {
@@ -52,9 +56,13 @@ class AppRouter extends _i7.RootStackRouter {
       );
     },
     SettingsRouter.name: (routeData) {
+      final args = routeData.argsAs<SettingsRouterArgs>();
       return _i7.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i5.SettingsScreen(),
+        child: _i5.SettingsScreen(
+          key: args.key,
+          onGroupChanged: args.onGroupChanged,
+        ),
       );
     },
     SchedulesRoute.name: (routeData) {
@@ -64,9 +72,13 @@ class AppRouter extends _i7.RootStackRouter {
       );
     },
     MyScheduleRoute.name: (routeData) {
+      final args = routeData.argsAs<MyScheduleRouteArgs>();
       return _i7.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: _i3.MyScheduleScreen(),
+        child: _i3.MyScheduleScreen(
+          key: args.key,
+          onGroupChanged: args.onGroupChanged,
+        ),
       );
     },
   };
@@ -141,14 +153,36 @@ class BellScheduleRouter extends _i7.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i3.MyScheduleScreen]
-class MyScheduleRouter extends _i7.PageRouteInfo<void> {
-  const MyScheduleRouter()
-      : super(
+class MyScheduleRouter extends _i7.PageRouteInfo<MyScheduleRouterArgs> {
+  MyScheduleRouter({
+    _i8.Key? key,
+    required void Function(String) onGroupChanged,
+  }) : super(
           MyScheduleRouter.name,
           path: 'my-schedule',
+          args: MyScheduleRouterArgs(
+            key: key,
+            onGroupChanged: onGroupChanged,
+          ),
         );
 
   static const String name = 'MyScheduleRouter';
+}
+
+class MyScheduleRouterArgs {
+  const MyScheduleRouterArgs({
+    this.key,
+    required this.onGroupChanged,
+  });
+
+  final _i8.Key? key;
+
+  final void Function(String) onGroupChanged;
+
+  @override
+  String toString() {
+    return 'MyScheduleRouterArgs{key: $key, onGroupChanged: $onGroupChanged}';
+  }
 }
 
 /// generated route for
@@ -166,14 +200,36 @@ class SchedulesRouter extends _i7.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i5.SettingsScreen]
-class SettingsRouter extends _i7.PageRouteInfo<void> {
-  const SettingsRouter()
-      : super(
+class SettingsRouter extends _i7.PageRouteInfo<SettingsRouterArgs> {
+  SettingsRouter({
+    _i8.Key? key,
+    required void Function() onGroupChanged,
+  }) : super(
           SettingsRouter.name,
           path: 'settings',
+          args: SettingsRouterArgs(
+            key: key,
+            onGroupChanged: onGroupChanged,
+          ),
         );
 
   static const String name = 'SettingsRouter';
+}
+
+class SettingsRouterArgs {
+  const SettingsRouterArgs({
+    this.key,
+    required this.onGroupChanged,
+  });
+
+  final _i8.Key? key;
+
+  final void Function() onGroupChanged;
+
+  @override
+  String toString() {
+    return 'SettingsRouterArgs{key: $key, onGroupChanged: $onGroupChanged}';
+  }
 }
 
 /// generated route for
@@ -190,12 +246,34 @@ class SchedulesRoute extends _i7.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i3.MyScheduleScreen]
-class MyScheduleRoute extends _i7.PageRouteInfo<void> {
-  const MyScheduleRoute()
-      : super(
+class MyScheduleRoute extends _i7.PageRouteInfo<MyScheduleRouteArgs> {
+  MyScheduleRoute({
+    _i8.Key? key,
+    required void Function(String) onGroupChanged,
+  }) : super(
           MyScheduleRoute.name,
           path: 'schedule',
+          args: MyScheduleRouteArgs(
+            key: key,
+            onGroupChanged: onGroupChanged,
+          ),
         );
 
   static const String name = 'MyScheduleRoute';
+}
+
+class MyScheduleRouteArgs {
+  const MyScheduleRouteArgs({
+    this.key,
+    required this.onGroupChanged,
+  });
+
+  final _i8.Key? key;
+
+  final void Function(String) onGroupChanged;
+
+  @override
+  String toString() {
+    return 'MyScheduleRouteArgs{key: $key, onGroupChanged: $onGroupChanged}';
+  }
 }

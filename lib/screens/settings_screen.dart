@@ -8,9 +8,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../repositories/groups_repository.dart';
 
-class SettingsScreen extends StatefulWidget {
-  const SettingsScreen({Key? key}) : super(key: key);
+typedef OnGroupChanged = void Function();
 
+class SettingsScreen extends StatefulWidget {
+  const SettingsScreen({Key? key, required this.onGroupChanged})
+      : super(key: key);
+  final OnGroupChanged onGroupChanged;
   @override
   State<SettingsScreen> createState() => _SettingsScreenState();
 }
@@ -42,7 +45,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   void setGroup(value) async {
     final SharedPreferences prefs = await _prefs;
     if (!mounted) return;
-
+    widget.onGroupChanged.call();
     setState(() {
       _selectedGroup = prefs.setString('myGroup', value).then((bool success) {
         return value;

@@ -14,67 +14,68 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../themes/styles.dart';
 import '../widgets/next_lesson.dart';
 
+typedef OnGroupChanged = void Function(String group);
+
 class MyScheduleScreen extends StatefulWidget {
+  MyScheduleScreen({super.key, required this.onGroupChanged});
+  final OnGroupChanged onGroupChanged;
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return _MyScheduleScreenState();
+    return MyScheduleScreenState();
   }
 }
 
-class _MyScheduleScreenState extends State<MyScheduleScreen> {
+class MyScheduleScreenState extends State<MyScheduleScreen> {
+  GlobalKey<CollapsibleCalendarState> _collapsibleCalendarKey = GlobalKey();
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   List<ScheduleModel> schedule = [];
   bool _loading = false;
   List<ScheduleModel> daySchedule = [];
   String _selectedGroup = '';
 
-  void getSchedule(selectedGroup) async {
+  void getSchedule() async {
+    if (!mounted) return;
     setState(() {
       _loading = true;
     });
-    if (!mounted) return;
-    final selectedGroupTemp = await selectedGroup;
+
+    final selectedGroupTemp = await checkGroup();
 
     if (this.mounted && selectedGroupTemp != null) {
+      _collapsibleCalendarKey.currentState?.changeDay(DateTime.now());
       setState(() {
         _selectedGroup = selectedGroupTemp;
       });
-      List<ScheduleModel>? mySchedule =
-          await getScheduleFromSharedPreferences();
+      List<ScheduleModel>? newSchedule =
+          await getScheduleFromSharedPreferences(_selectedGroup);
 
-      if (mySchedule.isNotEmpty) {
+      if (newSchedule.isNotEmpty) {
         if (!mounted) return;
-        setState(() {
-          schedule = mySchedule;
-          daySchedule = mySchedule
-              .where((element) =>
-                  element.weekDay.toLowerCase() ==
-                      dayNames[DateTime.now().weekday - 1].toLowerCase() &&
-                  element.weekType == Week(date: DateTime.now()).getWeekType())
-              .toList();
-          _loading = false;
-        });
+        setSchedule(newSchedule);
       } else {
         await SchedulesRepository()
             .getSchedulesByGroup(selectedGroupTemp)
-            .then((value) {
+            .then((newSchedule) {
           if (!mounted) return;
-          saveSchedule(value, selectedGroupTemp);
-          setState(() {
-            schedule = value;
-            daySchedule = value
-                .where((element) =>
-                    element.weekDay.toLowerCase() ==
-                        dayNames[DateTime.now().weekday - 1].toLowerCase() &&
-                    element.weekType ==
-                        Week(date: DateTime.now()).getWeekType())
-                .toList();
-            _loading = false;
-          });
+          saveSchedule(newSchedule, selectedGroupTemp);
+          setSchedule(newSchedule);
         });
       }
     }
+  }
+
+  void setSchedule(List<ScheduleModel> newSchedule) {
+    setState(() {
+      schedule = newSchedule;
+      daySchedule = newSchedule
+          .where((element) =>
+              element.weekDay.toLowerCase() ==
+                  dayNames[DateTime.now().weekday - 1].toLowerCase() &&
+              element.weekType == Week(date: DateTime.now()).getWeekType())
+          .toList();
+      _loading = false;
+    });
   }
 
   Future<String?> checkGroup() async {
@@ -99,11 +100,12 @@ class _MyScheduleScreenState extends State<MyScheduleScreen> {
     await prefs.setString('mySchedule', encoded);
   }
 
-  Future<List<ScheduleModel>> getScheduleFromSharedPreferences() async {
+  Future<List<ScheduleModel>> getScheduleFromSharedPreferences(
+      selectedGroup) async {
     String savedScheduleGroup = await _prefs.then((SharedPreferences prefs) {
       return prefs.getString('savedScheduleGroup') ?? '';
     });
-    if (_selectedGroup != '' && _selectedGroup == savedScheduleGroup) {
+    if (selectedGroup != '' && selectedGroup == savedScheduleGroup) {
       String encoded = await _prefs.then((SharedPreferences prefs) {
         return prefs.getString('mySchedule') ?? '';
       });
@@ -117,8 +119,7 @@ class _MyScheduleScreenState extends State<MyScheduleScreen> {
 
   @override
   void initState() {
-    getSchedule(checkGroup());
-    print(daySchedule);
+    getSchedule();
     super.initState();
   }
 
@@ -132,7 +133,7 @@ class _MyScheduleScreenState extends State<MyScheduleScreen> {
               onAccept: () async {
                 final group = await checkGroup();
                 if (group != null) {
-                  getSchedule(group);
+                  getSchedule();
                 }
               },
             ),
@@ -195,6 +196,7 @@ class _MyScheduleScreenState extends State<MyScheduleScreen> {
             ),
           ),
           CollapsibleCalendar(
+            key: _collapsibleCalendarKey,
             onDayChanged: (selectedDay) {
               dayChanged(selectedDay);
             },
