@@ -5,7 +5,7 @@ import 'package:schedule_mobile/models/bell_schedule_model.dart';
 import 'package:schedule_mobile/models/faculty_model.dart';
 import 'package:schedule_mobile/repositories/bell_schedules_repository.dart';
 import 'package:schedule_mobile/repositories/faculties_repository.dart';
-import 'package:schedule_mobile/utils/styles.dart';
+import 'package:schedule_mobile/themes/styles.dart';
 import 'package:schedule_mobile/widgets/app_bar_painter.dart';
 
 class BellScheduleScreen extends StatefulWidget {

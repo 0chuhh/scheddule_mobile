@@ -11,9 +11,8 @@ import 'package:schedule_mobile/widgets/modal_choose_group.dart';
 import 'package:schedule_mobile/widgets/schedule_list/schedule_list.dart';
 import 'package:schedule_mobile/widgets/week.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../utils/styles.dart';
+import '../themes/styles.dart';
 import '../widgets/next_lesson.dart';
-import 'dart:convert';
 
 class MyScheduleScreen extends StatefulWidget {
   @override

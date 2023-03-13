@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:schedule_mobile/utils/months_localizaition.dart';
-import 'package:schedule_mobile/utils/styles.dart';
+import 'package:schedule_mobile/themes/styles.dart';
 import 'package:schedule_mobile/widgets/collapsible_calendar/base_calendar.dart';
 import 'package:schedule_mobile/widgets/collapsible_calendar/calendar_animated_container.dart';
 import 'package:schedule_mobile/widgets/collapsible_calendar/calendar_collapse-button.dart';

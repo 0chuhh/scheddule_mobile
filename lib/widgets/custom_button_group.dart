@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:schedule_mobile/utils/styles.dart';
+import 'package:schedule_mobile/themes/styles.dart';
 
 typedef OnPressed = void Function(Widget selected, int index);
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../utils/styles.dart';
+import '../themes/styles.dart';
 import '../widgets/app_bar_painter.dart';
 import '../widgets/schedule_search_cards.dart';
 

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:schedule_mobile/utils/styles.dart';
+import 'package:schedule_mobile/themes/styles.dart';
 import 'package:schedule_mobile/widgets/week.dart';
 import 'package:table_calendar/table_calendar.dart';
 
