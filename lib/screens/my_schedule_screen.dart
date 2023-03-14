@@ -77,8 +77,10 @@ class MyScheduleScreenState extends State<MyScheduleScreen> {
           });
         }
       }
-    } else {
+    } else if (widget.screenType == ScheduleScreenType.classroomSchedule) {
       getClassRoomSchedule(widget.queryParam);
+    } else if (widget.screenType == ScheduleScreenType.groupSchedule) {
+      getGroupSchedule(widget.queryParam);
     }
   }
 
@@ -140,6 +142,12 @@ class MyScheduleScreenState extends State<MyScheduleScreen> {
         .then((newSchedule) => setSchedule(newSchedule));
   }
 
+  Future<void> getGroupSchedule(group) async {
+    await SchedulesRepository()
+        .getSchedulesByGroup(group)
+        .then((newSchedule) => setSchedule(newSchedule));
+  }
+
   @override
   void initState() {
     getSchedule();
@@ -187,7 +195,9 @@ class MyScheduleScreenState extends State<MyScheduleScreen> {
                 ? daySchedule.length > 0
                     ? ScheduleList(
                         padding: widget.screenType ==
-                                ScheduleScreenType.classroomSchedule
+                                    ScheduleScreenType.classroomSchedule ||
+                                widget.screenType ==
+                                    ScheduleScreenType.groupSchedule
                             ? 180
                             : 250,
                         schedule: daySchedule,
@@ -204,7 +214,10 @@ class MyScheduleScreenState extends State<MyScheduleScreen> {
                                     : widget.screenType ==
                                             ScheduleScreenType.classroomSchedule
                                         ? 'Сегодня в данной аудитории нет занятий.'
-                                        : 'Сегодня преподаватель не ведет занятия',
+                                        : widget.screenType ==
+                                                ScheduleScreenType.groupSchedule
+                                            ? 'Сегодня у группы нет занятий'
+                                            : 'Сегодня преподаватель не ведет занятия',
                                 textAlign: TextAlign.center,
                                 style: const TextStyle(
                                     color: Color(0xFF9498BE),
@@ -240,7 +253,8 @@ class MyScheduleScreenState extends State<MyScheduleScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                if (widget.screenType == ScheduleScreenType.classroomSchedule)
+                if (widget.screenType == ScheduleScreenType.classroomSchedule ||
+                    widget.screenType == ScheduleScreenType.groupSchedule)
                   Padding(
                     padding: const EdgeInsets.only(top: 10),
                     child: Row(
@@ -272,7 +286,10 @@ class MyScheduleScreenState extends State<MyScheduleScreen> {
                         ),
                         Gap(20),
                         Text(
-                          'Аудитория ${widget.queryParam ?? widget.queryParam}',
+                          widget.screenType ==
+                                  ScheduleScreenType.classroomSchedule
+                              ? 'Аудитория ${widget.queryParam ?? widget.queryParam}'
+                              : 'Группа ${widget.queryParam ?? widget.queryParam}',
                           style: const TextStyle(
                               color: Color(0xFF9498BE),
                               fontWeight: FontWeight.w700,
@@ -283,7 +300,8 @@ class MyScheduleScreenState extends State<MyScheduleScreen> {
                   ),
                 widget.screenType == ScheduleScreenType.mySchedule ||
                         widget.screenType ==
-                            ScheduleScreenType.classroomSchedule
+                            ScheduleScreenType.classroomSchedule ||
+                        widget.screenType == ScheduleScreenType.groupSchedule
                     ? CollapsibleCalendar(
                         marginTop:
                             widget.screenType != ScheduleScreenType.mySchedule

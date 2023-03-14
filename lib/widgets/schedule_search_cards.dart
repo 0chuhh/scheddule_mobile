@@ -144,13 +144,24 @@ class _ScheduleSearchCardsState extends State<ScheduleSearchCards> {
                         key: _autocomleteByGroupKey,
                         list: groups,
                         label: 'Группа',
+                        onSelected: (value) {
+                          setState(() {
+                            selectedGroup = value;
+                          });
+                        },
                         onTap: (_focusNode) {
                           onAutocompleteTap(0);
                         },
                         onTapOutside: () {}),
                     const Gap(5),
                     ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        if (selectedGroup != '') {
+                          context.router.push(ClassRoomScheduleRouter(
+                              screenType: ScheduleScreenType.groupSchedule,
+                              queryParam: selectedGroup));
+                        }
+                      },
                       style: ElevatedButton.styleFrom(
                         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                         backgroundColor: Styles.primaryColor,
