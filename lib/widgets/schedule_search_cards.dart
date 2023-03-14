@@ -48,6 +48,9 @@ class _ScheduleSearchCardsState extends State<ScheduleSearchCards> {
   String selectedGroup = '';
   String selectedLecturer = '';
 
+  String selectedScheduleFormat = 'Очная';
+
+  /// true - очная; false - заочная
   Future getLecturers() async {
     await LecturersRepository().getLecturers().then((value) {
       lecturers = value.map((e) => e.name).toList();
@@ -76,6 +79,11 @@ class _ScheduleSearchCardsState extends State<ScheduleSearchCards> {
                     CustomAutocomplete(
                       key: _autocomleteByLecturerKey,
                       list: lecturers,
+                      onSelected: (value) {
+                        setState(() {
+                          selectedLecturer = value;
+                        });
+                      },
                       label: 'Преподаватель',
                       onTap: (_focusNode) {
                         onAutocompleteTap(1);
@@ -89,15 +97,24 @@ class _ScheduleSearchCardsState extends State<ScheduleSearchCards> {
                     CustomButtonGroup(
                       items: const [
                         Text('Очная форма'),
-                        Text('Заочная форма'),
+                        // Text('Заочная форма'),
                       ],
                       onPressed: (selected, index) {
-                        // FocusScope.of(context).requestFocus(_focusNode);
+                        setState(() {
+                          selectedScheduleFormat =
+                              index == 0 ? 'Очная' : 'Заочная';
+                        });
                       },
                     ),
                     const Gap(5),
                     ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        if (selectedLecturer != '') {
+                          context.router.push(ClassRoomScheduleRouter(
+                              screenType: ScheduleScreenType.lecturerSchedule,
+                              queryParam: selectedLecturer));
+                        }
+                      },
                       style: ElevatedButton.styleFrom(
                         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                         backgroundColor: Styles.primaryColor,

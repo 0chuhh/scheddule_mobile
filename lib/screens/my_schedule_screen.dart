@@ -28,9 +28,10 @@ class MyScheduleScreen extends StatefulWidget {
       {super.key,
       this.showCalendar = true,
       this.queryParam,
+      this.scheduleFormat = 'Очная',
       this.screenType = ScheduleScreenType.mySchedule});
   final bool showCalendar;
-
+  final String scheduleFormat;
   final ScheduleScreenType screenType;
   final String? queryParam;
   @override
@@ -81,6 +82,8 @@ class MyScheduleScreenState extends State<MyScheduleScreen> {
       getClassRoomSchedule(widget.queryParam);
     } else if (widget.screenType == ScheduleScreenType.groupSchedule) {
       getGroupSchedule(widget.queryParam);
+    } else if (widget.screenType == ScheduleScreenType.lecturerSchedule) {
+      getLecturerSchedule(widget.queryParam, widget.scheduleFormat);
     }
   }
 
@@ -148,6 +151,19 @@ class MyScheduleScreenState extends State<MyScheduleScreen> {
         .then((newSchedule) => setSchedule(newSchedule));
   }
 
+  Future<void> getLecturerSchedule(lecturer, format) async {
+    await SchedulesRepository()
+        .getScheduleByLecturer(lecturer, format)
+        .then((newSchedule) => setSchedule(newSchedule));
+  }
+
+  String getLecturerFioInitials(Fio) {
+    final fio = Fio.trim().split(' ');
+    String result = '';
+    result += fio[0] + ' ' + fio[1][0] + '.' + fio[2][0] + '.';
+    return result;
+  }
+
   @override
   void initState() {
     getSchedule();
@@ -197,9 +213,12 @@ class MyScheduleScreenState extends State<MyScheduleScreen> {
                         padding: widget.screenType ==
                                     ScheduleScreenType.classroomSchedule ||
                                 widget.screenType ==
-                                    ScheduleScreenType.groupSchedule
+                                    ScheduleScreenType.groupSchedule ||
+                                widget.screenType ==
+                                    ScheduleScreenType.lecturerSchedule
                             ? 180
-                            : 250,
+                            // : 250,
+                            : 160,
                         schedule: daySchedule,
                       )
                     : Container(
@@ -238,10 +257,12 @@ class MyScheduleScreenState extends State<MyScheduleScreen> {
               color: Colors.transparent,
               width: MediaQuery.of(context).size.width,
               height: widget.screenType == ScheduleScreenType.mySchedule
-                  ? 260
+                  // ? 260
+                  ? 160
                   : 190,
               child: widget.screenType == ScheduleScreenType.mySchedule
-                  ? NextLesson()
+                  // ? NextLesson()
+                  ? null
                   : null,
             ),
           ),
@@ -254,7 +275,8 @@ class MyScheduleScreenState extends State<MyScheduleScreen> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 if (widget.screenType == ScheduleScreenType.classroomSchedule ||
-                    widget.screenType == ScheduleScreenType.groupSchedule)
+                    widget.screenType == ScheduleScreenType.groupSchedule ||
+                    widget.screenType == ScheduleScreenType.lecturerSchedule)
                   Padding(
                     padding: const EdgeInsets.only(top: 10),
                     child: Row(
@@ -285,23 +307,31 @@ class MyScheduleScreenState extends State<MyScheduleScreen> {
                                   ])),
                         ),
                         Gap(20),
-                        Text(
-                          widget.screenType ==
-                                  ScheduleScreenType.classroomSchedule
-                              ? 'Аудитория ${widget.queryParam ?? widget.queryParam}'
-                              : 'Группа ${widget.queryParam ?? widget.queryParam}',
-                          style: const TextStyle(
-                              color: Color(0xFF9498BE),
-                              fontWeight: FontWeight.w700,
-                              fontSize: 14),
-                        ),
+                        Container(
+                          constraints: BoxConstraints(maxWidth: 200),
+                          child: Text(
+                            widget.screenType ==
+                                    ScheduleScreenType.classroomSchedule
+                                ? 'Аудитория ${widget.queryParam ?? widget.queryParam}'
+                                : widget.screenType ==
+                                        ScheduleScreenType.lecturerSchedule
+                                    ? 'Преподаватель - ${getLecturerFioInitials(widget.queryParam)}'
+                                    : 'Группа ${widget.queryParam ?? widget.queryParam}',
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                                color: Color(0xFF9498BE),
+                                fontWeight: FontWeight.w700,
+                                fontSize: 14),
+                          ),
+                        )
                       ],
                     ),
                   ),
                 widget.screenType == ScheduleScreenType.mySchedule ||
                         widget.screenType ==
                             ScheduleScreenType.classroomSchedule ||
-                        widget.screenType == ScheduleScreenType.groupSchedule
+                        widget.screenType == ScheduleScreenType.groupSchedule ||
+                        widget.screenType == ScheduleScreenType.lecturerSchedule
                     ? CollapsibleCalendar(
                         marginTop:
                             widget.screenType != ScheduleScreenType.mySchedule

@@ -223,4 +223,15 @@ class SchedulesRepository {
     schedule.sort(((a, b) => a.couple.number.compareTo(b.couple.number)));
     return schedule;
   }
+
+  Future<List<ScheduleModel>> getScheduleByLecturer(
+      String lecturer, String format) async {
+    final response = await Dio().get(
+        'https://zabgu.ru/modules/raspisanie/api/schedule/lecturer.php',
+        queryParameters: {'lecturerName': lecturer, 'studyForm': format});
+    final data = jsonDecode(response.data) as List;
+    final schedule = data.map((json) => ScheduleModel.fromJson(json)).toList();
+    schedule.sort(((a, b) => a.couple.number.compareTo(b.couple.number)));
+    return schedule;
+  }
 }

@@ -123,7 +123,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     ),
                   ),
                   const Gap(10),
-                  // Theme
                   Material(
                     elevation: 3,
                     borderRadius: const BorderRadius.all(Radius.circular(10.0)),
@@ -138,16 +137,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         child: Column(
                           children: [
                             Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                const Icon(Icons.dark_mode),
-                                const Text('Темная тема'),
-                                const Spacer(),
-                                CupertinoSwitch(
-                                    activeColor: Styles.primaryColor,
-                                    value: selectedTheme,
-                                    onChanged: (value) => setState(() {
-                                          selectedTheme = value;
-                                        }))
+                                const Text(
+                                  'Прототип',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w700,
+                                      color: Color.fromARGB(211, 230, 92, 92)),
+                                ),
                               ],
                             )
                           ],
@@ -155,6 +152,38 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       ),
                     ),
                   ),
+                  // Theme
+                  // Material(
+                  //   elevation: 3,
+                  //   borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+                  //   child: Container(
+                  //     width: MediaQuery.of(context).size.width,
+                  //     decoration: const BoxDecoration(
+                  //         color: Colors.white,
+                  //         borderRadius:
+                  //             BorderRadius.all(Radius.circular(15.0))),
+                  //     child: Padding(
+                  //       padding: const EdgeInsets.all(15),
+                  //       child: Column(
+                  //         children: [
+                  //           Row(
+                  //             children: [
+                  //               const Icon(Icons.dark_mode),
+                  //               const Text('Темная тема'),
+                  //               const Spacer(),
+                  //               CupertinoSwitch(
+                  //                   activeColor: Styles.primaryColor,
+                  //                   value: selectedTheme,
+                  //                   onChanged: (value) => setState(() {
+                  //                         selectedTheme = value;
+                  //                       }))
+                  //             ],
+                  //           )
+                  //         ],
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               ),
             )

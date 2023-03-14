@@ -76,7 +76,11 @@ class ScheduleModel {
         weekType: json['type'] == 'н' ? WeekType.lower : WeekType.upper,
         couple: Couple(number: coupleNum, time: getCoupleTimeByNum(coupleNum)),
         name: json['predmet'],
-        format: ScheduleItemFormat.lection,
+        format: json['type_predmet'] == 'лекция'
+            ? ScheduleItemFormat.lection
+            : json['type_predmet'] == 'практика'
+                ? ScheduleItemFormat.practice
+                : ScheduleItemFormat.laboratory,
         lecturer: json['people'],
         cathedra: json['kafedra'],
         classroom: json['kabinet'],
