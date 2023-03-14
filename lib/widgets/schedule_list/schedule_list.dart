@@ -6,8 +6,8 @@ import 'package:intl/intl.dart';
 import '../../models/schedule_model.dart';
 
 class ScheduleList extends StatelessWidget {
-  const ScheduleList({super.key, this.schedule = const []});
-
+  const ScheduleList({super.key, this.schedule = const [], this.padding = 250});
+  final double padding;
   final List<ScheduleModel> schedule;
   String getCoupleTime(DateTime date) {
     return DateFormat.Hm().format(date);
@@ -17,7 +17,7 @@ class ScheduleList extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
         child: Container(
-      padding: const EdgeInsets.only(top: 250),
+      padding: EdgeInsets.only(top: padding),
       child: Timeline.tileBuilder(
         padding: const EdgeInsets.only(top: 20),
         builder: TimelineTileBuilder(

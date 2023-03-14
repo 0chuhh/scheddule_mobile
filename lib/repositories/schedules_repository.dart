@@ -204,11 +204,23 @@ import 'dart:convert';
 // ];
 
 class SchedulesRepository {
-  Future<List<ScheduleModel>> getSchedulesByGroup(group) async {
+  Future<List<ScheduleModel>> getSchedulesByGroup(String group) async {
     final response = await Dio().get(
         'https://zabgu.ru/modules/raspisanie/api/schedule/group.php',
         queryParameters: {'groupName': group});
     final data = jsonDecode(response.data) as List;
-    return data.map((json) => ScheduleModel.fromJson(json)).toList();
+    final schedule = data.map((json) => ScheduleModel.fromJson(json)).toList();
+    schedule.sort(((a, b) => a.couple.number.compareTo(b.couple.number)));
+    return schedule;
+  }
+
+  Future<List<ScheduleModel>> getScheduleByClassroom(String classroom) async {
+    final response = await Dio().get(
+        'https://zabgu.ru/modules/raspisanie/api/schedule/classroom.php',
+        queryParameters: {'classroom': classroom});
+    final data = jsonDecode(response.data) as List;
+    final schedule = data.map((json) => ScheduleModel.fromJson(json)).toList();
+    schedule.sort(((a, b) => a.couple.number.compareTo(b.couple.number)));
+    return schedule;
   }
 }

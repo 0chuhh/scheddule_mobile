@@ -23,6 +23,7 @@ class ScheduleModel {
   String lecturer;
   String cathedra;
   String classroom;
+  String? group;
 
   ScheduleModel(
       {required this.weekDay,
@@ -32,7 +33,8 @@ class ScheduleModel {
       required this.lecturer,
       required this.cathedra,
       required this.classroom,
-      required this.format});
+      required this.format,
+      this.group});
 
   factory ScheduleModel.fromJson(Map<String, dynamic> json) {
     final BellScheduleModel bellSchedules =
@@ -60,6 +62,9 @@ class ScheduleModel {
         case 6:
           return DateTime.parse(
               '${now.year}-${now.month > 9 ? now.month : '0${now.month}'}-${now.day > 9 ? now.day : '0${now.day}'} ${bellSchedules.sixthLesson.start}:00.000');
+        case 7:
+          return DateTime.parse(
+              '${now.year}-${now.month > 9 ? now.month : '0${now.month}'}-${now.day > 9 ? now.day : '0${now.day}'} ${bellSchedules.seventhLesson.start}:00.000');
         default:
           return DateTime.parse(
               '${now.year}-${now.month > 9 ? now.month : '0${now.month}'}-${now.day > 9 ? now.day : '0${now.day}'} ${bellSchedules.firstLesson.start}:00.000');
@@ -74,7 +79,8 @@ class ScheduleModel {
         format: ScheduleItemFormat.lection,
         lecturer: json['people'],
         cathedra: json['kafedra'],
-        classroom: json['kabinet']);
+        classroom: json['kabinet'],
+        group: json['group_name']);
   }
 
   static Map<String, dynamic> toMap(ScheduleModel schedule) => {

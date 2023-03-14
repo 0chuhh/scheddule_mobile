@@ -19,17 +19,14 @@ class RootScreen extends StatelessWidget {
     return AutoTabsScaffold(
       routes: [
         BellScheduleRouter(),
-        MyScheduleRouter(
-            onGroupChanged: (string) {
-              print(string);
-            },
-            key: myScheduleKey),
+        MyScheduleRouter(key: myScheduleKey),
         SchedulesRouter(),
         SettingsRouter(onGroupChanged: onGroupChange),
       ],
       bottomNavigationBuilder: (_, tabsRouter) {
         return BottomNavBar(
-          currentIndex: tabsRouter.activeIndex,
+          currentIndex:
+              tabsRouter.activeIndex <= 3 ? tabsRouter.activeIndex : 2,
           onTap: tabsRouter.setActiveIndex,
           items: [
             BottomNavigationBarItem(

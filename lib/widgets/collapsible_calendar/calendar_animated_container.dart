@@ -1,10 +1,15 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class CalendarAnimatedContainer extends StatelessWidget {
   const CalendarAnimatedContainer(
-      {required this.format, required this.children, super.key});
-
+      {required this.format,
+      required this.children,
+      super.key,
+      this.marginTop = 40});
+  final double marginTop;
   final CalendarFormat format;
   final List<Widget> children;
 
@@ -27,7 +32,7 @@ class CalendarAnimatedContainer extends StatelessWidget {
             color: Colors.white,
             borderRadius: BorderRadius.all(Radius.circular(50))),
         height: format == CalendarFormat.week ? 80 : 350,
-        margin: const EdgeInsets.only(top: 40),
+        margin: EdgeInsets.only(top: marginTop),
         child: SingleChildScrollView(
             child: Stack(
                 clipBehavior: Clip.none,

@@ -18,6 +18,7 @@ class CollapsibleCalendar extends StatefulWidget {
       {this.align = Alignment.topCenter,
       this.onDayChanged,
       this.onFormatChanged,
+      this.marginTop = 40,
       super.key});
 
   final OnDayChanged? onDayChanged;
@@ -25,6 +26,8 @@ class CollapsibleCalendar extends StatefulWidget {
   final OnFormatChanged? onFormatChanged;
 
   final Alignment align;
+
+  final double marginTop;
 
   @override
   State<StatefulWidget> createState() {
@@ -89,20 +92,22 @@ class CollapsibleCalendarState extends State<CollapsibleCalendar> {
           children: <Widget>[
             SizedBox(
               width: MediaQuery.of(context).size.width - 50,
-              child:
-                  CalendarAnimatedContainer(format: _format, children: <Widget>[
-                BaseCalendar(changeFormat, _selectedDay, changeDay, _format,
-                    _headerVisible),
-                Positioned(
-                    bottom: 0,
-                    child: CalendarCollapseButton(
-                      changeFormat: changeFormat,
-                      monthName: _monthName,
-                      selectedDay: _selectedDay,
-                      week: _week,
-                      format: _format,
-                    ))
-              ]),
+              child: CalendarAnimatedContainer(
+                  marginTop: widget.marginTop,
+                  format: _format,
+                  children: <Widget>[
+                    BaseCalendar(changeFormat, _selectedDay, changeDay, _format,
+                        _headerVisible),
+                    Positioned(
+                        bottom: 0,
+                        child: CalendarCollapseButton(
+                          changeFormat: changeFormat,
+                          monthName: _monthName,
+                          selectedDay: _selectedDay,
+                          week: _week,
+                          format: _format,
+                        ))
+                  ]),
             ),
           ],
         ));

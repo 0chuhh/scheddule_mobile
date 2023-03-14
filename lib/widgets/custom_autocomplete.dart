@@ -132,8 +132,8 @@ class CustomAutocompleteState extends State<CustomAutocomplete> {
                   child: Material(
                     elevation: 4.0,
                     child: Container(
-                        width: 250,
-                        height: 200,
+                        constraints:
+                            const BoxConstraints(maxHeight: 500, maxWidth: 250),
                         child: ListView.separated(
                           shrinkWrap: true,
                           padding: const EdgeInsets.all(8.0),

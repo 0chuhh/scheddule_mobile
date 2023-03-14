@@ -1,13 +1,17 @@
 import 'dart:async';
 
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:schedule_mobile/repositories/classrooms_repository.dart';
 import 'package:schedule_mobile/repositories/groups_repository.dart';
 import 'package:schedule_mobile/repositories/lecturers_repository.dart';
+import 'package:schedule_mobile/screens/my_schedule_screen.dart';
 import 'package:schedule_mobile/themes/styles.dart';
 import 'package:schedule_mobile/widgets/custom_autocomplete.dart';
 import 'package:schedule_mobile/widgets/custom_button_group.dart';
+
+import '../routers/router.gr.dart';
 
 class filterBlock {
   int id;
@@ -39,6 +43,10 @@ class _ScheduleSearchCardsState extends State<ScheduleSearchCards> {
   List<String> groups = [];
   List<String> lecturers = [];
   List<String> classroms = [];
+
+  String selectedClassroom = '';
+  String selectedGroup = '';
+  String selectedLecturer = '';
 
   Future getLecturers() async {
     await LecturersRepository().getLecturers().then((value) {
@@ -168,56 +176,70 @@ class _ScheduleSearchCardsState extends State<ScheduleSearchCards> {
         _data.insert(
             0,
             filterBlock(
-        id: 2,
-        widget: AnimatedContainer(
-          curve: Curves.easeInBack,
-          padding: const EdgeInsets.all(15),
-          decoration: BoxDecoration(
-              color: Colors.white, borderRadius: BorderRadius.circular(15)),
-          duration: const Duration(milliseconds: 700),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              const Text(
-                'Найти расписание занятий по аудитории:',
-                style: TextStyle(fontWeight: FontWeight.w500),
-                textAlign: TextAlign.left,
-              ),
-              const Gap(5),
-              CustomAutocomplete(
-                key: _autocomleteByClassromKey,
-                list: classroms,
-                label: 'Аудитория',
-                onTap: (_focusNode) {
-                  onAutocompleteTap(2);
-                  // FocusScope.of(context).requestFocus(focusNode);
-                },
-                onTapOutside: () {
-                  unfocusAutocomplete();
-                },
-              ),
-              const Gap(5),
-              ElevatedButton(
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  backgroundColor: Styles.primaryColor,
-                  minimumSize: const Size.fromHeight(
-                      30), // fromHeight use double.infinity as width and 40 is the height
+              id: 2,
+              widget: AnimatedContainer(
+                curve: Curves.easeInBack,
+                padding: const EdgeInsets.all(15),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(15)),
+                duration: const Duration(milliseconds: 700),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    const Text(
+                      'Найти расписание занятий по аудитории:',
+                      style: TextStyle(fontWeight: FontWeight.w500),
+                      textAlign: TextAlign.left,
+                    ),
+                    const Gap(5),
+                    CustomAutocomplete(
+                      key: _autocomleteByClassromKey,
+                      list: classroms,
+                      label: 'Аудитория',
+                      initValue: selectedClassroom,
+                      onSelected: (value) {
+                        setState(() {
+                          selectedClassroom = value;
+                        });
+                      },
+                      onTap: (_focusNode) {
+                        onAutocompleteTap(2);
+                        // FocusScope.of(context).requestFocus(focusNode);
+                      },
+                      onTapOutside: () {
+                        unfocusAutocomplete();
+                      },
+                    ),
+                    const Gap(5),
+                    ElevatedButton(
+                      onPressed: () {
+                        if (selectedClassroom != '') {
+                          context.router.push(ClassRoomScheduleRouter(
+                              screenType: ScheduleScreenType.classroomSchedule,
+                              queryParam: selectedClassroom));
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        backgroundColor: Styles.primaryColor,
+                        minimumSize: const Size.fromHeight(
+                            30), // fromHeight use double.infinity as width and 40 is the height
+                      ),
+                      child: const Text('Найти'),
+                    )
+                  ],
                 ),
-                child: const Text('Найти'),
-              )
-            ],
-          ),
-        ),
-      ));
+              ),
+            ));
       });
       addItem(2, 2);
     });
   }
 
   void init() async {
-    await getGroups().then((value) => getLecturers().then((value) => getClassrooms()));
+    await getGroups()
+        .then((value) => getLecturers().then((value) => getClassrooms()));
   }
 
   @override
