@@ -136,17 +136,35 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         padding: const EdgeInsets.all(15),
                         child: Column(
                           children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                const Text(
-                                  'Прототип',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w700,
-                                      color: Color.fromARGB(211, 230, 92, 92)),
-                                ),
-                              ],
-                            )
+                            Text(
+                              'О приложении',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                            Text(
+                              'Официальное приложение Расписание ЗабГУ. \n  Разработка ОРиВ ПО УИТ.',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            Text(
+                              'версия 0.2.85',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  color: Styles.crossColor),
+                            ),
+                            Text(
+                              '(прототип)',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                color: Color.fromARGB(255, 241, 84, 84),
+                              ),
+                            ),
                           ],
                         ),
                       ),
