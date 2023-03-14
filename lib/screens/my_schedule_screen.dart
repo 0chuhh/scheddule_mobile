@@ -1,7 +1,9 @@
 import 'dart:async';
 
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:gap/gap.dart';
 import 'package:schedule_mobile/models/schedule_model.dart';
 import 'package:schedule_mobile/repositories/schedules_repository.dart';
 import 'package:schedule_mobile/utils/day_names.dart';
@@ -14,11 +16,23 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../themes/styles.dart';
 import '../widgets/next_lesson.dart';
 
-typedef OnGroupChanged = void Function(String group);
+enum ScheduleScreenType {
+  mySchedule,
+  classroomSchedule,
+  lecturerSchedule,
+  groupSchedule
+}
 
 class MyScheduleScreen extends StatefulWidget {
-  MyScheduleScreen({super.key, required this.onGroupChanged});
-  final OnGroupChanged onGroupChanged;
+  MyScheduleScreen(
+      {super.key,
+      this.showCalendar = true,
+      this.queryParam,
+      this.screenType = ScheduleScreenType.mySchedule});
+  final bool showCalendar;
+
+  final ScheduleScreenType screenType;
+  final String? queryParam;
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
@@ -39,29 +53,32 @@ class MyScheduleScreenState extends State<MyScheduleScreen> {
     setState(() {
       _loading = true;
     });
+    if (widget.screenType == ScheduleScreenType.mySchedule) {
+      final selectedGroupTemp = await checkGroup();
 
-    final selectedGroupTemp = await checkGroup();
-
-    if (this.mounted && selectedGroupTemp != null) {
-      _collapsibleCalendarKey.currentState?.changeDay(DateTime.now());
-      setState(() {
-        _selectedGroup = selectedGroupTemp;
-      });
-      List<ScheduleModel>? newSchedule =
-          await getScheduleFromSharedPreferences(_selectedGroup);
-
-      if (newSchedule.isNotEmpty) {
-        if (!mounted) return;
-        setSchedule(newSchedule);
-      } else {
-        await SchedulesRepository()
-            .getSchedulesByGroup(selectedGroupTemp)
-            .then((newSchedule) {
-          if (!mounted) return;
-          saveSchedule(newSchedule, selectedGroupTemp);
-          setSchedule(newSchedule);
+      if (this.mounted && selectedGroupTemp != null) {
+        _collapsibleCalendarKey.currentState?.changeDay(DateTime.now());
+        setState(() {
+          _selectedGroup = selectedGroupTemp;
         });
+        List<ScheduleModel>? newSchedule =
+            await getScheduleFromSharedPreferences(_selectedGroup);
+
+        if (newSchedule.isNotEmpty) {
+          if (!mounted) return;
+          setSchedule(newSchedule);
+        } else {
+          await SchedulesRepository()
+              .getSchedulesByGroup(selectedGroupTemp)
+              .then((newSchedule) {
+            if (!mounted) return;
+            saveSchedule(newSchedule, selectedGroupTemp);
+            setSchedule(newSchedule);
+          });
+        }
       }
+    } else {
+      getClassRoomSchedule(widget.queryParam);
     }
   }
 
@@ -117,6 +134,12 @@ class MyScheduleScreenState extends State<MyScheduleScreen> {
     return [];
   }
 
+  Future<void> getClassRoomSchedule(classroom) async {
+    await SchedulesRepository()
+        .getScheduleByClassroom(classroom)
+        .then((newSchedule) => setSchedule(newSchedule));
+  }
+
   @override
   void initState() {
     getSchedule();
@@ -163,6 +186,10 @@ class MyScheduleScreenState extends State<MyScheduleScreen> {
             child: !_loading
                 ? daySchedule.length > 0
                     ? ScheduleList(
+                        padding: widget.screenType ==
+                                ScheduleScreenType.classroomSchedule
+                            ? 180
+                            : 250,
                         schedule: daySchedule,
                       )
                     : Container(
@@ -170,10 +197,16 @@ class MyScheduleScreenState extends State<MyScheduleScreen> {
                         child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              const Text(
-                                'Сегодня у вас нет занятий. Советуем потратить это время на самоподготовку.',
+                              Text(
+                                widget.screenType ==
+                                        ScheduleScreenType.mySchedule
+                                    ? 'Сегодня у вас нет занятий. Советуем потратить это время на самоподготовку.'
+                                    : widget.screenType ==
+                                            ScheduleScreenType.classroomSchedule
+                                        ? 'Сегодня в данной аудитории нет занятий.'
+                                        : 'Сегодня преподаватель не ведет занятия',
                                 textAlign: TextAlign.center,
-                                style: TextStyle(
+                                style: const TextStyle(
                                     color: Color(0xFF9498BE),
                                     fontWeight: FontWeight.w700,
                                     fontSize: 16),
@@ -191,16 +224,80 @@ class MyScheduleScreenState extends State<MyScheduleScreen> {
             child: Container(
               color: Colors.transparent,
               width: MediaQuery.of(context).size.width,
-              height: 260,
-              child: NextLesson(),
+              height: widget.screenType == ScheduleScreenType.mySchedule
+                  ? 260
+                  : 190,
+              child: widget.screenType == ScheduleScreenType.mySchedule
+                  ? NextLesson()
+                  : null,
             ),
           ),
-          CollapsibleCalendar(
-            key: _collapsibleCalendarKey,
-            onDayChanged: (selectedDay) {
-              dayChanged(selectedDay);
-            },
-          ),
+          Padding(
+            padding: EdgeInsets.only(
+                top: widget.screenType != ScheduleScreenType.mySchedule
+                    ? 30
+                    : 0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                if (widget.screenType == ScheduleScreenType.classroomSchedule)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        GestureDetector(
+                          onTap: () => context.router.pop(),
+                          child: Container(
+                              width: 80,
+                              height: 30,
+                              decoration: BoxDecoration(
+                                  color: Styles.primaryColor,
+                                  borderRadius: const BorderRadius.only(
+                                      topRight: Radius.circular(50),
+                                      bottomRight: Radius.circular(50))),
+                              child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: const [
+                                    Icon(
+                                      Icons.keyboard_arrow_left,
+                                      color: Colors.white,
+                                    ),
+                                    Text(
+                                      'Назад',
+                                      style: TextStyle(color: Colors.white),
+                                    )
+                                  ])),
+                        ),
+                        Gap(20),
+                        Text(
+                          'Аудитория ${widget.queryParam ?? widget.queryParam}',
+                          style: const TextStyle(
+                              color: Color(0xFF9498BE),
+                              fontWeight: FontWeight.w700,
+                              fontSize: 14),
+                        ),
+                      ],
+                    ),
+                  ),
+                widget.screenType == ScheduleScreenType.mySchedule ||
+                        widget.screenType ==
+                            ScheduleScreenType.classroomSchedule
+                    ? CollapsibleCalendar(
+                        marginTop:
+                            widget.screenType != ScheduleScreenType.mySchedule
+                                ? 10
+                                : 40,
+                        key: _collapsibleCalendarKey,
+                        onDayChanged: (selectedDay) {
+                          dayChanged(selectedDay);
+                        },
+                      )
+                    : Container(),
+              ],
+            ),
+          )
         ])
       ]),
     );

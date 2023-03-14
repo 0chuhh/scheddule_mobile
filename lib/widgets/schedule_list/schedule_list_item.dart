@@ -53,7 +53,8 @@ class ScheduleListItem extends StatelessWidget {
                   padding: const EdgeInsets.only(left: 20),
                   child: Text(
                     getFormatName(item.format),
-                    style: const TextStyle(color: Color.fromRGBO(148, 163, 184, 1)),
+                    style: const TextStyle(
+                        color: Color.fromRGBO(148, 163, 184, 1)),
                   ),
                 )
               ],
@@ -75,7 +76,7 @@ class ScheduleListItem extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Text('Каф.${item.cathedra}'),
-                  Text(item.classroom),
+                  Text(item.group != null ? item.group! : item.classroom),
                 ],
               ),
             ),

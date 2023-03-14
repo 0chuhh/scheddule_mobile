@@ -15,5 +15,6 @@ List<BellScheduleModel> bellSchedules = [
       thirdLesson: TimeRange(start: '12:00', end: '13:35'),
       fourthLesson: TimeRange(start: '14:35', end: '16:10'),
       fifthLesson: TimeRange(start: '16:20', end: '17:55'),
-      sixthLesson: TimeRange(start: '18:05', end: '19:40'))
+      sixthLesson: TimeRange(start: '18:05', end: '19:40'),
+      seventhLesson: TimeRange(start: '19:50', end: '21:25')),
 ];

@@ -40,12 +40,15 @@ class AppRouter extends _i7.RootStackRouter {
       );
     },
     MyScheduleRouter.name: (routeData) {
-      final args = routeData.argsAs<MyScheduleRouterArgs>();
+      final args = routeData.argsAs<MyScheduleRouterArgs>(
+          orElse: () => const MyScheduleRouterArgs());
       return _i7.MaterialPageX<dynamic>(
         routeData: routeData,
         child: _i3.MyScheduleScreen(
           key: args.key,
-          onGroupChanged: args.onGroupChanged,
+          showCalendar: args.showCalendar,
+          queryParam: args.queryParam,
+          screenType: args.screenType,
         ),
       );
     },
@@ -72,12 +75,28 @@ class AppRouter extends _i7.RootStackRouter {
       );
     },
     MyScheduleRoute.name: (routeData) {
-      final args = routeData.argsAs<MyScheduleRouteArgs>();
+      final args = routeData.argsAs<MyScheduleRouteArgs>(
+          orElse: () => const MyScheduleRouteArgs());
       return _i7.MaterialPageX<dynamic>(
         routeData: routeData,
         child: _i3.MyScheduleScreen(
           key: args.key,
-          onGroupChanged: args.onGroupChanged,
+          showCalendar: args.showCalendar,
+          queryParam: args.queryParam,
+          screenType: args.screenType,
+        ),
+      );
+    },
+    ClassRoomScheduleRouter.name: (routeData) {
+      final args = routeData.argsAs<ClassRoomScheduleRouterArgs>(
+          orElse: () => const ClassRoomScheduleRouterArgs());
+      return _i7.MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: _i3.MyScheduleScreen(
+          key: args.key,
+          showCalendar: args.showCalendar,
+          queryParam: args.queryParam,
+          screenType: args.screenType,
         ),
       );
     },
@@ -111,7 +130,12 @@ class AppRouter extends _i7.RootStackRouter {
                 ),
                 _i7.RouteConfig(
                   MyScheduleRoute.name,
-                  path: 'schedule',
+                  path: 'my-schedule',
+                  parent: SchedulesRouter.name,
+                ),
+                _i7.RouteConfig(
+                  ClassRoomScheduleRouter.name,
+                  path: 'classroom-schedule',
                   parent: SchedulesRouter.name,
                 ),
               ],
@@ -156,13 +180,17 @@ class BellScheduleRouter extends _i7.PageRouteInfo<void> {
 class MyScheduleRouter extends _i7.PageRouteInfo<MyScheduleRouterArgs> {
   MyScheduleRouter({
     _i8.Key? key,
-    required void Function(String) onGroupChanged,
+    bool showCalendar = true,
+    String? queryParam,
+    _i3.ScheduleScreenType screenType = _i3.ScheduleScreenType.mySchedule,
   }) : super(
           MyScheduleRouter.name,
           path: 'my-schedule',
           args: MyScheduleRouterArgs(
             key: key,
-            onGroupChanged: onGroupChanged,
+            showCalendar: showCalendar,
+            queryParam: queryParam,
+            screenType: screenType,
           ),
         );
 
@@ -172,16 +200,22 @@ class MyScheduleRouter extends _i7.PageRouteInfo<MyScheduleRouterArgs> {
 class MyScheduleRouterArgs {
   const MyScheduleRouterArgs({
     this.key,
-    required this.onGroupChanged,
+    this.showCalendar = true,
+    this.queryParam,
+    this.screenType = _i3.ScheduleScreenType.mySchedule,
   });
 
   final _i8.Key? key;
 
-  final void Function(String) onGroupChanged;
+  final bool showCalendar;
+
+  final String? queryParam;
+
+  final _i3.ScheduleScreenType screenType;
 
   @override
   String toString() {
-    return 'MyScheduleRouterArgs{key: $key, onGroupChanged: $onGroupChanged}';
+    return 'MyScheduleRouterArgs{key: $key, showCalendar: $showCalendar, queryParam: $queryParam, screenType: $screenType}';
   }
 }
 
@@ -249,13 +283,17 @@ class SchedulesRoute extends _i7.PageRouteInfo<void> {
 class MyScheduleRoute extends _i7.PageRouteInfo<MyScheduleRouteArgs> {
   MyScheduleRoute({
     _i8.Key? key,
-    required void Function(String) onGroupChanged,
+    bool showCalendar = true,
+    String? queryParam,
+    _i3.ScheduleScreenType screenType = _i3.ScheduleScreenType.mySchedule,
   }) : super(
           MyScheduleRoute.name,
-          path: 'schedule',
+          path: 'my-schedule',
           args: MyScheduleRouteArgs(
             key: key,
-            onGroupChanged: onGroupChanged,
+            showCalendar: showCalendar,
+            queryParam: queryParam,
+            screenType: screenType,
           ),
         );
 
@@ -265,15 +303,66 @@ class MyScheduleRoute extends _i7.PageRouteInfo<MyScheduleRouteArgs> {
 class MyScheduleRouteArgs {
   const MyScheduleRouteArgs({
     this.key,
-    required this.onGroupChanged,
+    this.showCalendar = true,
+    this.queryParam,
+    this.screenType = _i3.ScheduleScreenType.mySchedule,
   });
 
   final _i8.Key? key;
 
-  final void Function(String) onGroupChanged;
+  final bool showCalendar;
+
+  final String? queryParam;
+
+  final _i3.ScheduleScreenType screenType;
 
   @override
   String toString() {
-    return 'MyScheduleRouteArgs{key: $key, onGroupChanged: $onGroupChanged}';
+    return 'MyScheduleRouteArgs{key: $key, showCalendar: $showCalendar, queryParam: $queryParam, screenType: $screenType}';
+  }
+}
+
+/// generated route for
+/// [_i3.MyScheduleScreen]
+class ClassRoomScheduleRouter
+    extends _i7.PageRouteInfo<ClassRoomScheduleRouterArgs> {
+  ClassRoomScheduleRouter({
+    _i8.Key? key,
+    bool showCalendar = true,
+    String? queryParam,
+    _i3.ScheduleScreenType screenType = _i3.ScheduleScreenType.mySchedule,
+  }) : super(
+          ClassRoomScheduleRouter.name,
+          path: 'classroom-schedule',
+          args: ClassRoomScheduleRouterArgs(
+            key: key,
+            showCalendar: showCalendar,
+            queryParam: queryParam,
+            screenType: screenType,
+          ),
+        );
+
+  static const String name = 'ClassRoomScheduleRouter';
+}
+
+class ClassRoomScheduleRouterArgs {
+  const ClassRoomScheduleRouterArgs({
+    this.key,
+    this.showCalendar = true,
+    this.queryParam,
+    this.screenType = _i3.ScheduleScreenType.mySchedule,
+  });
+
+  final _i8.Key? key;
+
+  final bool showCalendar;
+
+  final String? queryParam;
+
+  final _i3.ScheduleScreenType screenType;
+
+  @override
+  String toString() {
+    return 'ClassRoomScheduleRouterArgs{key: $key, showCalendar: $showCalendar, queryParam: $queryParam, screenType: $screenType}';
   }
 }
