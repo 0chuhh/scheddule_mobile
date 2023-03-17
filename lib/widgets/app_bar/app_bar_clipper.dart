@@ -1,20 +1,9 @@
-import 'package:flutter/material.dart';
-import 'package:schedule_mobile/themes/styles.dart';
+import 'package:flutter/cupertino.dart';
 
-class AppBarPainter extends CustomPainter {
+class AppBarClipper extends CustomClipper<Path> {
   @override
-  void paint(Canvas canvas, size) {
-    var rect = Offset.zero & size;
-    Paint paint = Paint();
+  Path getClip(Size size) {
     Path path = Path();
-    paint.shader = LinearGradient(
-      begin: Alignment.topCenter,
-      end: Alignment.bottomCenter,
-      colors: [
-        Styles.bgColor,
-        Colors.white,
-      ],
-    ).createShader(rect);
     path.lineTo(size.width, size.height * 0.98);
     path.cubicTo(size.width, size.height * 0.98, size.width * 0.81,
         size.height * 0.93, size.width / 2, size.height * 0.98);
@@ -27,12 +16,11 @@ class AppBarPainter extends CustomPainter {
     path.cubicTo(size.width, size.height * 0.98, size.width, size.height * 0.98,
         size.width, size.height * 0.98);
     path.close();
-    canvas.drawShadow(path, Colors.black38, 5, false);
-    canvas.drawPath(path, paint);
+    return path;
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+  bool shouldReclip(covariant CustomClipper<Path> oldClipper) {
     return false;
   }
 }
