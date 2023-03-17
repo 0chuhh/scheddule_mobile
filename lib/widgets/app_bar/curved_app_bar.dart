@@ -44,9 +44,9 @@ class CurvedAppBar extends StatelessWidget {
                       leading ?? Container(),
                     ],
                   ),
-                  Gap(5),
+                  const Gap(5),
                   flexSpace ?? Container(),
-                  Gap(10),
+                  const Gap(10),
                 ],
               )
           ),
