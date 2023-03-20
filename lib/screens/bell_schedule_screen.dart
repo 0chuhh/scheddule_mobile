@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:schedule_mobile/widgets/search_text_field.dart';
 import 'package:timelines/timelines.dart';
 import 'package:schedule_mobile/models/bell_schedule_model.dart';
 import 'package:schedule_mobile/models/campus_model.dart';
@@ -68,27 +69,9 @@ class _BellScheduleScreenState extends State<BellScheduleScreen> {
                 height: 100,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 25),
-                  child: Material(
-                    borderRadius: BorderRadius.circular(25),
-                    elevation: 5,
-                    child: TextField(
-                      cursorColor: Styles.primaryColor,
-                      cursorRadius: const Radius.circular(2),
-                      onChanged: (value) => _runFilter(value),
-                      decoration: InputDecoration(
-                        isDense: true,
-                        filled: true,
-                        fillColor: Colors.white,
-                        hintText: 'Адрес корпуса...',
-                        focusColor: Styles.primaryColor,
-                        suffixIcon: const Icon(Icons.search),
-                        suffixIconColor: Styles.crossColor,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(25),
-                          borderSide: BorderSide.none,
-                        ),
-                      ),
-                    ),
+                  child: SearchTextField(
+                    hintText: 'Адрес корпуса...',
+                    onChanged: _runFilter,
                   ),
                 )),
           ),
