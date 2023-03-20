@@ -1,12 +1,9 @@
 class FacultyModel {
   FacultyModel({
-    required this.id,
-    required this.name,
-    required this.bellScheduleId,
+    required this.facultyShortName,
+    required this.facultyFullName,
   });
 
-  int id;
-  String name;
-  int bellScheduleId;
+  String facultyShortName;
+  String facultyFullName;
 }
-

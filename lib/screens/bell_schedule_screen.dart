@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:timelines/timelines.dart';
 import 'package:schedule_mobile/models/bell_schedule_model.dart';
-import 'package:schedule_mobile/models/faculty_model.dart';
+import 'package:schedule_mobile/models/campus_model.dart';
 import 'package:schedule_mobile/repositories/bell_schedules_repository.dart';
 import 'package:schedule_mobile/repositories/faculties_repository.dart';
 import 'package:schedule_mobile/themes/styles.dart';
@@ -16,27 +16,27 @@ class BellScheduleScreen extends StatefulWidget {
 }
 
 class _BellScheduleScreenState extends State<BellScheduleScreen> {
-  final List<FacultyModel> _allFaculties = FacultiesRepository().getFaculties();
-  List<FacultyModel> _foundedFaculties = [];
+  final List<CampusModel> _allCampuses = CampusesRepository().getCampuses();
+  List<CampusModel> _foundedCampuses = [];
 
   @override
   void initState() {
-    _foundedFaculties = _allFaculties;
+    _foundedCampuses = _allCampuses;
     super.initState();
   }
 
   void _runFilter(String value) {
-    List<FacultyModel> result = [];
+    List<CampusModel> result = [];
     if (value.isEmpty) {
-      result = _allFaculties;
+      result = _allCampuses;
     } else {
-      result = _allFaculties
-          .where((faculty) => faculty.name.toLowerCase().contains(value.toLowerCase()))
+      result = _allCampuses
+          .where((campus) => campus.address.toLowerCase().contains(value.toLowerCase()))
           .toList();
     }
 
     setState(() {
-      _foundedFaculties = result;
+      _foundedCampuses = result;
     });
   }
 
@@ -48,15 +48,15 @@ class _BellScheduleScreenState extends State<BellScheduleScreen> {
       body: Stack(children: <Widget>[
         ListView.builder(
           padding: const EdgeInsets.only(top: 150, bottom: 10),
-          itemCount: _foundedFaculties.length,
+          itemCount: _foundedCampuses.length,
           itemBuilder: (context, index) {
             return Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                 child: _bellScheduleElevatedButton(
-                  _foundedFaculties[index].id,
-                  _foundedFaculties[index].name,
+                  _foundedCampuses[index].id,
+                  _foundedCampuses[index].address,
                   BellSchedulesRepository()
-                      .getBellScheduleById(_foundedFaculties[index].bellScheduleId),
+                      .getBellScheduleById(_foundedCampuses[index].bellScheduleId),
                 ));
           },
         ),
