@@ -79,7 +79,7 @@ class _BellScheduleScreenState extends State<BellScheduleScreen> {
                         isDense: true,
                         filled: true,
                         fillColor: Colors.white,
-                        hintText: 'Название факультета...',
+                        hintText: 'Адрес корпуса...',
                         focusColor: Styles.primaryColor,
                         suffixIcon: const Icon(Icons.search),
                         suffixIconColor: Styles.crossColor,
