@@ -26,14 +26,14 @@ class NextLesson extends StatefulWidget {
   List<ScheduleModel> daySchedule;
   final DateTime? selectedDay;
   final String selectedGroup;
-  final List<ScheduleModel> schedule;
+  List<ScheduleModel> schedule;
   @override
   State<StatefulWidget> createState() {
-    return _NextLessonState();
+    return NextLessonState();
   }
 }
 
-class _NextLessonState extends State<NextLesson> {
+class NextLessonState extends State<NextLesson> {
   bool notif = false;
   ScheduleModel? nearestScheduleModel;
   Timer? currentCoupleTimer =
@@ -60,14 +60,8 @@ class _NextLessonState extends State<NextLesson> {
     // TODO: implement dispose
     checkingTimerNearestCouple!.cancel();
     currentCoupleTimer!.cancel();
+    stopAlarm();
     super.dispose();
-  }
-
-  @override
-  void didUpdateWidget(covariant NextLesson oldWidget) {
-    // TODO: implement didUpdateWidget
-
-    super.didUpdateWidget(oldWidget);
   }
 
   void startCheckingTimerNearestCouple() {
@@ -135,12 +129,13 @@ class _NextLessonState extends State<NextLesson> {
     AlarmSettings alarmSettings;
     if (dateTime.difference(DateTime.now()).inMinutes > 5) {
       alarmSettings = AlarmSettings(
-        dateTime: dateTime.subtract(const Duration(minutes: 5)),
+        // dateTime: dateTime.subtract(const Duration(minutes: 5)),
+        dateTime: DateTime.now().add(Duration(seconds: 20)),
         assetAudioPath: 'assets/sample.mp3',
         loopAudio: true,
         notificationTitle: '5 минут до пары',
         notificationBody: 'Пара ${name} скоро начнется..',
-        enableNotificationOnKill: true,
+        enableNotificationOnKill: true, id: 1,
       );
     } else {
       alarmSettings = AlarmSettings(
@@ -150,6 +145,7 @@ class _NextLessonState extends State<NextLesson> {
         notificationTitle: 'Пара началась',
         notificationBody: 'Пара ${name} уже началась..',
         enableNotificationOnKill: true,
+        id: 1,
       );
     }
     await Alarm.setNotificationOnAppKillContent(
@@ -160,7 +156,7 @@ class _NextLessonState extends State<NextLesson> {
       });
     }
 
-    await Alarm.set(settings: alarmSettings);
+    await Alarm.set(alarmSettings: alarmSettings);
   }
 
   Future<void> navigateToAlarmScreen(AlarmSettings alarmSettings) async {
@@ -214,7 +210,10 @@ class _NextLessonState extends State<NextLesson> {
   }
 
   void stopAlarm() async {
-    await Alarm.stop();
+    await Alarm.stop(1);
+    setState(() {
+      notif = false;
+    });
   }
 
   void getNearestCouple(DateTime day) async {

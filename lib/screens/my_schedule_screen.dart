@@ -43,6 +43,7 @@ class MyScheduleScreen extends StatefulWidget {
 
 class MyScheduleScreenState extends State<MyScheduleScreen> {
   GlobalKey<CollapsibleCalendarState> _collapsibleCalendarKey = GlobalKey();
+  GlobalKey<NextLessonState> _nextLesson = GlobalKey();
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   List<ScheduleModel> schedule = [];
   bool _loading = false;
@@ -57,7 +58,14 @@ class MyScheduleScreenState extends State<MyScheduleScreen> {
     });
     switch (widget.screenType) {
       case ScheduleScreenType.mySchedule:
-        getMySchedule();
+        getMySchedule().then((value) {
+          _nextLesson.currentState?.stopAlarm();
+          _nextLesson.currentState?.notif = false;
+          _nextLesson.currentState?.widget.daySchedule = daySchedule;
+          _nextLesson.currentState?.widget.schedule = schedule;
+          _nextLesson.currentState?.getNearestCouple(DateTime.now());
+        });
+
         break;
       case ScheduleScreenType.classroomSchedule:
         getClassRoomSchedule(widget.queryParam);
@@ -286,9 +294,10 @@ class MyScheduleScreenState extends State<MyScheduleScreen> {
                   : 190,
               child: widget.screenType == ScheduleScreenType.mySchedule &&
                       _selectedGroup != '' &&
-                      schedule.length != 0 &&
-                      daySchedule != 0
+                      schedule.isNotEmpty &&
+                      daySchedule.isNotEmpty
                   ? NextLesson(
+                      key: _nextLesson,
                       selectedGroup: _selectedGroup,
                       schedule: schedule,
                       daySchedule: daySchedule,

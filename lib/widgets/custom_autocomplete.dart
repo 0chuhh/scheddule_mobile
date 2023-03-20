@@ -153,7 +153,7 @@ class CustomAutocompleteState extends State<CustomAutocomplete> {
                                     AutocompleteHighlightedOption.of(context) ==
                                         index;
                                 if (highlight) {
-                                  SchedulerBinding.instance!
+                                  SchedulerBinding.instance
                                       .addPostFrameCallback(
                                           (Duration timeStamp) {
                                     Scrollable.ensureVisible(context,
