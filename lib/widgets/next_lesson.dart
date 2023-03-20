@@ -131,7 +131,7 @@ class NextLessonState extends State<NextLesson> {
       alarmSettings = AlarmSettings(
         // dateTime: dateTime.subtract(const Duration(minutes: 5)),
         dateTime: DateTime.now().add(Duration(seconds: 20)),
-        assetAudioPath: 'assets/sample.mp3',
+        assetAudioPath: 'assets/sample3.mp3',
         loopAudio: true,
         notificationTitle: '5 минут до пары',
         notificationBody: 'Пара ${name} скоро начнется..',
@@ -140,7 +140,7 @@ class NextLessonState extends State<NextLesson> {
     } else {
       alarmSettings = AlarmSettings(
         dateTime: dateTime,
-        assetAudioPath: 'assets/sample.mp3',
+        assetAudioPath: 'assets/sample3.mp3',
         loopAudio: true,
         notificationTitle: 'Пара началась',
         notificationBody: 'Пара ${name} уже началась..',
