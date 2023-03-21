@@ -311,14 +311,6 @@ class _ScheduleSearchCardsState extends State<ScheduleSearchCards> {
         }
         break;
     }
-
-    //   if(_autocomleteByGroupKey.currentWidget == filterBlocks.firstWhere((element) => element.id == index)){
-    //   _autocomleteByGroupKey.currentState?.getFocus();
-    // }else if(_autocomleteByClassromKey.currentWidget == filterBlocks.firstWhere((element) => element.id == index)){
-    //   _autocomleteByClassromKey.currentState?.getFocus();
-    // }else if(_autocomleteByLecturerKey.currentWidget == filterBlocks.firstWhere((element) => element.id == index)){
-    //   _autocomleteByLecturerKey.currentState?.getFocus();
-    // }
   }
 
   void removeItem(int id) {
