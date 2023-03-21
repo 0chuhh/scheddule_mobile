@@ -41,6 +41,7 @@ flutter:
 
   assets:
     - assets/noLessons.svg
+    - assets/no-connection.svg
     - assets/icon.png
     - assets/sample.mp3
     - assets/sample2.mp3

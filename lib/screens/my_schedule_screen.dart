@@ -6,7 +6,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:schedule_mobile/models/schedule_model.dart';
 import 'package:schedule_mobile/repositories/schedules_repository.dart';
+import 'package:schedule_mobile/utils/check_internet_connection.dart';
 import 'package:schedule_mobile/utils/day_names.dart';
+import 'package:schedule_mobile/utils/show_modal_no_internet_connection.dart';
 import 'package:schedule_mobile/widgets/collapsible_calendar/collapsible_calendar.dart';
 import 'package:schedule_mobile/widgets/app_bar_painter.dart';
 import 'package:schedule_mobile/widgets/modal_choose_group.dart';
@@ -136,6 +138,7 @@ class MyScheduleScreenState extends State<MyScheduleScreen> {
   }
 
   Future<void> getMySchedule() async {
+    final bool internet = await checkInternetConnection();
     final selectedGroupTemp = await checkGroup();
     if (this.mounted && selectedGroupTemp != null) {
       _collapsibleCalendarKey.currentState?.changeDay(DateTime.now());
@@ -149,13 +152,19 @@ class MyScheduleScreenState extends State<MyScheduleScreen> {
         if (!mounted) return;
         setSchedule(newSchedule);
       } else {
-        await SchedulesRepository()
-            .getSchedulesByGroup(selectedGroupTemp)
-            .then((newSchedule) {
-          if (!mounted) return;
-          saveSchedule(newSchedule, selectedGroupTemp);
-          setSchedule(newSchedule);
-        });
+        if (internet) {
+          await SchedulesRepository()
+              .getSchedulesByGroup(selectedGroupTemp)
+              .then((newSchedule) {
+            if (!mounted) return;
+            saveSchedule(newSchedule, selectedGroupTemp);
+            setSchedule(newSchedule);
+          });
+        } else {
+          if (context.mounted) {
+            showModalNoInternetConnection(context);
+          }
+        }
       }
     }
   }
@@ -294,8 +303,7 @@ class MyScheduleScreenState extends State<MyScheduleScreen> {
                   : 190,
               child: widget.screenType == ScheduleScreenType.mySchedule &&
                       _selectedGroup != '' &&
-                      schedule.isNotEmpty &&
-                      daySchedule.isNotEmpty
+                      schedule.isNotEmpty
                   ? NextLesson(
                       key: _nextLesson,
                       selectedGroup: _selectedGroup,
