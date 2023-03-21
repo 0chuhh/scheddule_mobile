@@ -32,7 +32,8 @@ class _BellScheduleScreenState extends State<BellScheduleScreen> {
       result = _allCampuses;
     } else {
       result = _allCampuses
-          .where((campus) => campus.address.toLowerCase().contains(value.toLowerCase()))
+          .where((campus) =>
+              campus.address.toLowerCase().contains(value.toLowerCase()))
           .toList();
     }
 
@@ -52,12 +53,13 @@ class _BellScheduleScreenState extends State<BellScheduleScreen> {
           itemCount: _foundedCampuses.length,
           itemBuilder: (context, index) {
             return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-                child: _bellScheduleElevatedButton(
-                  _foundedCampuses[index].id,
-                  _foundedCampuses[index].address,
-                  BellSchedulesRepository()
-                      .getBellScheduleById(_foundedCampuses[index].bellScheduleId),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                child: _ElevatedButton(
+                  campusId: _foundedCampuses[index].id,
+                  campusAddress: _foundedCampuses[index].address,
+                  bellSchedule: BellSchedulesRepository().getBellScheduleById(
+                      _foundedCampuses[index].bellScheduleId),
                 ));
           },
         ),
@@ -68,7 +70,8 @@ class _BellScheduleScreenState extends State<BellScheduleScreen> {
                 width: MediaQuery.of(context).size.width,
                 height: 100,
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 25),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 15, vertical: 25),
                   child: SearchTextField(
                     hintText: 'Адрес корпуса...',
                     onChanged: _runFilter,
@@ -79,8 +82,22 @@ class _BellScheduleScreenState extends State<BellScheduleScreen> {
       ]),
     );
   }
+}
 
-  Widget _bellScheduleElevatedButton(int id, String name, BellScheduleModel bellSchedule) {
+class _ElevatedButton extends StatelessWidget {
+  const _ElevatedButton({
+    Key? key,
+    required this.campusId,
+    required this.campusAddress,
+    required this.bellSchedule,
+  }) : super(key: key);
+
+  final int campusId;
+  final String campusAddress;
+  final BellScheduleModel bellSchedule;
+
+  @override
+  Widget build(BuildContext context) {
     return ElevatedButton(
         onPressed: () {
           FocusScope.of(context).unfocus();
@@ -88,12 +105,14 @@ class _BellScheduleScreenState extends State<BellScheduleScreen> {
               context: context,
               backgroundColor: Colors.transparent,
               builder: (BuildContext context) {
-                return _modalSheet(name, bellSchedule);
+                return _ModalSheet(
+                    campusAddress: campusAddress, bellSchedule: bellSchedule);
               });
         },
         style: ElevatedButton.styleFrom(
             padding: const EdgeInsets.only(left: 0, right: 20),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             minimumSize: Size(MediaQuery.of(context).size.width, 50),
             maximumSize: Size(MediaQuery.of(context).size.width, 50),
             backgroundColor: Colors.white,
@@ -111,7 +130,7 @@ class _BellScheduleScreenState extends State<BellScheduleScreen> {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: Text(
-                  id.toString(),
+                  campusId.toString(),
                   style: const TextStyle(
                     fontSize: 12,
                     color: Colors.white,
@@ -122,15 +141,26 @@ class _BellScheduleScreenState extends State<BellScheduleScreen> {
             Flexible(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Text(name),
+                child: Text(campusAddress),
               ),
             ),
           ],
-        )
-    );
+        ));
   }
+}
 
-  Widget _modalSheet(String facultyName, BellScheduleModel bellSchedule) {
+class _ModalSheet extends StatelessWidget {
+  const _ModalSheet({
+    Key? key,
+    required this.campusAddress,
+    required this.bellSchedule,
+  }) : super(key: key);
+
+  final String campusAddress;
+  final BellScheduleModel bellSchedule;
+
+  @override
+  Widget build(BuildContext context) {
     return Wrap(
       children: [
         // BottomSheet
@@ -139,11 +169,11 @@ class _BellScheduleScreenState extends State<BellScheduleScreen> {
             decoration: const BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(10), topLeft: Radius.circular(10)
-                )
-            ),
+                    topRight: Radius.circular(10),
+                    topLeft: Radius.circular(10))),
             child: Padding(
-              padding: const EdgeInsets.only(left: 15.0, right: 15.0, top: 5.0, bottom: 15.0),
+              padding: const EdgeInsets.only(
+                  left: 15.0, right: 15.0, top: 5.0, bottom: 15.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -152,7 +182,8 @@ class _BellScheduleScreenState extends State<BellScheduleScreen> {
                     width: MediaQuery.of(context).size.width * 0.30,
                     decoration: BoxDecoration(
                         color: Styles.crossColor,
-                        borderRadius: const BorderRadius.all(Radius.circular(5))),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(5))),
                   ),
                   const Gap(10),
                   Row(
@@ -165,7 +196,7 @@ class _BellScheduleScreenState extends State<BellScheduleScreen> {
                           children: [
                             const Text('Расписание звонков'),
                             Text(
-                              facultyName,
+                              campusAddress,
                             ),
                           ],
                         ),
@@ -173,32 +204,44 @@ class _BellScheduleScreenState extends State<BellScheduleScreen> {
                     ],
                   ),
                   const Gap(10),
-                  _lessonRow(1, bellSchedule.firstLesson),
+                  _LessonRow(lessonOrder: 1, lesson: bellSchedule.firstLesson),
                   const Gap(10),
-                  _lessonRow(2, bellSchedule.secondLesson),
+                  _LessonRow(lessonOrder: 2, lesson: bellSchedule.secondLesson),
                   const Gap(10),
-                  _lessonRow(3, bellSchedule.thirdLesson),
+                  _LessonRow(lessonOrder: 3, lesson: bellSchedule.thirdLesson),
                   const Gap(15),
                   Center(
                       child: Text(
                     'Большой перерыв ${bellSchedule.bigBreak.start} - ${bellSchedule.bigBreak.end}',
-                    style: TextStyle(color: Styles.crossColor, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                        color: Styles.crossColor, fontWeight: FontWeight.bold),
                   )),
                   const Gap(15),
-                  _lessonRow(4, bellSchedule.fourthLesson),
+                  _LessonRow(lessonOrder: 4, lesson: bellSchedule.fourthLesson),
                   const Gap(10),
-                  _lessonRow(5, bellSchedule.fifthLesson),
+                  _LessonRow(lessonOrder: 5, lesson: bellSchedule.fifthLesson),
                   const Gap(10),
-                  _lessonRow(6, bellSchedule.sixthLesson),
+                  _LessonRow(lessonOrder: 6, lesson: bellSchedule.sixthLesson),
                 ],
               ),
-            )
-        ),
+            )),
       ],
     );
   }
+}
 
-  Widget _lessonRow(int lessonOrder, TimeRange lesson) {
+class _LessonRow extends StatelessWidget {
+  const _LessonRow({
+    Key? key,
+    required this.lessonOrder,
+    required this.lesson,
+  }) : super(key: key);
+
+  final int lessonOrder;
+  final TimeRange lesson;
+
+  @override
+  Widget build(BuildContext context) {
     return Row(
       children: [
         Text('${lessonOrder.toString()} пара'),
