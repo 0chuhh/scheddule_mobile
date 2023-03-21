@@ -210,7 +210,9 @@ class NextLessonState extends State<NextLesson> {
   }
 
   void stopAlarm() async {
-    await Alarm.stop(1);
+    if (Alarm.hasAlarm()) {
+      await Alarm.stop(1);
+    }
     setState(() {
       notif = false;
     });

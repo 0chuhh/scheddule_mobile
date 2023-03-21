@@ -8,6 +8,7 @@ import 'package:schedule_mobile/models/schedule_model.dart';
 import 'package:schedule_mobile/repositories/schedules_repository.dart';
 import 'package:schedule_mobile/utils/check_internet_connection.dart';
 import 'package:schedule_mobile/utils/day_names.dart';
+import 'package:schedule_mobile/utils/get_date_from_extremular.dart';
 import 'package:schedule_mobile/utils/show_modal_no_internet_connection.dart';
 import 'package:schedule_mobile/widgets/collapsible_calendar/collapsible_calendar.dart';
 import 'package:schedule_mobile/widgets/app_bar_painter.dart';
@@ -87,13 +88,25 @@ class MyScheduleScreenState extends State<MyScheduleScreen> {
     setState(() {
       schedule = newSchedule;
       schedule.sort(((a, b) => a.couple.time.compareTo(b.couple.time)));
-      daySchedule = newSchedule
-          .where((element) =>
-              element.weekDay.toLowerCase() ==
-                  dayNames[DateTime.now().weekday - 1].toLowerCase() &&
-              element.weekType == Week(date: DateTime.now()).getWeekType())
-          .toList();
-      daySchedule.sort(((a, b) => a.couple.time.compareTo(b.couple.time)));
+      if (schedule.first.form == '0') {
+        daySchedule = newSchedule
+            .where((element) =>
+                element.weekDay.toLowerCase() ==
+                    dayNames[DateTime.now().weekday - 1].toLowerCase() &&
+                element.weekType == Week(date: DateTime.now()).getWeekType())
+            .toList();
+        daySchedule.sort(((a, b) => a.couple.time.compareTo(b.couple.time)));
+      } else {
+        daySchedule = schedule;
+        daySchedule.sort((a, b) {
+          var date = getDateFromExtremular(a.weekDay)![0]
+              .compareTo(getDateFromExtremular(b.weekDay)![0]);
+          if (date == 0) {
+            return a.couple.number.compareTo(b.couple.number);
+          }
+          return date;
+        });
+      }
       _loading = false;
     });
   }
@@ -251,14 +264,16 @@ class MyScheduleScreenState extends State<MyScheduleScreen> {
             child: !_loading
                 ? daySchedule.length > 0
                     ? ScheduleList(
-                        padding: widget.screenType ==
-                                    ScheduleScreenType.classroomSchedule ||
-                                widget.screenType ==
-                                    ScheduleScreenType.groupSchedule ||
-                                widget.screenType ==
-                                    ScheduleScreenType.lecturerSchedule
-                            ? 180
-                            : 250,
+                        padding: schedule.first.form == '1'
+                            ? 50
+                            : widget.screenType ==
+                                        ScheduleScreenType.classroomSchedule ||
+                                    widget.screenType ==
+                                        ScheduleScreenType.groupSchedule ||
+                                    widget.screenType ==
+                                        ScheduleScreenType.lecturerSchedule
+                                ? 180
+                                : 250,
                         // : 160,
                         schedule: daySchedule,
                       )
@@ -297,13 +312,17 @@ class MyScheduleScreenState extends State<MyScheduleScreen> {
             child: Container(
               color: Colors.transparent,
               width: MediaQuery.of(context).size.width,
-              height: widget.screenType == ScheduleScreenType.mySchedule
+              height: widget.screenType == ScheduleScreenType.mySchedule &&
+                      schedule.first.form == '0'
                   // ? 260
                   ? 260
-                  : 190,
+                  : schedule.first.form == '1'
+                      ? 56
+                      : 190,
               child: widget.screenType == ScheduleScreenType.mySchedule &&
                       _selectedGroup != '' &&
-                      schedule.isNotEmpty
+                      schedule.isNotEmpty &&
+                      schedule.first.form == '0'
                   ? NextLesson(
                       key: _nextLesson,
                       selectedGroup: _selectedGroup,
@@ -376,11 +395,15 @@ class MyScheduleScreenState extends State<MyScheduleScreen> {
                       ],
                     ),
                   ),
-                widget.screenType == ScheduleScreenType.mySchedule ||
-                        widget.screenType ==
-                            ScheduleScreenType.classroomSchedule ||
-                        widget.screenType == ScheduleScreenType.groupSchedule ||
-                        widget.screenType == ScheduleScreenType.lecturerSchedule
+                (widget.screenType == ScheduleScreenType.mySchedule ||
+                            widget.screenType ==
+                                ScheduleScreenType.classroomSchedule ||
+                            widget.screenType ==
+                                ScheduleScreenType.groupSchedule ||
+                            widget.screenType ==
+                                ScheduleScreenType.lecturerSchedule) &&
+                        schedule.isNotEmpty &&
+                        schedule.first.form == '0'
                     ? CollapsibleCalendar(
                         marginTop:
                             widget.screenType != ScheduleScreenType.mySchedule

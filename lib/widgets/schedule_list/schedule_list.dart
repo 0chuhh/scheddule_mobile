@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:schedule_mobile/themes/styles.dart';
+import 'package:schedule_mobile/utils/get_date_from_extremular.dart';
 import 'package:schedule_mobile/widgets/schedule_list/schedule_list_item.dart';
 import 'package:timelines/timelines.dart';
 import '../../models/schedule_model.dart';
@@ -21,12 +22,15 @@ class ScheduleList extends StatelessWidget {
       child: Timeline.tileBuilder(
         padding: const EdgeInsets.only(top: 20),
         builder: TimelineTileBuilder(
-          nodePositionBuilder: (context, index) => 0.14,
+          nodePositionBuilder: (context, index) =>
+              schedule[index].form == '0' ? 0.14 : 0.20,
           oppositeContentsBuilder: (context, index) => TimelineNode(
             indicator: Container(
                 padding: const EdgeInsets.only(top: 10, bottom: 10),
                 child: Text(
-                  getCoupleTime(schedule[index].couple.time),
+                  schedule[index].form == '0'
+                      ? getCoupleTime(schedule[index].couple.time)
+                      : getDateFromExtremular(schedule[index].weekDay)![1],
                   style: TextStyle(color: Styles.primaryColor),
                 )),
             startConnector: index == 0
