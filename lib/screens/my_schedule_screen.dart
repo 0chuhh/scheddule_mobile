@@ -265,7 +265,7 @@ class MyScheduleScreenState extends State<MyScheduleScreen> {
                 ? daySchedule.length > 0
                     ? ScheduleList(
                         padding: schedule.first.form == '1'
-                            ? 50
+                            ? 70
                             : widget.screenType ==
                                         ScheduleScreenType.classroomSchedule ||
                                     widget.screenType ==
@@ -313,11 +313,12 @@ class MyScheduleScreenState extends State<MyScheduleScreen> {
               color: Colors.transparent,
               width: MediaQuery.of(context).size.width,
               height: widget.screenType == ScheduleScreenType.mySchedule &&
+                      schedule.isNotEmpty &&
                       schedule.first.form == '0'
                   // ? 260
                   ? 260
-                  : schedule.first.form == '1'
-                      ? 56
+                  : schedule.isNotEmpty && schedule.first.form == '1'
+                      ? 80
                       : 190,
               child: widget.screenType == ScheduleScreenType.mySchedule &&
                       _selectedGroup != '' &&
@@ -374,7 +375,7 @@ class MyScheduleScreenState extends State<MyScheduleScreen> {
                                     )
                                   ])),
                         ),
-                        Gap(20),
+                        const Gap(20),
                         Container(
                           constraints: BoxConstraints(maxWidth: 200),
                           child: Text(
@@ -391,7 +392,7 @@ class MyScheduleScreenState extends State<MyScheduleScreen> {
                                 fontWeight: FontWeight.w700,
                                 fontSize: 12),
                           ),
-                        )
+                        ),
                       ],
                     ),
                   ),
