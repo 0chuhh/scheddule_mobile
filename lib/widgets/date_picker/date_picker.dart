@@ -18,8 +18,7 @@ class DatePicker extends StatefulWidget {
 }
 
 class _DatePickerState extends State<DatePicker> {
-  late List<bool> isSelected =
-      List.generate(widget.children.length, (_) => _ == 0 ? true : false);
+  List<bool> isSelected = [];
 
   void _onPressed(int index) {
     setState(() {
@@ -31,6 +30,13 @@ class _DatePickerState extends State<DatePicker> {
     });
 
     widget.onDateChanged?.call(index);
+  }
+
+  @override
+  void initState() {
+    isSelected =
+        List.generate(widget.children.length, (_) => _ == 0 ? true : false);
+    super.initState();
   }
 
   @override

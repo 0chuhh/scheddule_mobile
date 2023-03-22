@@ -99,7 +99,7 @@ class MyScheduleScreenState extends State<MyScheduleScreen> {
                 element.weekType == Week(date: DateTime.now()).getWeekType())
             .toList();
         daySchedule.sort(((a, b) => a.couple.time.compareTo(b.couple.time)));
-      } else {
+      } else if (schedule.isNotEmpty) {
         daySchedule = schedule;
         daySchedule.sort((a, b) {
           var date = getDateFromExtremular(a.weekDay)![0]
