@@ -88,7 +88,7 @@ class MyScheduleScreenState extends State<MyScheduleScreen> {
     setState(() {
       schedule = newSchedule;
       schedule.sort(((a, b) => a.couple.time.compareTo(b.couple.time)));
-      if (schedule.first.form == '0') {
+      if (schedule.isNotEmpty && schedule.first.form == '0') {
         daySchedule = newSchedule
             .where((element) =>
                 element.weekDay.toLowerCase() ==
@@ -283,16 +283,20 @@ class MyScheduleScreenState extends State<MyScheduleScreen> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                widget.screenType ==
-                                        ScheduleScreenType.mySchedule
-                                    ? 'Сегодня у вас нет занятий. Советуем потратить это время на самоподготовку.'
+                                schedule.isEmpty
+                                    ? 'По данному запросу нет расписания'
                                     : widget.screenType ==
-                                            ScheduleScreenType.classroomSchedule
-                                        ? 'Сегодня в данной аудитории нет занятий.'
+                                            ScheduleScreenType.mySchedule
+                                        ? 'Сегодня у вас нет занятий. Советуем потратить это время на самоподготовку.'
                                         : widget.screenType ==
-                                                ScheduleScreenType.groupSchedule
-                                            ? 'Сегодня у группы нет занятий'
-                                            : 'Сегодня преподаватель не ведет занятия',
+                                                ScheduleScreenType
+                                                    .classroomSchedule
+                                            ? 'Сегодня в данной аудитории нет занятий.'
+                                            : widget.screenType ==
+                                                    ScheduleScreenType
+                                                        .groupSchedule
+                                                ? 'Сегодня у группы нет занятий'
+                                                : 'Сегодня преподаватель не ведет занятия',
                                 textAlign: TextAlign.center,
                                 style: const TextStyle(
                                     color: Color(0xFF9498BE),
@@ -317,9 +321,11 @@ class MyScheduleScreenState extends State<MyScheduleScreen> {
                       schedule.first.form == '0'
                   // ? 260
                   ? 260
-                  : schedule.isNotEmpty && schedule.first.form == '1'
+                  : schedule.isEmpty
                       ? 80
-                      : 190,
+                      : schedule.isNotEmpty && schedule.first.form == '1'
+                          ? 80
+                          : 190,
               child: widget.screenType == ScheduleScreenType.mySchedule &&
                       _selectedGroup != '' &&
                       schedule.isNotEmpty &&

@@ -48,6 +48,7 @@ class AppRouter extends _i7.RootStackRouter {
           key: args.key,
           showCalendar: args.showCalendar,
           queryParam: args.queryParam,
+          scheduleFormat: args.scheduleFormat,
           screenType: args.screenType,
         ),
       );
@@ -83,6 +84,7 @@ class AppRouter extends _i7.RootStackRouter {
           key: args.key,
           showCalendar: args.showCalendar,
           queryParam: args.queryParam,
+          scheduleFormat: args.scheduleFormat,
           screenType: args.screenType,
         ),
       );
@@ -96,6 +98,7 @@ class AppRouter extends _i7.RootStackRouter {
           key: args.key,
           showCalendar: args.showCalendar,
           queryParam: args.queryParam,
+          scheduleFormat: args.scheduleFormat,
           screenType: args.screenType,
         ),
       );
@@ -182,6 +185,7 @@ class MyScheduleRouter extends _i7.PageRouteInfo<MyScheduleRouterArgs> {
     _i8.Key? key,
     bool showCalendar = true,
     String? queryParam,
+    String scheduleFormat = 'Очная',
     _i3.ScheduleScreenType screenType = _i3.ScheduleScreenType.mySchedule,
   }) : super(
           MyScheduleRouter.name,
@@ -190,6 +194,7 @@ class MyScheduleRouter extends _i7.PageRouteInfo<MyScheduleRouterArgs> {
             key: key,
             showCalendar: showCalendar,
             queryParam: queryParam,
+            scheduleFormat: scheduleFormat,
             screenType: screenType,
           ),
         );
@@ -202,6 +207,7 @@ class MyScheduleRouterArgs {
     this.key,
     this.showCalendar = true,
     this.queryParam,
+    this.scheduleFormat = 'Очная',
     this.screenType = _i3.ScheduleScreenType.mySchedule,
   });
 
@@ -211,11 +217,13 @@ class MyScheduleRouterArgs {
 
   final String? queryParam;
 
+  final String scheduleFormat;
+
   final _i3.ScheduleScreenType screenType;
 
   @override
   String toString() {
-    return 'MyScheduleRouterArgs{key: $key, showCalendar: $showCalendar, queryParam: $queryParam, screenType: $screenType}';
+    return 'MyScheduleRouterArgs{key: $key, showCalendar: $showCalendar, queryParam: $queryParam, scheduleFormat: $scheduleFormat, screenType: $screenType}';
   }
 }
 
@@ -285,6 +293,7 @@ class MyScheduleRoute extends _i7.PageRouteInfo<MyScheduleRouteArgs> {
     _i8.Key? key,
     bool showCalendar = true,
     String? queryParam,
+    String scheduleFormat = 'Очная',
     _i3.ScheduleScreenType screenType = _i3.ScheduleScreenType.mySchedule,
   }) : super(
           MyScheduleRoute.name,
@@ -293,6 +302,7 @@ class MyScheduleRoute extends _i7.PageRouteInfo<MyScheduleRouteArgs> {
             key: key,
             showCalendar: showCalendar,
             queryParam: queryParam,
+            scheduleFormat: scheduleFormat,
             screenType: screenType,
           ),
         );
@@ -305,6 +315,7 @@ class MyScheduleRouteArgs {
     this.key,
     this.showCalendar = true,
     this.queryParam,
+    this.scheduleFormat = 'Очная',
     this.screenType = _i3.ScheduleScreenType.mySchedule,
   });
 
@@ -314,11 +325,13 @@ class MyScheduleRouteArgs {
 
   final String? queryParam;
 
+  final String scheduleFormat;
+
   final _i3.ScheduleScreenType screenType;
 
   @override
   String toString() {
-    return 'MyScheduleRouteArgs{key: $key, showCalendar: $showCalendar, queryParam: $queryParam, screenType: $screenType}';
+    return 'MyScheduleRouteArgs{key: $key, showCalendar: $showCalendar, queryParam: $queryParam, scheduleFormat: $scheduleFormat, screenType: $screenType}';
   }
 }
 
@@ -330,6 +343,7 @@ class ClassRoomScheduleRouter
     _i8.Key? key,
     bool showCalendar = true,
     String? queryParam,
+    String scheduleFormat = 'Очная',
     _i3.ScheduleScreenType screenType = _i3.ScheduleScreenType.mySchedule,
   }) : super(
           ClassRoomScheduleRouter.name,
@@ -338,6 +352,7 @@ class ClassRoomScheduleRouter
             key: key,
             showCalendar: showCalendar,
             queryParam: queryParam,
+            scheduleFormat: scheduleFormat,
             screenType: screenType,
           ),
         );
@@ -350,6 +365,7 @@ class ClassRoomScheduleRouterArgs {
     this.key,
     this.showCalendar = true,
     this.queryParam,
+    this.scheduleFormat = 'Очная',
     this.screenType = _i3.ScheduleScreenType.mySchedule,
   });
 
@@ -359,10 +375,12 @@ class ClassRoomScheduleRouterArgs {
 
   final String? queryParam;
 
+  final String scheduleFormat;
+
   final _i3.ScheduleScreenType screenType;
 
   @override
   String toString() {
-    return 'ClassRoomScheduleRouterArgs{key: $key, showCalendar: $showCalendar, queryParam: $queryParam, screenType: $screenType}';
+    return 'ClassRoomScheduleRouterArgs{key: $key, showCalendar: $showCalendar, queryParam: $queryParam, scheduleFormat: $scheduleFormat, screenType: $screenType}';
   }
 }

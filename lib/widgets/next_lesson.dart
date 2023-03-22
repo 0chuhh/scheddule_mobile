@@ -129,13 +129,13 @@ class NextLessonState extends State<NextLesson> {
     AlarmSettings alarmSettings;
     if (dateTime.difference(DateTime.now()).inMinutes > 5) {
       alarmSettings = AlarmSettings(
-        // dateTime: dateTime.subtract(const Duration(minutes: 5)),
-        dateTime: DateTime.now().add(Duration(seconds: 20)),
+        dateTime: dateTime.subtract(const Duration(minutes: 5)),
         assetAudioPath: 'assets/sample3.mp3',
         loopAudio: true,
         notificationTitle: '5 минут до пары',
         notificationBody: 'Пара ${name} скоро начнется..',
-        enableNotificationOnKill: true, id: 1,
+        enableNotificationOnKill: true,
+        id: 1,
       );
     } else {
       alarmSettings = AlarmSettings(

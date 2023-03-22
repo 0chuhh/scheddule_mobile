@@ -116,6 +116,7 @@ class _ScheduleSearchCardsState extends State<ScheduleSearchCards> {
                         if (selectedLecturer != '') {
                           context.router.push(ClassRoomScheduleRouter(
                               screenType: ScheduleScreenType.lecturerSchedule,
+                              scheduleFormat: selectedScheduleFormat,
                               queryParam: selectedLecturer));
                         }
                       },
