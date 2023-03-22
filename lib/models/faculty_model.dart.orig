@@ -1,0 +1,22 @@
+class FacultyModel {
+  FacultyModel({
+<<<<<<< HEAD
+    required this.facultyShortName,
+    required this.facultyFullName,
+  });
+
+  String facultyShortName;
+  String facultyFullName;
+}
+=======
+    required this.id,
+    required this.name,
+    required this.bellScheduleId,
+  });
+
+  int id;
+  String name;
+  int bellScheduleId;
+}
+
+>>>>>>> viktor/alarm

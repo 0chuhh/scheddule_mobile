@@ -4,6 +4,7 @@ import 'package:schedule_mobile/schedule_app.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   initializeDateFormatting().then((_) => {
         SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
           statusBarBrightness: Brightness.dark,

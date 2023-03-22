@@ -1,13 +1,17 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:schedule_mobile/repositories/classrooms_repository.dart';
 import 'package:schedule_mobile/repositories/groups_repository.dart';
 import 'package:schedule_mobile/repositories/lecturers_repository.dart';
 import 'package:schedule_mobile/screens/my_schedule_screen.dart';
 import 'package:schedule_mobile/themes/styles.dart';
+import 'package:schedule_mobile/utils/check_internet_connection.dart';
+import 'package:schedule_mobile/utils/show_modal_no_internet_connection.dart';
 import 'package:schedule_mobile/widgets/custom_autocomplete.dart';
 import 'package:schedule_mobile/widgets/custom_button_group.dart';
 
@@ -97,7 +101,7 @@ class _ScheduleSearchCardsState extends State<ScheduleSearchCards> {
                     CustomButtonGroup(
                       items: const [
                         Text('Очная форма'),
-                        // Text('Заочная форма'),
+                        Text('Заочная форма'),
                       ],
                       onPressed: (selected, index) {
                         setState(() {
@@ -112,6 +116,7 @@ class _ScheduleSearchCardsState extends State<ScheduleSearchCards> {
                         if (selectedLecturer != '') {
                           context.router.push(ClassRoomScheduleRouter(
                               screenType: ScheduleScreenType.lecturerSchedule,
+                              scheduleFormat: selectedScheduleFormat,
                               queryParam: selectedLecturer));
                         }
                       },
@@ -266,8 +271,14 @@ class _ScheduleSearchCardsState extends State<ScheduleSearchCards> {
   }
 
   void init() async {
-    await getGroups()
-        .then((value) => getLecturers().then((value) => getClassrooms()));
+    if (await checkInternetConnection()) {
+      await getGroups();
+      await getLecturers().then((value) async => await getClassrooms());
+    } else {
+      if (context.mounted) {
+        showModalNoInternetConnection(context);
+      }
+    }
   }
 
   @override
@@ -311,14 +322,6 @@ class _ScheduleSearchCardsState extends State<ScheduleSearchCards> {
         }
         break;
     }
-
-    //   if(_autocomleteByGroupKey.currentWidget == filterBlocks.firstWhere((element) => element.id == index)){
-    //   _autocomleteByGroupKey.currentState?.getFocus();
-    // }else if(_autocomleteByClassromKey.currentWidget == filterBlocks.firstWhere((element) => element.id == index)){
-    //   _autocomleteByClassromKey.currentState?.getFocus();
-    // }else if(_autocomleteByLecturerKey.currentWidget == filterBlocks.firstWhere((element) => element.id == index)){
-    //   _autocomleteByLecturerKey.currentState?.getFocus();
-    // }
   }
 
   void removeItem(int id) {
@@ -358,7 +361,9 @@ class _ScheduleSearchCardsState extends State<ScheduleSearchCards> {
         child: Container(
             margin: const EdgeInsets.only(top: 15),
             height: MediaQuery.of(context).size.height - 200,
-            child: groups.isNotEmpty && lecturers.isNotEmpty
+            child: groups.isNotEmpty &&
+                    lecturers.isNotEmpty &&
+                    classroms.isNotEmpty
                 ? AnimatedList(
                     key: _animatedListKey,
                     initialItemCount: filterBlocks.length,

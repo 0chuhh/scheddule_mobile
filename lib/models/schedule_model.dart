@@ -23,6 +23,7 @@ class ScheduleModel {
   String lecturer;
   String cathedra;
   String classroom;
+  String form;
   String? group;
 
   ScheduleModel(
@@ -33,6 +34,7 @@ class ScheduleModel {
       required this.lecturer,
       required this.cathedra,
       required this.classroom,
+      required this.form,
       required this.format,
       this.group});
 
@@ -84,6 +86,7 @@ class ScheduleModel {
         lecturer: json['people'],
         cathedra: json['kafedra'],
         classroom: json['kabinet'],
+        form: json['form'],
         group: json['group_name']);
   }
 
@@ -96,7 +99,8 @@ class ScheduleModel {
         'format': schedule.format.toString(),
         'lecturer': schedule.lecturer,
         'cathedra': schedule.cathedra,
-        'classroom': schedule.classroom
+        'classroom': schedule.classroom,
+        'form': schedule.form
       };
 
   static String encode(List<ScheduleModel> schedule) => json.encode(
@@ -119,6 +123,7 @@ class ScheduleModel {
         lecturer: json['lecturer'],
         cathedra: json['cathedra'],
         classroom: json['classroom'],
+        form: json['form'],
         format: json['format'] == 'ScheduleItemFormat.lection'
             ? ScheduleItemFormat.lection
             : json['format'] == 'ScheduleItemFormat.practice'

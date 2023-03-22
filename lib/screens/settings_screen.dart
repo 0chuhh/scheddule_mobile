@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:schedule_mobile/themes/styles.dart';
+import 'package:schedule_mobile/utils/check_internet_connection.dart';
+import 'package:schedule_mobile/utils/show_modal_no_internet_connection.dart';
 import 'package:schedule_mobile/widgets/app_bar_painter.dart';
 import 'package:schedule_mobile/widgets/custom_autocomplete.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -26,6 +28,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   void initState() {
     super.initState();
+
     getGroups();
     _selectedGroup = _prefs.then((SharedPreferences prefs) {
       return prefs.getString('myGroup') ?? '';
@@ -33,13 +36,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   void getGroups() async {
-    await GroupsRepository().getGroups().then((value) {
-      if (!mounted) return;
+    if (await checkInternetConnection()) {
+      await GroupsRepository().getGroups().then((value) {
+        if (!mounted) return;
 
-      setState(() {
-        groups = value.map((e) => e.name).toList();
+        setState(() {
+          groups = value.map((e) => e.name).toList();
+        });
       });
-    });
+    } else {
+      if (context.mounted) {
+        showModalNoInternetConnection(context);
+      }
+    }
   }
 
   void setGroup(value) async {
@@ -136,14 +145,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         padding: const EdgeInsets.all(15),
                         child: Column(
                           children: [
-                            Text(
+                            const Text(
                               'О приложении',
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
-                            Text(
+                            const Text(
                               'Официальное приложение Расписание ЗабГУ. \n  Разработка ОРиВ ПО УИТ.',
                               textAlign: TextAlign.center,
                               style: TextStyle(
@@ -151,13 +160,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               ),
                             ),
                             Text(
-                              'версия 0.2.85',
+                              'версия 0.3.0',
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontWeight: FontWeight.w500,
                                   color: Styles.crossColor),
                             ),
-                            Text(
+                            const Text(
                               '(прототип)',
                               textAlign: TextAlign.center,
                               style: TextStyle(

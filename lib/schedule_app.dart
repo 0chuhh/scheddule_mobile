@@ -9,7 +9,7 @@ class ScheduleApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-      title: 'Schedule ZabGU',
+      title: 'Расписание ЗабГУ',
       debugShowCheckedModeBanner: false,
       theme: lightTheme,
       routerDelegate: _appRouter.delegate(),

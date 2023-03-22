@@ -1,7 +1,7 @@
 name: schedule_mobile
 description: A new Flutter project.
 publish_to: 'none'
-version: 0.1.0
+version: 0.3.0
 
 environment:
   sdk: '>=2.19.2 <3.0.0'
@@ -20,6 +20,8 @@ dependencies:
   intl: ^0.17.0
   timelines: ^0.1.0
   shared_preferences: ^2.0.18
+  alarm: ^0.2.0
+  
 
 dev_dependencies:
   flutter_test:
@@ -27,12 +29,23 @@ dev_dependencies:
   auto_route_generator: ^5.0.3
   build_runner: ^2.3.3
   flutter_lints: ^2.0.0
+  flutter_launcher_icons: ^0.12.0
+  
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/icon.png"
 
 flutter:
   uses-material-design: true
 
   assets:
     - assets/noLessons.svg
+    - assets/no-connection.svg
+    - assets/icon.png
+    - assets/sample.mp3
+    - assets/sample2.mp3
+    - assets/sample3.mp3
 
   fonts:
     - family: Montserrat

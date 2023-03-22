@@ -6,7 +6,10 @@ import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:schedule_mobile/models/schedule_model.dart';
 import 'package:schedule_mobile/repositories/schedules_repository.dart';
+import 'package:schedule_mobile/utils/check_internet_connection.dart';
 import 'package:schedule_mobile/utils/day_names.dart';
+import 'package:schedule_mobile/utils/get_date_from_extremular.dart';
+import 'package:schedule_mobile/utils/show_modal_no_internet_connection.dart';
 import 'package:schedule_mobile/widgets/collapsible_calendar/collapsible_calendar.dart';
 import 'package:schedule_mobile/widgets/app_bar_painter.dart';
 import 'package:schedule_mobile/widgets/modal_choose_group.dart';
@@ -43,59 +46,67 @@ class MyScheduleScreen extends StatefulWidget {
 
 class MyScheduleScreenState extends State<MyScheduleScreen> {
   GlobalKey<CollapsibleCalendarState> _collapsibleCalendarKey = GlobalKey();
+  GlobalKey<NextLessonState> _nextLesson = GlobalKey();
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   List<ScheduleModel> schedule = [];
   bool _loading = false;
   List<ScheduleModel> daySchedule = [];
   String _selectedGroup = '';
+  DateTime _selectedDay = DateTime.now();
 
   void getSchedule() async {
     if (!mounted) return;
     setState(() {
       _loading = true;
     });
-    if (widget.screenType == ScheduleScreenType.mySchedule) {
-      final selectedGroupTemp = await checkGroup();
-
-      if (this.mounted && selectedGroupTemp != null) {
-        _collapsibleCalendarKey.currentState?.changeDay(DateTime.now());
-        setState(() {
-          _selectedGroup = selectedGroupTemp;
+    switch (widget.screenType) {
+      case ScheduleScreenType.mySchedule:
+        getMySchedule().then((value) {
+          _nextLesson.currentState?.stopAlarm();
+          _nextLesson.currentState?.notif = false;
+          _nextLesson.currentState?.widget.daySchedule = daySchedule;
+          _nextLesson.currentState?.widget.schedule = schedule;
+          _nextLesson.currentState?.getNearestCouple(DateTime.now());
         });
-        List<ScheduleModel>? newSchedule =
-            await getScheduleFromSharedPreferences(_selectedGroup);
 
-        if (newSchedule.isNotEmpty) {
-          if (!mounted) return;
-          setSchedule(newSchedule);
-        } else {
-          await SchedulesRepository()
-              .getSchedulesByGroup(selectedGroupTemp)
-              .then((newSchedule) {
-            if (!mounted) return;
-            saveSchedule(newSchedule, selectedGroupTemp);
-            setSchedule(newSchedule);
-          });
-        }
-      }
-    } else if (widget.screenType == ScheduleScreenType.classroomSchedule) {
-      getClassRoomSchedule(widget.queryParam);
-    } else if (widget.screenType == ScheduleScreenType.groupSchedule) {
-      getGroupSchedule(widget.queryParam);
-    } else if (widget.screenType == ScheduleScreenType.lecturerSchedule) {
-      getLecturerSchedule(widget.queryParam, widget.scheduleFormat);
+        break;
+      case ScheduleScreenType.classroomSchedule:
+        getClassRoomSchedule(widget.queryParam);
+        break;
+      case ScheduleScreenType.groupSchedule:
+        getGroupSchedule(widget.queryParam);
+        break;
+      case ScheduleScreenType.lecturerSchedule:
+        getLecturerSchedule(widget.queryParam, widget.scheduleFormat);
+        break;
+      default:
+        break;
     }
   }
 
   void setSchedule(List<ScheduleModel> newSchedule) {
     setState(() {
       schedule = newSchedule;
-      daySchedule = newSchedule
-          .where((element) =>
-              element.weekDay.toLowerCase() ==
-                  dayNames[DateTime.now().weekday - 1].toLowerCase() &&
-              element.weekType == Week(date: DateTime.now()).getWeekType())
-          .toList();
+      schedule.sort(((a, b) => a.couple.time.compareTo(b.couple.time)));
+      if (schedule.isNotEmpty && schedule.first.form == '0') {
+        daySchedule = newSchedule
+            .where((element) =>
+                element.weekDay.toLowerCase() ==
+                    dayNames[DateTime.now().weekday - 1].toLowerCase() &&
+                element.weekType == Week(date: DateTime.now()).getWeekType())
+            .toList();
+        daySchedule.sort(((a, b) => a.couple.time.compareTo(b.couple.time)));
+      } else {
+        daySchedule = schedule;
+        daySchedule.sort((a, b) {
+          var date = getDateFromExtremular(a.weekDay)![0]
+              .compareTo(getDateFromExtremular(b.weekDay)![0]);
+          if (date == 0) {
+            return a.couple.number.compareTo(b.couple.number);
+          }
+          return date;
+        });
+      }
       _loading = false;
     });
   }
@@ -139,6 +150,38 @@ class MyScheduleScreenState extends State<MyScheduleScreen> {
     return [];
   }
 
+  Future<void> getMySchedule() async {
+    final bool internet = await checkInternetConnection();
+    final selectedGroupTemp = await checkGroup();
+    if (this.mounted && selectedGroupTemp != null) {
+      _collapsibleCalendarKey.currentState?.changeDay(DateTime.now());
+      setState(() {
+        _selectedGroup = selectedGroupTemp;
+      });
+      List<ScheduleModel>? newSchedule =
+          await getScheduleFromSharedPreferences(_selectedGroup);
+
+      if (newSchedule.isNotEmpty) {
+        if (!mounted) return;
+        setSchedule(newSchedule);
+      } else {
+        if (internet) {
+          await SchedulesRepository()
+              .getSchedulesByGroup(selectedGroupTemp)
+              .then((newSchedule) {
+            if (!mounted) return;
+            saveSchedule(newSchedule, selectedGroupTemp);
+            setSchedule(newSchedule);
+          });
+        } else {
+          if (context.mounted) {
+            showModalNoInternetConnection(context);
+          }
+        }
+      }
+    }
+  }
+
   Future<void> getClassRoomSchedule(classroom) async {
     await SchedulesRepository()
         .getScheduleByClassroom(classroom)
@@ -157,11 +200,21 @@ class MyScheduleScreenState extends State<MyScheduleScreen> {
         .then((newSchedule) => setSchedule(newSchedule));
   }
 
-  String getLecturerFioInitials(Fio) {
-    final fio = Fio.trim().split(' ');
+  String getLecturerFioInitials(String fullname) {
     String result = '';
-    result += fio[0] + ' ' + fio[1][0] + '.' + fio[2][0] + '.';
-    return result;
+    if (fullname.contains(';')) {
+      final List<String> lecturers = fullname.split(';');
+      lecturers.forEach((element) {
+        final List<String> fio = element.trim().split(' ');
+        result +=
+            '${fio[0]} ${fio[1][0]}.${fio[2][0]}. ${element != lecturers.last ? '; ' : ''}';
+      });
+      return 'Преподаватли - $result';
+    } else {
+      final List<String> fio = fullname.trim().split(' ');
+      result += '${fio[0]} ${fio[1][0]}.${fio[2][0]}.';
+      return 'Преподаватль - $result';
+    }
   }
 
   @override
@@ -189,6 +242,7 @@ class MyScheduleScreenState extends State<MyScheduleScreen> {
 
   void dayChanged(DateTime day) {
     setState(() {
+      _selectedDay = day;
       WeekType currentWeek = Week(date: day).getWeekType();
       daySchedule = schedule
           .where((element) =>
@@ -210,15 +264,17 @@ class MyScheduleScreenState extends State<MyScheduleScreen> {
             child: !_loading
                 ? daySchedule.length > 0
                     ? ScheduleList(
-                        padding: widget.screenType ==
-                                    ScheduleScreenType.classroomSchedule ||
-                                widget.screenType ==
-                                    ScheduleScreenType.groupSchedule ||
-                                widget.screenType ==
-                                    ScheduleScreenType.lecturerSchedule
-                            ? 180
-                            // : 250,
-                            : 160,
+                        padding: schedule.first.form == '1'
+                            ? 70
+                            : widget.screenType ==
+                                        ScheduleScreenType.classroomSchedule ||
+                                    widget.screenType ==
+                                        ScheduleScreenType.groupSchedule ||
+                                    widget.screenType ==
+                                        ScheduleScreenType.lecturerSchedule
+                                ? 180
+                                : 250,
+                        // : 160,
                         schedule: daySchedule,
                       )
                     : Container(
@@ -227,16 +283,20 @@ class MyScheduleScreenState extends State<MyScheduleScreen> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                widget.screenType ==
-                                        ScheduleScreenType.mySchedule
-                                    ? 'Сегодня у вас нет занятий. Советуем потратить это время на самоподготовку.'
+                                schedule.isEmpty
+                                    ? 'По данному запросу нет расписания'
                                     : widget.screenType ==
-                                            ScheduleScreenType.classroomSchedule
-                                        ? 'Сегодня в данной аудитории нет занятий.'
+                                            ScheduleScreenType.mySchedule
+                                        ? 'Сегодня у вас нет занятий. Советуем потратить это время на самоподготовку.'
                                         : widget.screenType ==
-                                                ScheduleScreenType.groupSchedule
-                                            ? 'Сегодня у группы нет занятий'
-                                            : 'Сегодня преподаватель не ведет занятия',
+                                                ScheduleScreenType
+                                                    .classroomSchedule
+                                            ? 'Сегодня в данной аудитории нет занятий.'
+                                            : widget.screenType ==
+                                                    ScheduleScreenType
+                                                        .groupSchedule
+                                                ? 'Сегодня у группы нет занятий'
+                                                : 'Сегодня преподаватель не ведет занятия',
                                 textAlign: TextAlign.center,
                                 style: const TextStyle(
                                     color: Color(0xFF9498BE),
@@ -256,13 +316,28 @@ class MyScheduleScreenState extends State<MyScheduleScreen> {
             child: Container(
               color: Colors.transparent,
               width: MediaQuery.of(context).size.width,
-              height: widget.screenType == ScheduleScreenType.mySchedule
+              height: widget.screenType == ScheduleScreenType.mySchedule &&
+                      schedule.isNotEmpty &&
+                      schedule.first.form == '0'
                   // ? 260
-                  ? 160
-                  : 190,
-              child: widget.screenType == ScheduleScreenType.mySchedule
-                  // ? NextLesson()
-                  ? null
+                  ? 260
+                  : schedule.isEmpty
+                      ? 80
+                      : schedule.isNotEmpty && schedule.first.form == '1'
+                          ? 80
+                          : 190,
+              child: widget.screenType == ScheduleScreenType.mySchedule &&
+                      _selectedGroup != '' &&
+                      schedule.isNotEmpty &&
+                      schedule.first.form == '0'
+                  ? NextLesson(
+                      key: _nextLesson,
+                      selectedGroup: _selectedGroup,
+                      schedule: schedule,
+                      daySchedule: daySchedule,
+                      selectedDay: _selectedDay,
+                    )
+                  // ? null
                   : null,
             ),
           ),
@@ -306,7 +381,7 @@ class MyScheduleScreenState extends State<MyScheduleScreen> {
                                     )
                                   ])),
                         ),
-                        Gap(20),
+                        const Gap(20),
                         Container(
                           constraints: BoxConstraints(maxWidth: 200),
                           child: Text(
@@ -315,23 +390,27 @@ class MyScheduleScreenState extends State<MyScheduleScreen> {
                                 ? 'Аудитория ${widget.queryParam ?? widget.queryParam}'
                                 : widget.screenType ==
                                         ScheduleScreenType.lecturerSchedule
-                                    ? 'Преподаватель - ${getLecturerFioInitials(widget.queryParam)}'
+                                    ? getLecturerFioInitials(widget.queryParam!)
                                     : 'Группа ${widget.queryParam ?? widget.queryParam}',
                             textAlign: TextAlign.center,
                             style: const TextStyle(
                                 color: Color(0xFF9498BE),
                                 fontWeight: FontWeight.w700,
-                                fontSize: 14),
+                                fontSize: 12),
                           ),
-                        )
+                        ),
                       ],
                     ),
                   ),
-                widget.screenType == ScheduleScreenType.mySchedule ||
-                        widget.screenType ==
-                            ScheduleScreenType.classroomSchedule ||
-                        widget.screenType == ScheduleScreenType.groupSchedule ||
-                        widget.screenType == ScheduleScreenType.lecturerSchedule
+                (widget.screenType == ScheduleScreenType.mySchedule ||
+                            widget.screenType ==
+                                ScheduleScreenType.classroomSchedule ||
+                            widget.screenType ==
+                                ScheduleScreenType.groupSchedule ||
+                            widget.screenType ==
+                                ScheduleScreenType.lecturerSchedule) &&
+                        schedule.isNotEmpty &&
+                        schedule.first.form == '0'
                     ? CollapsibleCalendar(
                         marginTop:
                             widget.screenType != ScheduleScreenType.mySchedule
