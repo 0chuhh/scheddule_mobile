@@ -9,11 +9,6 @@ import 'package:schedule_mobile/screens/settings_screen.dart';
 @MaterialAutoRouter(replaceInRouteName: 'Screen,Route', routes: <AutoRoute>[
   AutoRoute(path: '/', page: RootScreen, children: [
     AutoRoute(
-      path: 'bell-schedule',
-      name: 'BellScheduleRouter',
-      page: BellScheduleScreen,
-    ),
-    AutoRoute(
       path: 'my-schedule',
       name: 'MyScheduleRouter',
       page: MyScheduleScreen,
@@ -30,6 +25,11 @@ import 'package:schedule_mobile/screens/settings_screen.dart';
               page: MyScheduleScreen,
               name: 'ClassRoomScheduleRouter'),
         ]),
+    AutoRoute(
+      path: 'bell-schedule',
+      name: 'BellScheduleRouter',
+      page: BellScheduleScreen,
+    ),
     AutoRoute(
       path: 'settings',
       name: 'SettingsRouter',

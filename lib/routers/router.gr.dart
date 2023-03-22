@@ -12,11 +12,11 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:auto_route/auto_route.dart' as _i7;
-import 'package:auto_route/empty_router_widgets.dart' as _i4;
+import 'package:auto_route/empty_router_widgets.dart' as _i3;
 import 'package:flutter/material.dart' as _i8;
 
-import '../screens/bell_schedule_screen.dart' as _i2;
-import '../screens/my_schedule_screen.dart' as _i3;
+import '../screens/bell_schedule_screen.dart' as _i4;
+import '../screens/my_schedule_screen.dart' as _i2;
 import '../screens/root_screen.dart' as _i1;
 import '../screens/schedules_screen.dart' as _i6;
 import '../screens/settings_screen.dart' as _i5;
@@ -33,18 +33,12 @@ class AppRouter extends _i7.RootStackRouter {
         child: const _i1.RootScreen(),
       );
     },
-    BellScheduleRouter.name: (routeData) {
-      return _i7.MaterialPageX<dynamic>(
-        routeData: routeData,
-        child: const _i2.BellScheduleScreen(),
-      );
-    },
     MyScheduleRouter.name: (routeData) {
       final args = routeData.argsAs<MyScheduleRouterArgs>(
           orElse: () => const MyScheduleRouterArgs());
       return _i7.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: _i3.MyScheduleScreen(
+        child: _i2.MyScheduleScreen(
           key: args.key,
           showCalendar: args.showCalendar,
           queryParam: args.queryParam,
@@ -56,7 +50,13 @@ class AppRouter extends _i7.RootStackRouter {
     SchedulesRouter.name: (routeData) {
       return _i7.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i4.EmptyRouterPage(),
+        child: const _i3.EmptyRouterPage(),
+      );
+    },
+    BellScheduleRouter.name: (routeData) {
+      return _i7.MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: const _i4.BellScheduleScreen(),
       );
     },
     SettingsRouter.name: (routeData) {
@@ -80,7 +80,7 @@ class AppRouter extends _i7.RootStackRouter {
           orElse: () => const MyScheduleRouteArgs());
       return _i7.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: _i3.MyScheduleScreen(
+        child: _i2.MyScheduleScreen(
           key: args.key,
           showCalendar: args.showCalendar,
           queryParam: args.queryParam,
@@ -94,7 +94,7 @@ class AppRouter extends _i7.RootStackRouter {
           orElse: () => const ClassRoomScheduleRouterArgs());
       return _i7.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: _i3.MyScheduleScreen(
+        child: _i2.MyScheduleScreen(
           key: args.key,
           showCalendar: args.showCalendar,
           queryParam: args.queryParam,
@@ -111,11 +111,6 @@ class AppRouter extends _i7.RootStackRouter {
           RootRoute.name,
           path: '/',
           children: [
-            _i7.RouteConfig(
-              BellScheduleRouter.name,
-              path: 'bell-schedule',
-              parent: RootRoute.name,
-            ),
             _i7.RouteConfig(
               MyScheduleRouter.name,
               path: 'my-schedule',
@@ -144,6 +139,11 @@ class AppRouter extends _i7.RootStackRouter {
               ],
             ),
             _i7.RouteConfig(
+              BellScheduleRouter.name,
+              path: 'bell-schedule',
+              parent: RootRoute.name,
+            ),
+            _i7.RouteConfig(
               SettingsRouter.name,
               path: 'settings',
               parent: RootRoute.name,
@@ -167,26 +167,14 @@ class RootRoute extends _i7.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i2.BellScheduleScreen]
-class BellScheduleRouter extends _i7.PageRouteInfo<void> {
-  const BellScheduleRouter()
-      : super(
-          BellScheduleRouter.name,
-          path: 'bell-schedule',
-        );
-
-  static const String name = 'BellScheduleRouter';
-}
-
-/// generated route for
-/// [_i3.MyScheduleScreen]
+/// [_i2.MyScheduleScreen]
 class MyScheduleRouter extends _i7.PageRouteInfo<MyScheduleRouterArgs> {
   MyScheduleRouter({
     _i8.Key? key,
     bool showCalendar = true,
     String? queryParam,
     String scheduleFormat = 'Очная',
-    _i3.ScheduleScreenType screenType = _i3.ScheduleScreenType.mySchedule,
+    _i2.ScheduleScreenType screenType = _i2.ScheduleScreenType.mySchedule,
   }) : super(
           MyScheduleRouter.name,
           path: 'my-schedule',
@@ -208,7 +196,7 @@ class MyScheduleRouterArgs {
     this.showCalendar = true,
     this.queryParam,
     this.scheduleFormat = 'Очная',
-    this.screenType = _i3.ScheduleScreenType.mySchedule,
+    this.screenType = _i2.ScheduleScreenType.mySchedule,
   });
 
   final _i8.Key? key;
@@ -219,7 +207,7 @@ class MyScheduleRouterArgs {
 
   final String scheduleFormat;
 
-  final _i3.ScheduleScreenType screenType;
+  final _i2.ScheduleScreenType screenType;
 
   @override
   String toString() {
@@ -228,7 +216,7 @@ class MyScheduleRouterArgs {
 }
 
 /// generated route for
-/// [_i4.EmptyRouterPage]
+/// [_i3.EmptyRouterPage]
 class SchedulesRouter extends _i7.PageRouteInfo<void> {
   const SchedulesRouter({List<_i7.PageRouteInfo>? children})
       : super(
@@ -238,6 +226,18 @@ class SchedulesRouter extends _i7.PageRouteInfo<void> {
         );
 
   static const String name = 'SchedulesRouter';
+}
+
+/// generated route for
+/// [_i4.BellScheduleScreen]
+class BellScheduleRouter extends _i7.PageRouteInfo<void> {
+  const BellScheduleRouter()
+      : super(
+          BellScheduleRouter.name,
+          path: 'bell-schedule',
+        );
+
+  static const String name = 'BellScheduleRouter';
 }
 
 /// generated route for
@@ -287,14 +287,14 @@ class SchedulesRoute extends _i7.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i3.MyScheduleScreen]
+/// [_i2.MyScheduleScreen]
 class MyScheduleRoute extends _i7.PageRouteInfo<MyScheduleRouteArgs> {
   MyScheduleRoute({
     _i8.Key? key,
     bool showCalendar = true,
     String? queryParam,
     String scheduleFormat = 'Очная',
-    _i3.ScheduleScreenType screenType = _i3.ScheduleScreenType.mySchedule,
+    _i2.ScheduleScreenType screenType = _i2.ScheduleScreenType.mySchedule,
   }) : super(
           MyScheduleRoute.name,
           path: 'my-schedule',
@@ -316,7 +316,7 @@ class MyScheduleRouteArgs {
     this.showCalendar = true,
     this.queryParam,
     this.scheduleFormat = 'Очная',
-    this.screenType = _i3.ScheduleScreenType.mySchedule,
+    this.screenType = _i2.ScheduleScreenType.mySchedule,
   });
 
   final _i8.Key? key;
@@ -327,7 +327,7 @@ class MyScheduleRouteArgs {
 
   final String scheduleFormat;
 
-  final _i3.ScheduleScreenType screenType;
+  final _i2.ScheduleScreenType screenType;
 
   @override
   String toString() {
@@ -336,7 +336,7 @@ class MyScheduleRouteArgs {
 }
 
 /// generated route for
-/// [_i3.MyScheduleScreen]
+/// [_i2.MyScheduleScreen]
 class ClassRoomScheduleRouter
     extends _i7.PageRouteInfo<ClassRoomScheduleRouterArgs> {
   ClassRoomScheduleRouter({
@@ -344,7 +344,7 @@ class ClassRoomScheduleRouter
     bool showCalendar = true,
     String? queryParam,
     String scheduleFormat = 'Очная',
-    _i3.ScheduleScreenType screenType = _i3.ScheduleScreenType.mySchedule,
+    _i2.ScheduleScreenType screenType = _i2.ScheduleScreenType.mySchedule,
   }) : super(
           ClassRoomScheduleRouter.name,
           path: 'classroom-schedule',
@@ -366,7 +366,7 @@ class ClassRoomScheduleRouterArgs {
     this.showCalendar = true,
     this.queryParam,
     this.scheduleFormat = 'Очная',
-    this.screenType = _i3.ScheduleScreenType.mySchedule,
+    this.screenType = _i2.ScheduleScreenType.mySchedule,
   });
 
   final _i8.Key? key;
@@ -377,7 +377,7 @@ class ClassRoomScheduleRouterArgs {
 
   final String scheduleFormat;
 
-  final _i3.ScheduleScreenType screenType;
+  final _i2.ScheduleScreenType screenType;
 
   @override
   String toString() {

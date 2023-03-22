@@ -18,9 +18,9 @@ class RootScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return AutoTabsScaffold(
       routes: [
-        BellScheduleRouter(),
         MyScheduleRouter(key: myScheduleKey),
-        SchedulesRouter(),
+        const SchedulesRouter(),
+        const BellScheduleRouter(),
         SettingsRouter(onGroupChanged: onGroupChange),
       ],
       bottomNavigationBuilder: (_, tabsRouter) {
@@ -28,28 +28,6 @@ class RootScreen extends StatelessWidget {
           currentIndex: tabsRouter.activeIndex,
           onTap: tabsRouter.setActiveIndex,
           items: [
-            BottomNavigationBarItem(
-              icon: Column(
-                children: [
-                  const Icon(Icons.watch_later_outlined),
-                  Container(
-                    width: 100,
-                    child: Text(
-                      "Расписание звонков",
-                      overflow: TextOverflow.visible,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          height: 1,
-                          fontSize: 10,
-                          color: tabsRouter.activeIndex == 0
-                              ? Styles.primaryColor
-                              : Styles.textColor),
-                    ),
-                  )
-                ],
-              ),
-              label: "",
-            ),
             BottomNavigationBarItem(
               icon: Column(
                 children: [
@@ -63,7 +41,7 @@ class RootScreen extends StatelessWidget {
                       style: TextStyle(
                           height: 1,
                           fontSize: 10,
-                          color: tabsRouter.activeIndex == 1
+                          color: tabsRouter.activeIndex == 0
                               ? Styles.primaryColor
                               : Styles.textColor),
                     ),
@@ -89,13 +67,35 @@ class RootScreen extends StatelessWidget {
                         style: TextStyle(
                             height: 1,
                             fontSize: 10,
-                            color: tabsRouter.activeIndex == 2
+                            color: tabsRouter.activeIndex == 1
                                 ? Styles.primaryColor
                                 : Styles.textColor),
                       ),
                     )
                   ],
                 ),
+              ),
+              label: "",
+            ),
+            BottomNavigationBarItem(
+              icon: Column(
+                children: [
+                  const Icon(Icons.watch_later_outlined),
+                  Container(
+                    width: 100,
+                    child: Text(
+                      "Расписание звонков",
+                      overflow: TextOverflow.visible,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          height: 1,
+                          fontSize: 10,
+                          color: tabsRouter.activeIndex == 2
+                              ? Styles.primaryColor
+                              : Styles.textColor),
+                    ),
+                  )
+                ],
               ),
               label: "",
             ),
