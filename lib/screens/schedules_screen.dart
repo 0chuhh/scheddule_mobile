@@ -13,26 +13,30 @@ class SchedulesScreen extends StatelessWidget {
       resizeToAvoidBottomInset: false,
       backgroundColor: Styles.bgColor,
       body: Stack(children: <Widget>[
-        CustomPaint(
-          painter: AppBarPainter(),
-          child: Container(
-            margin: const EdgeInsets.only(top: 40),
-            width: MediaQuery.of(context).size.width,
-            height: 70,
-            child: const Text(
-              'Расписание по фильтрам',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  color: Color(0xFF979CB7),
-                  fontSize: 20,
-                  fontWeight: FontWeight.w800),
-            ),
-          ),
-        ),
-        const SingleChildScrollView(
-          padding: EdgeInsets.only(top: 120),
+        const Positioned.fill(
           child: ScheduleSearchCards(),
-        )
+        ),
+        Stack(
+          children: [
+            CustomPaint(
+              painter: AppBarPainter(),
+              child: Container(
+                margin: const EdgeInsets.only(top: 40),
+                width: MediaQuery.of(context).size.width,
+                height: 70,
+                child: const Text(
+                  'Расписание по фильтрам',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      color: Color(0xFF979CB7),
+                      fontSize: 20,
+                      fontWeight: FontWeight.w800),
+                ),
+              ),
+            ),
+            Container()
+          ],
+        ),
       ]),
     );
   }

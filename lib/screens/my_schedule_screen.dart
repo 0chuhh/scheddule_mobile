@@ -275,16 +275,29 @@ class MyScheduleScreenState extends State<MyScheduleScreen> {
             child: !_loading
                 ? daySchedule.length > 0
                     ? ScheduleList(
-                        padding: schedule.first.form == '1'
-                            ? 110
-                            : widget.screenType ==
+                        padding: (widget.screenType ==
                                         ScheduleScreenType.classroomSchedule ||
                                     widget.screenType ==
                                         ScheduleScreenType.groupSchedule ||
                                     widget.screenType ==
-                                        ScheduleScreenType.lecturerSchedule
-                                ? 180
-                                : 250,
+                                        ScheduleScreenType.lecturerSchedule) &&
+                                schedule.isNotEmpty &&
+                                schedule.first.form == '1'
+                            ? 150
+                            : widget.screenType ==
+                                        ScheduleScreenType.mySchedule &&
+                                    schedule.isNotEmpty &&
+                                    schedule.first.form == '1'
+                                ? 110
+                                : widget.screenType ==
+                                            ScheduleScreenType
+                                                .classroomSchedule ||
+                                        widget.screenType ==
+                                            ScheduleScreenType.groupSchedule ||
+                                        widget.screenType ==
+                                            ScheduleScreenType.lecturerSchedule
+                                    ? 180
+                                    : 250,
                         // : 160,
                         schedule: daySchedule,
                       )
@@ -334,9 +347,22 @@ class MyScheduleScreenState extends State<MyScheduleScreen> {
                   ? 260
                   : schedule.isEmpty
                       ? 80
-                      : schedule.isNotEmpty && schedule.first.form == '1'
+                      : widget.screenType == ScheduleScreenType.mySchedule &&
+                              schedule.isNotEmpty &&
+                              schedule.first.form == '1'
                           ? 120
-                          : 190,
+                          : ((widget.screenType ==
+                                          ScheduleScreenType.groupSchedule ||
+                                      widget.screenType ==
+                                          ScheduleScreenType
+                                              .classroomSchedule ||
+                                      widget.screenType ==
+                                          ScheduleScreenType
+                                              .lecturerSchedule) &&
+                                  schedule.isNotEmpty &&
+                                  schedule.first.form == '1')
+                              ? 160
+                              : 190,
               child: widget.screenType == ScheduleScreenType.mySchedule &&
                       _selectedGroup != '' &&
                       schedule.isNotEmpty &&
@@ -413,15 +439,7 @@ class MyScheduleScreenState extends State<MyScheduleScreen> {
                       ],
                     ),
                   ),
-                (widget.screenType == ScheduleScreenType.mySchedule ||
-                            widget.screenType ==
-                                ScheduleScreenType.classroomSchedule ||
-                            widget.screenType ==
-                                ScheduleScreenType.groupSchedule ||
-                            widget.screenType ==
-                                ScheduleScreenType.lecturerSchedule) &&
-                        schedule.isNotEmpty &&
-                        schedule.first.form == '0'
+                schedule.isNotEmpty && schedule.first.form == '0'
                     ? CollapsibleCalendar(
                         marginTop:
                             widget.screenType != ScheduleScreenType.mySchedule
@@ -432,9 +450,23 @@ class MyScheduleScreenState extends State<MyScheduleScreen> {
                           dayChanged(selectedDay);
                         },
                       )
-                    : extremularDates.isNotEmpty
+                    : (widget.screenType ==
+                                    ScheduleScreenType.classroomSchedule ||
+                                widget.screenType ==
+                                    ScheduleScreenType.groupSchedule ||
+                                widget.screenType ==
+                                    ScheduleScreenType.lecturerSchedule ||
+                                (widget.screenType ==
+                                        ScheduleScreenType.mySchedule &&
+                                    schedule.isNotEmpty &&
+                                    schedule.first.form == '1')) &&
+                            extremularDates.isNotEmpty
                         ? Container(
-                            margin: const EdgeInsets.only(top: 12),
+                            margin: EdgeInsets.only(
+                                top: widget.screenType ==
+                                        ScheduleScreenType.mySchedule
+                                    ? 32
+                                    : 0),
                             child: DatePicker(
                                 onDateChanged: (index) {
                                   setState(() {

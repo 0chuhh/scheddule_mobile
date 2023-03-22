@@ -53,13 +53,13 @@ class _ScheduleSearchCardsState extends State<ScheduleSearchCards> {
   String selectedLecturer = '';
 
   String selectedScheduleFormat = 'Очная';
+  ScrollController _scrollController = ScrollController();
 
   /// true - очная; false - заочная
   Future getLecturers() async {
     await LecturersRepository().getLecturers().then((value) {
       lecturers = value.map((e) => e.name).toList();
       if (!mounted) return;
-
       setState(() {
         _data.insert(
             1,
@@ -348,6 +348,11 @@ class _ScheduleSearchCardsState extends State<ScheduleSearchCards> {
 
     filterBlocks.insert(insertToIndex, item);
     _animatedListKey.currentState?.insertItem(0);
+    _scrollController.animateTo(
+      0.0,
+      curve: Curves.easeOut,
+      duration: const Duration(milliseconds: 300),
+    );
   }
 
   void unfocusAutocomplete() {
@@ -357,33 +362,33 @@ class _ScheduleSearchCardsState extends State<ScheduleSearchCards> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return SingleChildScrollView(
-        child: Container(
-            margin: const EdgeInsets.only(top: 15),
-            height: MediaQuery.of(context).size.height - 200,
-            child: groups.isNotEmpty &&
-                    lecturers.isNotEmpty &&
-                    classroms.isNotEmpty
-                ? AnimatedList(
-                    key: _animatedListKey,
-                    initialItemCount: filterBlocks.length,
-                    itemBuilder: (context, index, animation) {
-                      return SlideTransition(
-                        position: animation.drive(
-                          // Tween that slides from right to left.
-                          Tween(
-                              begin: const Offset(1.0, 1.0),
-                              end: const Offset(0.0, 0.0)),
-                        ),
-                        // Simply display the letter.
-                        child: ListTile(
-                          title: filterBlocks[index].widget,
-                        ),
-                      );
-                    },
-                  )
-                : const Center(
-                    child: CircularProgressIndicator(),
-                  )));
+    return SizedBox(
+      child: Container(
+          margin: const EdgeInsets.only(top: 140),
+          child:
+              groups.isNotEmpty && lecturers.isNotEmpty && classroms.isNotEmpty
+                  ? AnimatedList(
+                      controller: _scrollController,
+                      key: _animatedListKey,
+                      initialItemCount: filterBlocks.length,
+                      itemBuilder: (context, index, animation) {
+                        return SlideTransition(
+                          position: animation.drive(
+                            // Tween that slides from right to left.
+                            Tween(
+                                begin: const Offset(1.0, 1.0),
+                                end: const Offset(0.0, 0.0)),
+                          ),
+                          // Simply display the letter.
+                          child: ListTile(
+                            title: filterBlocks[index].widget,
+                          ),
+                        );
+                      },
+                    )
+                  : const Center(
+                      child: CircularProgressIndicator(),
+                    )),
+    );
   }
 }

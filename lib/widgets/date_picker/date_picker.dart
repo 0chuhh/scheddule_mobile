@@ -43,9 +43,9 @@ class _DatePickerState extends State<DatePicker> {
   Widget build(BuildContext context) {
     return SizedBox(
         width: MediaQuery.of(context).size.width,
-        height: 110,
+        height: 70,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 25),
+          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
           child: Material(
             borderRadius: BorderRadius.circular(50),
             elevation: 5,

@@ -25,8 +25,7 @@ class RootScreen extends StatelessWidget {
       ],
       bottomNavigationBuilder: (_, tabsRouter) {
         return BottomNavBar(
-          currentIndex:
-              tabsRouter.activeIndex <= 3 ? tabsRouter.activeIndex : 2,
+          currentIndex: tabsRouter.activeIndex,
           onTap: tabsRouter.setActiveIndex,
           items: [
             BottomNavigationBarItem(
