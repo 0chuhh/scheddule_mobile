@@ -12,12 +12,15 @@ import 'package:schedule_mobile/utils/get_date_from_extremular.dart';
 import 'package:schedule_mobile/utils/show_modal_no_internet_connection.dart';
 import 'package:schedule_mobile/widgets/collapsible_calendar/collapsible_calendar.dart';
 import 'package:schedule_mobile/widgets/app_bar_painter.dart';
+import 'package:schedule_mobile/widgets/date_picker/date_picker.dart';
+import 'package:schedule_mobile/widgets/date_picker/date_toggle_button.dart';
 import 'package:schedule_mobile/widgets/modal_choose_group.dart';
 import 'package:schedule_mobile/widgets/schedule_list/schedule_list.dart';
 import 'package:schedule_mobile/widgets/week.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../themes/styles.dart';
 import '../widgets/next_lesson.dart';
+import "package:collection/collection.dart";
 
 enum ScheduleScreenType {
   mySchedule,
@@ -53,7 +56,7 @@ class MyScheduleScreenState extends State<MyScheduleScreen> {
   List<ScheduleModel> daySchedule = [];
   String _selectedGroup = '';
   DateTime _selectedDay = DateTime.now();
-
+  List<String> extremularDates = [];
   void getSchedule() async {
     if (!mounted) return;
     setState(() {
@@ -105,6 +108,14 @@ class MyScheduleScreenState extends State<MyScheduleScreen> {
             return a.couple.number.compareTo(b.couple.number);
           }
           return date;
+        });
+        setState(() {
+          extremularDates = daySchedule.map((e) => e.weekDay).toSet().toList();
+          daySchedule = schedule
+              .where(
+                (element) => element.weekDay == extremularDates[0],
+              )
+              .toList();
         });
       }
       _loading = false;
@@ -265,7 +276,7 @@ class MyScheduleScreenState extends State<MyScheduleScreen> {
                 ? daySchedule.length > 0
                     ? ScheduleList(
                         padding: schedule.first.form == '1'
-                            ? 70
+                            ? 110
                             : widget.screenType ==
                                         ScheduleScreenType.classroomSchedule ||
                                     widget.screenType ==
@@ -324,7 +335,7 @@ class MyScheduleScreenState extends State<MyScheduleScreen> {
                   : schedule.isEmpty
                       ? 80
                       : schedule.isNotEmpty && schedule.first.form == '1'
-                          ? 80
+                          ? 120
                           : 190,
               child: widget.screenType == ScheduleScreenType.mySchedule &&
                       _selectedGroup != '' &&
@@ -421,7 +432,33 @@ class MyScheduleScreenState extends State<MyScheduleScreen> {
                           dayChanged(selectedDay);
                         },
                       )
-                    : Container(),
+                    : extremularDates.isNotEmpty
+                        ? Container(
+                            margin: const EdgeInsets.only(top: 12),
+                            child: DatePicker(
+                                onDateChanged: (index) {
+                                  setState(() {
+                                    daySchedule = schedule
+                                        .where((element) =>
+                                            element.weekDay ==
+                                            extremularDates[index])
+                                        .toList();
+                                  });
+                                },
+                                children: extremularDates
+                                    .map((e) => DateToggleButton(
+                                          date: getDateFromExtremular(e)![0]
+                                              .day
+                                              .toString(),
+                                          month: getDateFromExtremular(e)![1]
+                                              .substring(
+                                                  getDateFromExtremular(e)![1]
+                                                          .length -
+                                                      3),
+                                        ))
+                                    .toList()),
+                          )
+                        : Container(),
               ],
             ),
           )

@@ -28,9 +28,7 @@ class ScheduleList extends StatelessWidget {
             indicator: Container(
                 padding: const EdgeInsets.only(top: 10, bottom: 10),
                 child: Text(
-                  schedule[index].form == '0'
-                      ? getCoupleTime(schedule[index].couple.time)
-                      : getDateFromExtremular(schedule[index].weekDay)![1],
+                  getCoupleTime(schedule[index].couple.time),
                   style: TextStyle(color: Styles.primaryColor),
                 )),
             startConnector: index == 0

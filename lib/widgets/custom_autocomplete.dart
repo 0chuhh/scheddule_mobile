@@ -34,7 +34,7 @@ class CustomAutocomplete extends StatefulWidget {
 }
 
 class CustomAutocompleteState extends State<CustomAutocomplete> {
-  FocusNode _focusNode = new FocusNode();
+  FocusNode _focusNode = FocusNode();
   bool _expanded = false;
 
   void getFocus() {
@@ -62,7 +62,7 @@ class CustomAutocompleteState extends State<CustomAutocomplete> {
                 });
                 return const Iterable<String>.empty();
               }
-              if (widget.list.length > 0) {
+              if (widget.list.isNotEmpty) {
                 return widget.list.where((String option) {
                   return option
                       .toLowerCase()
@@ -139,7 +139,7 @@ class CustomAutocompleteState extends State<CustomAutocomplete> {
                           padding: const EdgeInsets.all(8.0),
                           itemCount: options.length,
                           separatorBuilder: (context, i) {
-                            return Divider();
+                            return const Divider();
                           },
                           itemBuilder: (BuildContext context, int index) {
                             final option = options.elementAt(index);
@@ -153,7 +153,7 @@ class CustomAutocompleteState extends State<CustomAutocomplete> {
                                     AutocompleteHighlightedOption.of(context) ==
                                         index;
                                 if (highlight) {
-                                  SchedulerBinding.instance!
+                                  SchedulerBinding.instance
                                       .addPostFrameCallback(
                                           (Duration timeStamp) {
                                     Scrollable.ensureVisible(context,
