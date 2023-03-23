@@ -49,6 +49,7 @@ class MyScheduleScreen extends StatefulWidget {
 
 class MyScheduleScreenState extends State<MyScheduleScreen> {
   GlobalKey<CollapsibleCalendarState> _collapsibleCalendarKey = GlobalKey();
+  GlobalKey<DatePickerState> _DatePickerKey = GlobalKey();
   GlobalKey<NextLessonState> _nextLesson = GlobalKey();
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   List<ScheduleModel> schedule = [];
@@ -57,6 +58,7 @@ class MyScheduleScreenState extends State<MyScheduleScreen> {
   String _selectedGroup = '';
   DateTime _selectedDay = DateTime.now();
   List<String> extremularDates = [];
+  List<bool> datePickerIsSelected = [];
   void getSchedule() async {
     if (!mounted) return;
     setState(() {
@@ -65,11 +67,16 @@ class MyScheduleScreenState extends State<MyScheduleScreen> {
     switch (widget.screenType) {
       case ScheduleScreenType.mySchedule:
         getMySchedule().then((value) {
-          _nextLesson.currentState?.stopAlarm();
-          _nextLesson.currentState?.notif = false;
-          _nextLesson.currentState?.widget.daySchedule = daySchedule;
-          _nextLesson.currentState?.widget.schedule = schedule;
-          _nextLesson.currentState?.getNearestCouple(DateTime.now());
+          if ((widget.screenType == ScheduleScreenType.mySchedule &&
+              _selectedGroup != '' &&
+              schedule.isNotEmpty &&
+              schedule.first.form == '0')) {
+            _nextLesson.currentState?.stopAlarm();
+            _nextLesson.currentState?.notif = false;
+            _nextLesson.currentState?.widget.daySchedule = daySchedule;
+            _nextLesson.currentState?.widget.schedule = schedule;
+            _nextLesson.currentState?.getNearestCouple(DateTime.now());
+          }
         });
 
         break;
@@ -111,6 +118,12 @@ class MyScheduleScreenState extends State<MyScheduleScreen> {
         });
         setState(() {
           extremularDates = daySchedule.map((e) => e.weekDay).toSet().toList();
+          datePickerIsSelected = extremularDates
+              .map(
+                (e) => false,
+              )
+              .toList();
+          datePickerIsSelected[0] = true;
           daySchedule = schedule
               .where(
                 (element) => element.weekDay == extremularDates[0],
@@ -169,8 +182,8 @@ class MyScheduleScreenState extends State<MyScheduleScreen> {
       setState(() {
         _selectedGroup = selectedGroupTemp;
       });
-      List<ScheduleModel>? newSchedule =
-          await getScheduleFromSharedPreferences(_selectedGroup);
+      List<ScheduleModel>? newSchedule = [];
+      // await getScheduleFromSharedPreferences(_selectedGroup);
 
       if (newSchedule.isNotEmpty) {
         if (!mounted) return;
@@ -468,8 +481,15 @@ class MyScheduleScreenState extends State<MyScheduleScreen> {
                                     ? 32
                                     : 0),
                             child: DatePicker(
+                                key: _DatePickerKey,
+                                isSelected: datePickerIsSelected,
                                 onDateChanged: (index) {
                                   setState(() {
+                                    for (var i = 0;
+                                        i < datePickerIsSelected.length;
+                                        i++) {
+                                      datePickerIsSelected[i] = index == i;
+                                    }
                                     daySchedule = schedule
                                         .where((element) =>
                                             element.weekDay ==
@@ -477,18 +497,7 @@ class MyScheduleScreenState extends State<MyScheduleScreen> {
                                         .toList();
                                   });
                                 },
-                                children: extremularDates
-                                    .map((e) => DateToggleButton(
-                                          date: getDateFromExtremular(e)![0]
-                                              .day
-                                              .toString(),
-                                          month: getDateFromExtremular(e)![1]
-                                              .substring(
-                                                  getDateFromExtremular(e)![1]
-                                                          .length -
-                                                      3),
-                                        ))
-                                    .toList()),
+                                children: extremularDates),
                           )
                         : Container(),
               ],

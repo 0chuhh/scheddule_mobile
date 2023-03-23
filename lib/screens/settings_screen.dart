@@ -54,12 +54,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
   void setGroup(value) async {
     final SharedPreferences prefs = await _prefs;
     if (!mounted) return;
-    widget.onGroupChanged.call();
     setState(() {
       _selectedGroup = prefs.setString('myGroup', value).then((bool success) {
         return value;
       });
     });
+    widget.onGroupChanged.call();
   }
 
   @override

@@ -342,17 +342,23 @@ class _ScheduleSearchCardsState extends State<ScheduleSearchCards> {
                     borderRadius: BorderRadius.circular(15)))));
   }
 
-  void addItem(int id, int insertToIndex) {
+  void addItem(int id, int insertToIndex) async {
     final item = _data.firstWhere((element) => element.id == id);
     final index = _data.indexOf(item);
 
     filterBlocks.insert(insertToIndex, item);
     _animatedListKey.currentState?.insertItem(0);
-    _scrollController.animateTo(
-      0.0,
-      curve: Curves.easeOut,
-      duration: const Duration(milliseconds: 300),
-    );
+    if (groups.isNotEmpty && lecturers.isNotEmpty && classroms.isNotEmpty) {
+      try {
+        await _scrollController.animateTo(
+          0.0,
+          curve: Curves.easeOut,
+          duration: const Duration(milliseconds: 300),
+        );
+      } catch (e) {
+        return;
+      }
+    }
   }
 
   void unfocusAutocomplete() {
