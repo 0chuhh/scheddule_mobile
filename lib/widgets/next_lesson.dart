@@ -11,6 +11,7 @@ import 'package:schedule_mobile/screens/my_schedule_screen.dart';
 import 'package:schedule_mobile/utils/date_is_today.dart';
 import 'package:schedule_mobile/utils/day_names.dart';
 import 'package:schedule_mobile/utils/schedule_item_format.dart';
+import 'package:schedule_mobile/widgets/life_cycle_observer.dart';
 // import 'package:alarm/alarm.dart';
 
 import '../themes/styles.dart';
@@ -33,7 +34,7 @@ class NextLesson extends StatefulWidget {
   }
 }
 
-class NextLessonState extends State<NextLesson> {
+class NextLessonState extends LifecycleWatcherState<NextLesson> {
   bool notif = false;
   ScheduleModel? nearestScheduleModel;
   Timer? currentCoupleTimer =
@@ -60,7 +61,6 @@ class NextLessonState extends State<NextLesson> {
     // TODO: implement dispose
     checkingTimerNearestCouple!.cancel();
     currentCoupleTimer!.cancel();
-    stopAlarm();
     super.dispose();
   }
 
@@ -484,14 +484,16 @@ class NextLessonState extends State<NextLesson> {
                                     fontWeight: FontWeight.w600, fontSize: 10),
                               ),
                             Text(
-                              '${nearestScheduleModel?.name}',
+                              '${nearestScheduleModel!.name.length > 60 ? '${nearestScheduleModel!.name.substring(0, 60)}...' : nearestScheduleModel?.name}',
                               style: const TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.w500,
                                   height: 1),
                             ),
                             Text(
-                              '${nearestScheduleModel?.lecturer}',
+                              nearestScheduleModel!.lecturer.length > 35
+                                  ? '${nearestScheduleModel!.lecturer.substring(0, 35)}...'
+                                  : nearestScheduleModel!.lecturer,
                               style: const TextStyle(fontSize: 10),
                             ),
                           ],
@@ -589,5 +591,27 @@ class NextLessonState extends State<NextLesson> {
         ),
       ),
     );
+  }
+
+  @override
+  void onDetached() {
+    print('detached');
+  }
+
+  @override
+  void onInactive() {
+    print('inaactive');
+  }
+
+  @override
+  void onPaused() {
+    checkingTimerNearestCouple!.cancel();
+    currentCoupleTimer!.cancel();
+    print('paused');
+  }
+
+  @override
+  void onResumed() {
+    getNearestCouple(DateTime.now());
   }
 }
