@@ -12,6 +12,7 @@ import 'package:schedule_mobile/utils/date_is_today.dart';
 import 'package:schedule_mobile/utils/day_names.dart';
 import 'package:schedule_mobile/utils/schedule_item_format.dart';
 import 'package:schedule_mobile/widgets/life_cycle_observer.dart';
+import 'package:schedule_mobile/widgets/week.dart';
 // import 'package:alarm/alarm.dart';
 
 import '../themes/styles.dart';
@@ -223,6 +224,8 @@ class NextLessonState extends LifecycleWatcherState<NextLesson> {
 
   void getNearestCouple(DateTime day) async {
     var gotElement = false;
+    checkingTimerNearestCouple!.cancel();
+    currentCoupleTimer!.cancel();
     if (dateIsToday(day)) {
       if (widget.daySchedule.length > 0) {
         widget.daySchedule
@@ -318,9 +321,11 @@ class NextLessonState extends LifecycleWatcherState<NextLesson> {
       tempSchedule = widget.schedule
           .where((element) =>
               element.weekDay.toLowerCase() ==
-              dayNames[dateTemp.weekday - 1].toLowerCase())
+                  dayNames[dateTemp.weekday - 1].toLowerCase() &&
+              element.weekType == Week(date: dateTemp).getWeekType())
           .toList();
     }
+
     var currentScheduleModelTime = tempSchedule.first!.couple.time;
     currentScheduleModelTime = DateTime(
         dateTemp.year,
