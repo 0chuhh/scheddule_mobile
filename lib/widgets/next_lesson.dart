@@ -128,12 +128,12 @@ class NextLessonState extends LifecycleWatcherState<NextLesson> {
   void setAlarm(DateTime dateTime, String name) async {
     await Alarm.init();
     AlarmSettings alarmSettings;
-    if (dateTime.difference(DateTime.now()).inMinutes > 5) {
+    if (dateTime.difference(DateTime.now()).inMinutes >= 20) {
       alarmSettings = AlarmSettings(
-        dateTime: dateTime.subtract(const Duration(minutes: 5)),
+        dateTime: dateTime.subtract(const Duration(minutes: 20)),
         assetAudioPath: 'assets/sample3.mp3',
         loopAudio: true,
-        notificationTitle: '5 минут до пары',
+        notificationTitle: '20 минут до пары',
         notificationBody: 'Пара ${name} скоро начнется..',
         enableNotificationOnKill: true,
         id: 1,

@@ -16,113 +16,116 @@ class RootScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AutoTabsScaffold(
-      routes: [
-        MyScheduleRouter(key: myScheduleKey),
-        const SchedulesRouter(),
-        const BellScheduleRouter(),
-        SettingsRouter(onGroupChanged: onGroupChange),
-      ],
-      bottomNavigationBuilder: (_, tabsRouter) {
-        return BottomNavBar(
-          currentIndex: tabsRouter.activeIndex,
-          onTap: tabsRouter.setActiveIndex,
-          items: [
-            BottomNavigationBarItem(
-              icon: Column(
-                children: [
-                  const Icon(Icons.calendar_month_outlined),
-                  Container(
-                    width: 100,
-                    child: Text(
-                      "Мое расписание",
-                      overflow: TextOverflow.visible,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          height: 1,
-                          fontSize: 10,
-                          color: tabsRouter.activeIndex == 0
-                              ? Styles.primaryColor
-                              : Styles.textColor),
-                    ),
-                  )
-                ],
-              ),
-              label: "",
-            ),
-            BottomNavigationBarItem(
-              icon: Container(
-                transform: Matrix4.compose(vector.Vector3(0, 0, 0),
-                    vector.Quaternion(0, 0, 0, 0), vector.Vector3(1, 1, 1)),
-                alignment: Alignment.topCenter,
-                child: Column(
-                  children: [
-                    const Icon(Icons.calendar_today_outlined),
-                    Container(
-                      width: 100,
-                      child: Text(
-                        "Расписание",
-                        overflow: TextOverflow.visible,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            height: 1,
-                            fontSize: 10,
-                            color: tabsRouter.activeIndex == 1
-                                ? Styles.primaryColor
-                                : Styles.textColor),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-              label: "",
-            ),
-            BottomNavigationBarItem(
-              icon: Column(
-                children: [
-                  const Icon(Icons.watch_later_outlined),
-                  Container(
-                    width: 100,
-                    child: Text(
-                      "Расписание звонков",
-                      overflow: TextOverflow.visible,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          height: 1,
-                          fontSize: 10,
-                          color: tabsRouter.activeIndex == 2
-                              ? Styles.primaryColor
-                              : Styles.textColor),
-                    ),
-                  )
-                ],
-              ),
-              label: "",
-            ),
-            BottomNavigationBarItem(
-                icon: Column(
-                  children: [
-                    const Icon(Icons.settings),
-                    Container(
-                      width: 100,
-                      child: Text(
-                        "Настройки",
-                        overflow: TextOverflow.visible,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            height: 1,
-                            fontSize: 10,
-                            color: tabsRouter.activeIndex == 3
-                                ? Styles.primaryColor
-                                : Styles.textColor),
-                      ),
-                    )
-                  ],
-                ),
-                label: ""),
+    final mediaQueryData = MediaQuery.of(context);
+    return MediaQuery(
+        data: mediaQueryData.copyWith(textScaleFactor: 1.0),
+        child: AutoTabsScaffold(
+          routes: [
+            MyScheduleRouter(key: myScheduleKey),
+            const SchedulesRouter(),
+            const BellScheduleRouter(),
+            SettingsRouter(onGroupChanged: onGroupChange),
           ],
-        );
-      },
-    );
+          bottomNavigationBuilder: (_, tabsRouter) {
+            return BottomNavBar(
+              currentIndex: tabsRouter.activeIndex,
+              onTap: tabsRouter.setActiveIndex,
+              items: [
+                BottomNavigationBarItem(
+                  icon: Column(
+                    children: [
+                      const Icon(Icons.calendar_month_outlined),
+                      Container(
+                        width: 100,
+                        child: Text(
+                          "Мое расписание",
+                          overflow: TextOverflow.visible,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              height: 1,
+                              fontSize: 10,
+                              color: tabsRouter.activeIndex == 0
+                                  ? Styles.primaryColor
+                                  : Styles.textColor),
+                        ),
+                      )
+                    ],
+                  ),
+                  label: "",
+                ),
+                BottomNavigationBarItem(
+                  icon: Container(
+                    transform: Matrix4.compose(vector.Vector3(0, 0, 0),
+                        vector.Quaternion(0, 0, 0, 0), vector.Vector3(1, 1, 1)),
+                    alignment: Alignment.topCenter,
+                    child: Column(
+                      children: [
+                        const Icon(Icons.calendar_today_outlined),
+                        Container(
+                          width: 100,
+                          child: Text(
+                            "Расписание",
+                            overflow: TextOverflow.visible,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                height: 1,
+                                fontSize: 10,
+                                color: tabsRouter.activeIndex == 1
+                                    ? Styles.primaryColor
+                                    : Styles.textColor),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  label: "",
+                ),
+                BottomNavigationBarItem(
+                  icon: Column(
+                    children: [
+                      const Icon(Icons.watch_later_outlined),
+                      Container(
+                        width: 100,
+                        child: Text(
+                          "Расписание звонков",
+                          overflow: TextOverflow.visible,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              height: 1,
+                              fontSize: 10,
+                              color: tabsRouter.activeIndex == 2
+                                  ? Styles.primaryColor
+                                  : Styles.textColor),
+                        ),
+                      )
+                    ],
+                  ),
+                  label: "",
+                ),
+                BottomNavigationBarItem(
+                    icon: Column(
+                      children: [
+                        const Icon(Icons.settings),
+                        Container(
+                          width: 100,
+                          child: Text(
+                            "Настройки",
+                            overflow: TextOverflow.visible,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                height: 1,
+                                fontSize: 10,
+                                color: tabsRouter.activeIndex == 3
+                                    ? Styles.primaryColor
+                                    : Styles.textColor),
+                          ),
+                        )
+                      ],
+                    ),
+                    label: ""),
+              ],
+            );
+          },
+        ));
   }
 }

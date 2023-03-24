@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:schedule_mobile/models/schedule_model.dart';
+import 'package:schedule_mobile/screens/my_schedule_screen.dart';
 import 'package:schedule_mobile/themes/styles.dart';
 
 class ScheduleListItem extends StatelessWidget {
-  const ScheduleListItem({super.key, required this.item});
+  const ScheduleListItem(
+      {super.key,
+      required this.item,
+      this.screenType = ScheduleScreenType.mySchedule});
 
   final ScheduleModel item;
-
+  final ScheduleScreenType screenType;
   String getFormatName(ScheduleItemFormat? format) {
     switch (format) {
       case ScheduleItemFormat.lection:
@@ -68,7 +72,10 @@ class ScheduleListItem extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.only(left: 10, right: 10, top: 5),
-              child: Text(item.lecturer),
+              child: Text(screenType == ScheduleScreenType.lecturerSchedule &&
+                      item.group != null
+                  ? item.group!
+                  : item.lecturer),
             ),
             Padding(
               padding: const EdgeInsets.only(left: 10, right: 10, top: 5),
@@ -76,7 +83,10 @@ class ScheduleListItem extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Text('Каф.${item.cathedra}'),
-                  Text(item.group != null ? item.group! : item.classroom),
+                  Text(item.group != null &&
+                          screenType == ScheduleScreenType.classroomSchedule
+                      ? item.group!
+                      : item.classroom),
                 ],
               ),
             ),

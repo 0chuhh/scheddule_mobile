@@ -286,8 +286,9 @@ class MyScheduleScreenState extends State<MyScheduleScreen> {
       body: Stack(children: <Widget>[
         Positioned.fill(
             child: !_loading
-                ? daySchedule.length > 0
+                ? daySchedule.isNotEmpty
                     ? ScheduleList(
+                        screenType: widget.screenType,
                         padding: (widget.screenType ==
                                         ScheduleScreenType.classroomSchedule ||
                                     widget.screenType ==

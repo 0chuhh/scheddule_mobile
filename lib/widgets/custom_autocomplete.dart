@@ -35,7 +35,6 @@ class CustomAutocomplete extends StatefulWidget {
 
 class CustomAutocompleteState extends State<CustomAutocomplete> {
   FocusNode _focusNode = FocusNode();
-  bool _expanded = false;
 
   void getFocus() {
     FocusScope.of(context).requestFocus(_focusNode);
@@ -57,9 +56,6 @@ class CustomAutocompleteState extends State<CustomAutocomplete> {
             initialValue: TextEditingValue(text: widget.initValue),
             optionsBuilder: (TextEditingValue textEditingValue) {
               if (textEditingValue.text == '') {
-                setState(() {
-                  _expanded = false;
-                });
                 return const Iterable<String>.empty();
               }
               if (widget.list.isNotEmpty) {
@@ -98,9 +94,6 @@ class CustomAutocompleteState extends State<CustomAutocomplete> {
                 decoration: InputDecoration(
                   contentPadding: const EdgeInsets.only(top: 0, left: 10),
                   suffixIconColor: Styles.primaryColor,
-                  suffixIcon: Icon(_expanded
-                      ? Icons.keyboard_arrow_up
-                      : Icons.keyboard_arrow_down),
                   constraints: const BoxConstraints(
                     maxHeight: 30,
                   ),
