@@ -168,6 +168,7 @@ class MyScheduleScreenState extends State<MyScheduleScreen> {
       });
       if (encoded.isNotEmpty) {
         List<ScheduleModel> mySchedule = ScheduleModel.decode(encoded);
+        mySchedule.sort(((a, b) => a.couple.time.compareTo(b.couple.time)));
         return mySchedule;
       }
     }
@@ -182,8 +183,8 @@ class MyScheduleScreenState extends State<MyScheduleScreen> {
       setState(() {
         _selectedGroup = selectedGroupTemp;
       });
-      List<ScheduleModel>? newSchedule = [];
-      // await getScheduleFromSharedPreferences(_selectedGroup);
+      List<ScheduleModel>? newSchedule =
+          await getScheduleFromSharedPreferences(_selectedGroup);
 
       if (newSchedule.isNotEmpty) {
         if (!mounted) return;
@@ -274,6 +275,7 @@ class MyScheduleScreenState extends State<MyScheduleScreen> {
                   dayNames[day.weekday - 1].toLowerCase() &&
               element.weekType == currentWeek)
           .toList();
+      daySchedule.sort(((a, b) => a.couple.number.compareTo(b.couple.number)));
     });
   }
 

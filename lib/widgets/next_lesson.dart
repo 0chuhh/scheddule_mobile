@@ -11,6 +11,7 @@ import 'package:schedule_mobile/screens/my_schedule_screen.dart';
 import 'package:schedule_mobile/utils/date_is_today.dart';
 import 'package:schedule_mobile/utils/day_names.dart';
 import 'package:schedule_mobile/utils/schedule_item_format.dart';
+import 'package:schedule_mobile/utils/show_alarm_set_dialog.dart';
 import 'package:schedule_mobile/widgets/life_cycle_observer.dart';
 import 'package:schedule_mobile/widgets/week.dart';
 // import 'package:alarm/alarm.dart';
@@ -186,7 +187,7 @@ class NextLessonState extends LifecycleWatcherState<NextLesson> {
                       const Gap(3),
                       Text('${alarmSettings.notificationBody}'),
                       GestureDetector(
-                        onTap: () {
+                        onTap: () async {
                           stopAlarm();
                           Navigator.pop(context);
                         },
@@ -211,15 +212,15 @@ class NextLessonState extends LifecycleWatcherState<NextLesson> {
   }
 
   void stopAlarm() async {
-    await Alarm.init();
-
-    if (Alarm.hasAlarm()) {
+    try {
       await Alarm.stop(1);
+      if (!mounted) return;
+      setState(() {
+        notif = false;
+      });
+    } catch (e) {
+      print('error');
     }
-    if (!mounted) return;
-    setState(() {
-      notif = false;
-    });
   }
 
   void getNearestCouple(DateTime day) async {
@@ -324,6 +325,7 @@ class NextLessonState extends LifecycleWatcherState<NextLesson> {
                   dayNames[dateTemp.weekday - 1].toLowerCase() &&
               element.weekType == Week(date: dateTemp).getWeekType())
           .toList();
+      tempSchedule.sort(((a, b) => a.couple.number.compareTo(b.couple.number)));
     }
 
     var currentScheduleModelTime = tempSchedule.first!.couple.time;
@@ -527,6 +529,9 @@ class NextLessonState extends LifecycleWatcherState<NextLesson> {
                                   setState(() {
                                     notif = true;
                                   });
+                                  if (context.mounted) {
+                                    showAlarmSetDialog(context);
+                                  }
                                 } else {
                                   stopAlarm();
                                   setState(() {

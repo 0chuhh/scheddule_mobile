@@ -46,6 +46,7 @@ flutter:
     - assets/sample.mp3
     - assets/sample2.mp3
     - assets/sample3.mp3
+    - assets/push-notification.svg
 
   fonts:
     - family: Montserrat
