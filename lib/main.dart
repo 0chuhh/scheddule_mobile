@@ -11,6 +11,7 @@ void main() {
           statusBarIconBrightness: Brightness.dark,
           statusBarColor: Colors.transparent,
           systemNavigationBarColor: Colors.white,
+          systemNavigationBarIconBrightness: Brightness.dark,
         )),
         runApp(ScheduleApp())
       });
