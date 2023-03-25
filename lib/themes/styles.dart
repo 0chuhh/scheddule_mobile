@@ -6,4 +6,6 @@ class Styles {
   static Color accentColor = const Color(0xFFFBAD39);
   static Color bgColor = const Color(0xFFE7E9FE);
   static Color textColor = const Color(0xFF1E1E1E);
+
+  static Color darkBgColor = const Color(0xFF211F1F);
 }

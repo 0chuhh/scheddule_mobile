@@ -21,6 +21,7 @@ dependencies:
   timelines: ^0.1.0
   shared_preferences: ^2.0.18
   alarm: ^0.2.0
+  flutter_theme_provider: ^0.0.4
   
 
 dev_dependencies:
