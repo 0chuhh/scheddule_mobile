@@ -40,8 +40,9 @@ class _ScheduleAppState extends State<ScheduleApp> {
             statusBarBrightness: Brightness.dark,
             statusBarIconBrightness: Brightness.dark,
             statusBarColor: Colors.transparent,
-            systemNavigationBarColor:
-                theme.getTheme()?.navigationBarTheme.backgroundColor,
+            systemNavigationBarColor: theme.getThemeName() == 'Light'
+                ? Colors.white
+                : const Color(0xFF3A3A3A),
             systemNavigationBarIconBrightness: Brightness.dark,
           ));
           return MaterialApp.router(

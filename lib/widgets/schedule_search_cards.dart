@@ -127,6 +127,7 @@ class _ScheduleSearchCardsState extends State<ScheduleSearchCards> {
                                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                                 backgroundColor: Styles.primaryColor,
                                 minimumSize: const Size.fromHeight(30),
+                                foregroundColor: Colors.white,
                                 padding: EdgeInsets.zero,
                               ),
                               child: const Text('Найти'),
@@ -192,6 +193,7 @@ class _ScheduleSearchCardsState extends State<ScheduleSearchCards> {
                               style: ElevatedButton.styleFrom(
                                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                                 backgroundColor: Styles.primaryColor,
+                                foregroundColor: Colors.white,
                                 minimumSize: const Size.fromHeight(
                                     30), // fromHeight use double.infinity as width and 40 is the height
                               ),
@@ -263,6 +265,7 @@ class _ScheduleSearchCardsState extends State<ScheduleSearchCards> {
                               style: ElevatedButton.styleFrom(
                                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                                 backgroundColor: Styles.primaryColor,
+                                foregroundColor: Colors.white,
                                 minimumSize: const Size.fromHeight(
                                     30), // fromHeight use double.infinity as width and 40 is the height
                               ),
