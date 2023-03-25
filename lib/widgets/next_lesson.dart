@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:alarm/alarm.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_theme_provider/flutter_theme_provider.dart';
 import 'package:gap/gap.dart';
 import 'package:schedule_mobile/models/schedule_model.dart';
 import 'package:schedule_mobile/repositories/schedules_repository.dart';
@@ -14,6 +15,7 @@ import 'package:schedule_mobile/utils/schedule_item_format.dart';
 import 'package:schedule_mobile/utils/show_alarm_set_dialog.dart';
 import 'package:schedule_mobile/widgets/life_cycle_observer.dart';
 import 'package:schedule_mobile/widgets/week.dart';
+import 'package:provider/provider.dart';
 // import 'package:alarm/alarm.dart';
 
 import '../themes/styles.dart';
@@ -343,264 +345,294 @@ class NextLessonState extends LifecycleWatcherState<NextLesson> {
 
   @override
   Widget build(BuildContext context) {
-    return Align(
-      alignment: Alignment.bottomCenter,
-      child: Container(
-        color: Colors.transparent,
-        margin: const EdgeInsets.only(top: 140),
-        padding: const EdgeInsets.only(left: 20, right: 20),
-        alignment: Alignment.bottomCenter,
-        child: Column(
-          children: nearestScheduleModel == null
-              ? []
-              : [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        currentCoupleTimer!.isActive
-                            ? 'Текущая пара'
-                            : 'Ближайшаяя пара',
-                        style: const TextStyle(fontWeight: FontWeight.w700),
-                      ),
-                      Container(
-                        padding: const EdgeInsets.only(
-                            left: 5, right: 5, top: 3, bottom: 3),
-                        decoration: BoxDecoration(
-                            color: Styles.accentColor,
-                            borderRadius: BorderRadius.circular(50)),
-                        child: Text(
-                          getFormatName(nearestScheduleModel?.format),
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(
-                              fontSize: 10, color: Colors.white),
-                        ),
-                      )
-                    ],
-                  ),
-                  const Gap(10),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Column(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
+    return Consumer<ThemeProvider>(
+        builder: (context, theme, child) => Align(
+              alignment: Alignment.bottomCenter,
+              child: Container(
+                color: Colors.transparent,
+                margin: const EdgeInsets.only(top: 140),
+                padding: const EdgeInsets.only(left: 20, right: 20),
+                alignment: Alignment.bottomCenter,
+                child: Column(
+                  children: nearestScheduleModel == null
+                      ? []
+                      : [
                           Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Container(
-                                alignment: Alignment.center,
-                                width: 40,
-                                height: 40,
-                                decoration: BoxDecoration(
-                                    gradient: const LinearGradient(
-                                      colors: [
-                                        Color(0xffdbdaff),
-                                        Color(0x29dbdaff)
-                                      ],
-                                      begin: Alignment.topLeft,
-                                      end: Alignment.bottomRight,
-                                    ),
-                                    borderRadius: BorderRadius.circular(6)),
-                                child: Text(
-                                  currentCoupleTimer!.isActive
-                                      ? getTimerString()[0]
-                                      : nearestScheduleModel!.couple.time.hour >
-                                              9
-                                          ? nearestScheduleModel!
-                                              .couple.time.hour
-                                              .toString()
-                                          : '0${nearestScheduleModel!.couple.time.hour.toString()}',
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 25),
-                                  textAlign: TextAlign.center,
-                                ),
+                              Text(
+                                currentCoupleTimer!.isActive
+                                    ? 'Текущая пара'
+                                    : 'Ближайшаяя пара',
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.w700),
                               ),
-                              const Gap(5),
-                              Column(
-                                children: [
-                                  Container(
-                                    width: 6,
-                                    height: 6,
-                                    decoration: BoxDecoration(
-                                        color: const Color(0xff1e1e1e),
-                                        borderRadius:
-                                            BorderRadius.circular(50)),
-                                  ),
-                                  const Gap(3),
-                                  Container(
-                                    width: 6,
-                                    height: 6,
-                                    decoration: BoxDecoration(
-                                        color: const Color(0xff1e1e1e),
-                                        borderRadius:
-                                            BorderRadius.circular(50)),
-                                  )
-                                ],
-                              ),
-                              const Gap(5),
                               Container(
-                                alignment: Alignment.center,
-                                width: 40,
-                                height: 40,
+                                padding: const EdgeInsets.only(
+                                    left: 5, right: 5, top: 3, bottom: 3),
                                 decoration: BoxDecoration(
-                                    gradient: const LinearGradient(
-                                      colors: [
-                                        Color(0xffdbdaff),
-                                        Color(0x29dbdaff)
-                                      ],
-                                      begin: Alignment.topLeft,
-                                      end: Alignment.bottomRight,
-                                    ),
-                                    borderRadius: BorderRadius.circular(6)),
+                                    color: Styles.accentColor,
+                                    borderRadius: BorderRadius.circular(50)),
                                 child: Text(
-                                  currentCoupleTimer!.isActive
-                                      ? getTimerString()[1]
-                                      : nearestScheduleModel!
-                                                  .couple.time.minute >
-                                              9
-                                          ? nearestScheduleModel!
-                                              .couple.time.minute
-                                              .toString()
-                                          : '0${nearestScheduleModel!.couple.time.minute.toString()}',
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 25),
+                                  getFormatName(nearestScheduleModel?.format),
                                   textAlign: TextAlign.center,
+                                  style: const TextStyle(
+                                      fontSize: 10, color: Colors.white),
                                 ),
                               )
                             ],
                           ),
                           const Gap(10),
-                        ],
-                      ),
-                      const Gap(7),
-                      Container(
-                        alignment: Alignment.topLeft,
-                        width: MediaQuery.of(context).size.width * 0.6,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            if (!today)
-                              Text(
-                                '${nearestScheduleModel?.couple.time.toString().substring(0, 10)}',
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.w600, fontSize: 10),
-                              ),
-                            Text(
-                              '${nearestScheduleModel!.name.length > 60 ? '${nearestScheduleModel!.name.substring(0, 60)}...' : nearestScheduleModel?.name}',
-                              style: const TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w500,
-                                  height: 1),
-                            ),
-                            Text(
-                              nearestScheduleModel!.lecturer.length > 35
-                                  ? '${nearestScheduleModel!.lecturer.substring(0, 35)}...'
-                                  : nearestScheduleModel!.lecturer,
-                              style: const TextStyle(fontSize: 10),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      currentCoupleTimer!.isActive
-                          ? Container(
-                              width: 95,
-                              child: const Text(
-                                'До конца пары осталось',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w700, fontSize: 10),
-                              ),
-                            )
-                          : GestureDetector(
-                              onTap: () {
-                                if (!notif) {
-                                  setAlarm(nearestScheduleModel!.couple.time,
-                                      nearestScheduleModel!.name);
-                                  setState(() {
-                                    notif = true;
-                                  });
-                                  if (context.mounted) {
-                                    showAlarmSetDialog(context);
-                                  }
-                                } else {
-                                  stopAlarm();
-                                  setState(() {
-                                    notif = false;
-                                  });
-                                }
-                              },
-                              child: Container(
-                                alignment: Alignment.center,
-                                width: 95,
-                                height: 25,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(3),
-                                    color: !notif
-                                        ? Styles.primaryColor
-                                        : const Color.fromARGB(
-                                            158, 209, 209, 209)),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Transform.rotate(
-                                      angle: 6.5,
-                                      child: Icon(
-                                        Icons.notifications_outlined,
-                                        size: 15,
-                                        color: !notif
-                                            ? Colors.white
-                                            : const Color.fromARGB(
-                                                255, 104, 103, 103),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Column(
+                                mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Container(
+                                        alignment: Alignment.center,
+                                        width: 40,
+                                        height: 40,
+                                        decoration: BoxDecoration(
+                                            gradient: LinearGradient(
+                                              colors: theme.getThemeName() ==
+                                                      'Light'
+                                                  ? [
+                                                      const Color(0xffdbdaff),
+                                                      const Color(0x29dbdaff)
+                                                    ]
+                                                  : [
+                                                      const Color(0xFF6A6A6B),
+                                                      const Color(0xFF37373C)
+                                                    ],
+                                              begin: Alignment.topLeft,
+                                              end: Alignment.bottomRight,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(6)),
+                                        child: Text(
+                                          currentCoupleTimer!.isActive
+                                              ? getTimerString()[0]
+                                              : nearestScheduleModel!
+                                                          .couple.time.hour >
+                                                      9
+                                                  ? nearestScheduleModel!
+                                                      .couple.time.hour
+                                                      .toString()
+                                                  : '0${nearestScheduleModel!.couple.time.hour.toString()}',
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.w700,
+                                              fontSize: 25),
+                                          textAlign: TextAlign.center,
+                                        ),
                                       ),
+                                      const Gap(5),
+                                      Column(
+                                        children: [
+                                          Container(
+                                            width: 6,
+                                            height: 6,
+                                            decoration: BoxDecoration(
+                                                color: theme.getThemeName() ==
+                                                        'Light'
+                                                    ? const Color(0xff1e1e1e)
+                                                    : Colors.white,
+                                                borderRadius:
+                                                    BorderRadius.circular(50)),
+                                          ),
+                                          const Gap(3),
+                                          Container(
+                                            width: 6,
+                                            height: 6,
+                                            decoration: BoxDecoration(
+                                                color: theme.getThemeName() ==
+                                                        'Light'
+                                                    ? const Color(0xff1e1e1e)
+                                                    : Colors.white,
+                                                borderRadius:
+                                                    BorderRadius.circular(50)),
+                                          )
+                                        ],
+                                      ),
+                                      const Gap(5),
+                                      Container(
+                                        alignment: Alignment.center,
+                                        width: 40,
+                                        height: 40,
+                                        decoration: BoxDecoration(
+                                            gradient: LinearGradient(
+                                              colors: theme.getThemeName() ==
+                                                      'Light'
+                                                  ? [
+                                                      const Color(0xffdbdaff),
+                                                      const Color(0x29dbdaff)
+                                                    ]
+                                                  : [
+                                                      const Color(0xFF6A6A6B),
+                                                      const Color(0xFF37373C)
+                                                    ],
+                                              begin: Alignment.topLeft,
+                                              end: Alignment.bottomRight,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(6)),
+                                        child: Text(
+                                          currentCoupleTimer!.isActive
+                                              ? getTimerString()[1]
+                                              : nearestScheduleModel!
+                                                          .couple.time.minute >
+                                                      9
+                                                  ? nearestScheduleModel!
+                                                      .couple.time.minute
+                                                      .toString()
+                                                  : '0${nearestScheduleModel!.couple.time.minute.toString()}',
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.w700,
+                                              fontSize: 25),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                  const Gap(10),
+                                ],
+                              ),
+                              const Gap(7),
+                              Container(
+                                alignment: Alignment.topLeft,
+                                width: MediaQuery.of(context).size.width * 0.6,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    if (!today)
+                                      Text(
+                                        '${nearestScheduleModel?.couple.time.toString().substring(0, 10)}',
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 10),
+                                      ),
+                                    Text(
+                                      '${nearestScheduleModel!.name.length > 60 ? '${nearestScheduleModel!.name.substring(0, 60)}...' : nearestScheduleModel?.name}',
+                                      style: const TextStyle(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w500,
+                                          height: 1),
                                     ),
                                     Text(
-                                      'Напомнить',
-                                      style: TextStyle(
-                                          fontSize: 10,
-                                          color: !notif
-                                              ? Colors.white
-                                              : const Color.fromARGB(
-                                                  255, 68, 68, 68)),
-                                    )
+                                      nearestScheduleModel!.lecturer.length > 35
+                                          ? '${nearestScheduleModel!.lecturer.substring(0, 35)}...'
+                                          : nearestScheduleModel!.lecturer,
+                                      style: const TextStyle(fontSize: 10),
+                                    ),
                                   ],
                                 ),
                               ),
-                            ),
-                      const Gap(8),
-                      Container(
-                        width: MediaQuery.of(context).size.width * 0.6,
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'Каф.${nearestScheduleModel?.cathedra}',
-                              style: const TextStyle(fontSize: 10),
-                            ),
-                            Text(
-                              'Ауд. ${nearestScheduleModel?.classroom}',
-                              style: const TextStyle(fontSize: 10),
-                            )
-                          ],
-                        ),
-                      )
-                    ],
-                  )
-                ],
-        ),
-      ),
-    );
+                            ],
+                          ),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              currentCoupleTimer!.isActive
+                                  ? Container(
+                                      width: 95,
+                                      child: const Text(
+                                        'До конца пары осталось',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w700,
+                                            fontSize: 10),
+                                      ),
+                                    )
+                                  : GestureDetector(
+                                      onTap: () {
+                                        if (!notif) {
+                                          setAlarm(
+                                              nearestScheduleModel!.couple.time,
+                                              nearestScheduleModel!.name);
+                                          setState(() {
+                                            notif = true;
+                                          });
+                                          if (context.mounted) {
+                                            showAlarmSetDialog(context);
+                                          }
+                                        } else {
+                                          stopAlarm();
+                                          setState(() {
+                                            notif = false;
+                                          });
+                                        }
+                                      },
+                                      child: Container(
+                                        alignment: Alignment.center,
+                                        width: 95,
+                                        height: 25,
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(3),
+                                            color: !notif
+                                                ? Styles.primaryColor
+                                                : const Color.fromARGB(
+                                                    158, 209, 209, 209)),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Transform.rotate(
+                                              angle: 6.5,
+                                              child: Icon(
+                                                Icons.notifications_outlined,
+                                                size: 15,
+                                                color: !notif
+                                                    ? Colors.white
+                                                    : const Color.fromARGB(
+                                                        255, 104, 103, 103),
+                                              ),
+                                            ),
+                                            Text(
+                                              'Напомнить',
+                                              style: TextStyle(
+                                                  fontSize: 10,
+                                                  color: !notif
+                                                      ? Colors.white
+                                                      : const Color.fromARGB(
+                                                          255, 68, 68, 68)),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                              const Gap(8),
+                              Container(
+                                width: MediaQuery.of(context).size.width * 0.6,
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      'Каф.${nearestScheduleModel?.cathedra}',
+                                      style: const TextStyle(fontSize: 10),
+                                    ),
+                                    Text(
+                                      'Ауд. ${nearestScheduleModel?.classroom}',
+                                      style: const TextStyle(fontSize: 10),
+                                    )
+                                  ],
+                                ),
+                              )
+                            ],
+                          )
+                        ],
+                ),
+              ),
+            ));
   }
 
   @override

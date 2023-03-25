@@ -85,31 +85,39 @@ class CollapsibleCalendarState extends State<CollapsibleCalendar> {
 
   @override
   Widget build(BuildContext context) {
-    return Align(
-        alignment: widget.align,
-        child: Stack(
-          clipBehavior: Clip.none,
-          children: <Widget>[
-            SizedBox(
-              width: MediaQuery.of(context).size.width - 50,
-              child: CalendarAnimatedContainer(
-                  marginTop: widget.marginTop,
-                  format: _format,
-                  children: <Widget>[
-                    BaseCalendar(changeFormat, _selectedDay, changeDay, _format,
-                        _headerVisible),
-                    Positioned(
-                        bottom: 0,
-                        child: CalendarCollapseButton(
-                          changeFormat: changeFormat,
-                          monthName: _monthName,
-                          selectedDay: _selectedDay,
-                          week: _week,
-                          format: _format,
-                        ))
-                  ]),
-            ),
-          ],
-        ));
+    return WillPopScope(
+        child: Align(
+            alignment: widget.align,
+            child: Stack(
+              clipBehavior: Clip.none,
+              children: <Widget>[
+                SizedBox(
+                  width: MediaQuery.of(context).size.width - 50,
+                  child: CalendarAnimatedContainer(
+                      marginTop: widget.marginTop,
+                      format: _format,
+                      children: <Widget>[
+                        BaseCalendar(changeFormat, _selectedDay, changeDay,
+                            _format, _headerVisible),
+                        Positioned(
+                            bottom: 0,
+                            child: CalendarCollapseButton(
+                              changeFormat: changeFormat,
+                              monthName: _monthName,
+                              selectedDay: _selectedDay,
+                              week: _week,
+                              format: _format,
+                            ))
+                      ]),
+                ),
+              ],
+            )),
+        onWillPop: () async {
+          if (_format == CalendarFormat.month) {
+            changeFormat();
+            return false;
+          }
+          return true;
+        });
   }
 }

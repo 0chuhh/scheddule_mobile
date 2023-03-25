@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:flutter_theme_provider/flutter_theme_provider.dart';
 import 'package:gap/gap.dart';
 import 'package:schedule_mobile/models/schedule_model.dart';
 import 'package:schedule_mobile/repositories/schedules_repository.dart';
@@ -12,6 +13,7 @@ import 'package:schedule_mobile/utils/get_date_from_extremular.dart';
 import 'package:schedule_mobile/utils/show_modal_no_internet_connection.dart';
 import 'package:schedule_mobile/widgets/collapsible_calendar/collapsible_calendar.dart';
 import 'package:schedule_mobile/widgets/app_bar_painter.dart';
+import 'package:schedule_mobile/widgets/dark_bar_painter.dart';
 import 'package:schedule_mobile/widgets/date_picker/date_picker.dart';
 import 'package:schedule_mobile/widgets/date_picker/date_toggle_button.dart';
 import 'package:schedule_mobile/widgets/modal_choose_group.dart';
@@ -21,6 +23,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../themes/styles.dart';
 import '../widgets/next_lesson.dart';
 import "package:collection/collection.dart";
+import 'package:provider/provider.dart';
 
 enum ScheduleScreenType {
   mySchedule,
@@ -64,6 +67,7 @@ class MyScheduleScreenState extends State<MyScheduleScreen> {
     setState(() {
       _loading = true;
     });
+    final bool internet = await checkInternetConnection();
     switch (widget.screenType) {
       case ScheduleScreenType.mySchedule:
         getMySchedule().then((value) {
@@ -81,13 +85,31 @@ class MyScheduleScreenState extends State<MyScheduleScreen> {
 
         break;
       case ScheduleScreenType.classroomSchedule:
-        getClassRoomSchedule(widget.queryParam);
+        if (internet) {
+          getClassRoomSchedule(widget.queryParam);
+        } else {
+          if (mounted) {
+            showModalNoInternetConnection(context);
+          }
+        }
         break;
       case ScheduleScreenType.groupSchedule:
-        getGroupSchedule(widget.queryParam);
+        if (internet) {
+          getGroupSchedule(widget.queryParam);
+        } else {
+          if (mounted) {
+            showModalNoInternetConnection(context);
+          }
+        }
         break;
       case ScheduleScreenType.lecturerSchedule:
-        getLecturerSchedule(widget.queryParam, widget.scheduleFormat);
+        if (internet) {
+          getLecturerSchedule(widget.queryParam, widget.scheduleFormat);
+        } else {
+          if (mounted) {
+            showModalNoInternetConnection(context);
+          }
+        }
         break;
       default:
         break;
@@ -281,233 +303,257 @@ class MyScheduleScreenState extends State<MyScheduleScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      backgroundColor: Styles.bgColor,
-      extendBodyBehindAppBar: true,
-      body: Stack(children: <Widget>[
-        Positioned.fill(
-            child: !_loading
-                ? daySchedule.isNotEmpty
-                    ? ScheduleList(
-                        screenType: widget.screenType,
-                        padding: (widget.screenType ==
-                                        ScheduleScreenType.classroomSchedule ||
+    return Consumer<ThemeProvider>(
+        builder: (context, theme, child) => Scaffold(
+              resizeToAvoidBottomInset: false,
+              extendBodyBehindAppBar: true,
+              body: Stack(children: <Widget>[
+                Positioned.fill(
+                    child: !_loading
+                        ? daySchedule.isNotEmpty
+                            ? ScheduleList(
+                                screenType: widget.screenType,
+                                padding: (widget.screenType ==
+                                                ScheduleScreenType
+                                                    .classroomSchedule ||
+                                            widget.screenType ==
+                                                ScheduleScreenType
+                                                    .groupSchedule ||
+                                            widget.screenType ==
+                                                ScheduleScreenType
+                                                    .lecturerSchedule) &&
+                                        schedule.isNotEmpty &&
+                                        schedule.first.form == '1'
+                                    ? 150
+                                    : widget.screenType ==
+                                                ScheduleScreenType.mySchedule &&
+                                            schedule.isNotEmpty &&
+                                            schedule.first.form == '1'
+                                        ? 110
+                                        : widget.screenType ==
+                                                    ScheduleScreenType
+                                                        .classroomSchedule ||
+                                                widget.screenType ==
+                                                    ScheduleScreenType
+                                                        .groupSchedule ||
+                                                widget.screenType ==
+                                                    ScheduleScreenType
+                                                        .lecturerSchedule
+                                            ? 180
+                                            : 250,
+                                // : 160,
+                                schedule: daySchedule,
+                              )
+                            : Container(
+                                margin: EdgeInsets.only(top: 150),
+                                child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        schedule.isEmpty
+                                            ? 'По данному запросу нет расписания'
+                                            : widget.screenType ==
+                                                    ScheduleScreenType
+                                                        .mySchedule
+                                                ? 'Сегодня у вас нет занятий. Советуем потратить это время на самоподготовку.'
+                                                : widget.screenType ==
+                                                        ScheduleScreenType
+                                                            .classroomSchedule
+                                                    ? 'Сегодня в данной аудитории нет занятий.'
+                                                    : widget.screenType ==
+                                                            ScheduleScreenType
+                                                                .groupSchedule
+                                                        ? 'Сегодня у группы нет занятий'
+                                                        : 'Сегодня преподаватель не ведет занятия',
+                                        textAlign: TextAlign.center,
+                                        style: const TextStyle(
+                                            color: Color(0xFF9498BE),
+                                            fontWeight: FontWeight.w700,
+                                            fontSize: 16),
+                                      ),
+                                      SvgPicture.asset(
+                                        'assets/noLessons.svg',
+                                        width: 270,
+                                      )
+                                    ]),
+                              )
+                        : const Center(child: CircularProgressIndicator())),
+                Stack(children: <Widget>[
+                  CustomPaint(
+                    painter: theme.getThemeName() == 'Light'
+                        ? AppBarPainter()
+                        : DarkAppBarPainter(),
+                    child: Container(
+                      color: Colors.transparent,
+                      width: MediaQuery.of(context).size.width,
+                      height:
+                          widget.screenType == ScheduleScreenType.mySchedule &&
+                                  schedule.isNotEmpty &&
+                                  schedule.first.form == '0'
+                              // ? 260
+                              ? 260
+                              : schedule.isEmpty
+                                  ? 80
+                                  : widget.screenType ==
+                                              ScheduleScreenType.mySchedule &&
+                                          schedule.isNotEmpty &&
+                                          schedule.first.form == '1'
+                                      ? 120
+                                      : ((widget.screenType ==
+                                                      ScheduleScreenType
+                                                          .groupSchedule ||
+                                                  widget.screenType ==
+                                                      ScheduleScreenType
+                                                          .classroomSchedule ||
+                                                  widget.screenType ==
+                                                      ScheduleScreenType
+                                                          .lecturerSchedule) &&
+                                              schedule.isNotEmpty &&
+                                              schedule.first.form == '1')
+                                          ? 160
+                                          : 190,
+                      child:
+                          widget.screenType == ScheduleScreenType.mySchedule &&
+                                  _selectedGroup != '' &&
+                                  schedule.isNotEmpty &&
+                                  schedule.first.form == '0'
+                              ? NextLesson(
+                                  key: _nextLesson,
+                                  selectedGroup: _selectedGroup,
+                                  schedule: schedule,
+                                  daySchedule: daySchedule,
+                                  selectedDay: _selectedDay,
+                                )
+                              // ? null
+                              : null,
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                        top: widget.screenType != ScheduleScreenType.mySchedule
+                            ? 30
+                            : 0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        if (widget.screenType ==
+                                ScheduleScreenType.classroomSchedule ||
+                            widget.screenType ==
+                                ScheduleScreenType.groupSchedule ||
+                            widget.screenType ==
+                                ScheduleScreenType.lecturerSchedule)
+                          Padding(
+                            padding: const EdgeInsets.only(top: 10),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                GestureDetector(
+                                  onTap: () => context.router.pop(),
+                                  child: Container(
+                                      width: 80,
+                                      height: 30,
+                                      decoration: BoxDecoration(
+                                          color: Styles.primaryColor,
+                                          borderRadius: const BorderRadius.only(
+                                              topRight: Radius.circular(50),
+                                              bottomRight:
+                                                  Radius.circular(50))),
+                                      child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: const [
+                                            Icon(
+                                              Icons.keyboard_arrow_left,
+                                              color: Colors.white,
+                                            ),
+                                            Text(
+                                              'Назад',
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            )
+                                          ])),
+                                ),
+                                const Gap(20),
+                                Container(
+                                  constraints: BoxConstraints(maxWidth: 200),
+                                  child: Text(
                                     widget.screenType ==
-                                        ScheduleScreenType.groupSchedule ||
-                                    widget.screenType ==
-                                        ScheduleScreenType.lecturerSchedule) &&
-                                schedule.isNotEmpty &&
-                                schedule.first.form == '1'
-                            ? 150
-                            : widget.screenType ==
-                                        ScheduleScreenType.mySchedule &&
-                                    schedule.isNotEmpty &&
-                                    schedule.first.form == '1'
-                                ? 110
-                                : widget.screenType ==
+                                            ScheduleScreenType.classroomSchedule
+                                        ? 'Аудитория ${widget.queryParam ?? widget.queryParam}'
+                                        : widget.screenType ==
+                                                ScheduleScreenType
+                                                    .lecturerSchedule
+                                            ? getLecturerFioInitials(
+                                                widget.queryParam!)
+                                            : 'Группа ${widget.queryParam ?? widget.queryParam}',
+                                    textAlign: TextAlign.center,
+                                    style: const TextStyle(
+                                        color: Color(0xFF9498BE),
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 12),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        schedule.isNotEmpty && schedule.first.form == '0'
+                            ? CollapsibleCalendar(
+                                marginTop: widget.screenType !=
+                                        ScheduleScreenType.mySchedule
+                                    ? 10
+                                    : 40,
+                                key: _collapsibleCalendarKey,
+                                onDayChanged: (selectedDay) {
+                                  dayChanged(selectedDay);
+                                },
+                              )
+                            : (widget.screenType ==
                                             ScheduleScreenType
                                                 .classroomSchedule ||
                                         widget.screenType ==
                                             ScheduleScreenType.groupSchedule ||
                                         widget.screenType ==
-                                            ScheduleScreenType.lecturerSchedule
-                                    ? 180
-                                    : 250,
-                        // : 160,
-                        schedule: daySchedule,
-                      )
-                    : Container(
-                        margin: EdgeInsets.only(top: 150),
-                        child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                schedule.isEmpty
-                                    ? 'По данному запросу нет расписания'
-                                    : widget.screenType ==
-                                            ScheduleScreenType.mySchedule
-                                        ? 'Сегодня у вас нет занятий. Советуем потратить это время на самоподготовку.'
-                                        : widget.screenType ==
-                                                ScheduleScreenType
-                                                    .classroomSchedule
-                                            ? 'Сегодня в данной аудитории нет занятий.'
-                                            : widget.screenType ==
-                                                    ScheduleScreenType
-                                                        .groupSchedule
-                                                ? 'Сегодня у группы нет занятий'
-                                                : 'Сегодня преподаватель не ведет занятия',
-                                textAlign: TextAlign.center,
-                                style: const TextStyle(
-                                    color: Color(0xFF9498BE),
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 16),
-                              ),
-                              SvgPicture.asset(
-                                'assets/noLessons.svg',
-                                width: 270,
-                              )
-                            ]),
-                      )
-                : const Center(child: CircularProgressIndicator())),
-        Stack(children: <Widget>[
-          CustomPaint(
-            painter: AppBarPainter(),
-            child: Container(
-              color: Colors.transparent,
-              width: MediaQuery.of(context).size.width,
-              height: widget.screenType == ScheduleScreenType.mySchedule &&
-                      schedule.isNotEmpty &&
-                      schedule.first.form == '0'
-                  // ? 260
-                  ? 260
-                  : schedule.isEmpty
-                      ? 80
-                      : widget.screenType == ScheduleScreenType.mySchedule &&
-                              schedule.isNotEmpty &&
-                              schedule.first.form == '1'
-                          ? 120
-                          : ((widget.screenType ==
-                                          ScheduleScreenType.groupSchedule ||
-                                      widget.screenType ==
-                                          ScheduleScreenType
-                                              .classroomSchedule ||
-                                      widget.screenType ==
-                                          ScheduleScreenType
-                                              .lecturerSchedule) &&
-                                  schedule.isNotEmpty &&
-                                  schedule.first.form == '1')
-                              ? 160
-                              : 190,
-              child: widget.screenType == ScheduleScreenType.mySchedule &&
-                      _selectedGroup != '' &&
-                      schedule.isNotEmpty &&
-                      schedule.first.form == '0'
-                  ? NextLesson(
-                      key: _nextLesson,
-                      selectedGroup: _selectedGroup,
-                      schedule: schedule,
-                      daySchedule: daySchedule,
-                      selectedDay: _selectedDay,
-                    )
-                  // ? null
-                  : null,
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(
-                top: widget.screenType != ScheduleScreenType.mySchedule
-                    ? 30
-                    : 0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                if (widget.screenType == ScheduleScreenType.classroomSchedule ||
-                    widget.screenType == ScheduleScreenType.groupSchedule ||
-                    widget.screenType == ScheduleScreenType.lecturerSchedule)
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        GestureDetector(
-                          onTap: () => context.router.pop(),
-                          child: Container(
-                              width: 80,
-                              height: 30,
-                              decoration: BoxDecoration(
-                                  color: Styles.primaryColor,
-                                  borderRadius: const BorderRadius.only(
-                                      topRight: Radius.circular(50),
-                                      bottomRight: Radius.circular(50))),
-                              child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: const [
-                                    Icon(
-                                      Icons.keyboard_arrow_left,
-                                      color: Colors.white,
-                                    ),
-                                    Text(
-                                      'Назад',
-                                      style: TextStyle(color: Colors.white),
-                                    )
-                                  ])),
-                        ),
-                        const Gap(20),
-                        Container(
-                          constraints: BoxConstraints(maxWidth: 200),
-                          child: Text(
-                            widget.screenType ==
-                                    ScheduleScreenType.classroomSchedule
-                                ? 'Аудитория ${widget.queryParam ?? widget.queryParam}'
-                                : widget.screenType ==
-                                        ScheduleScreenType.lecturerSchedule
-                                    ? getLecturerFioInitials(widget.queryParam!)
-                                    : 'Группа ${widget.queryParam ?? widget.queryParam}',
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(
-                                color: Color(0xFF9498BE),
-                                fontWeight: FontWeight.w700,
-                                fontSize: 12),
-                          ),
-                        ),
+                                            ScheduleScreenType
+                                                .lecturerSchedule ||
+                                        (widget.screenType ==
+                                                ScheduleScreenType.mySchedule &&
+                                            schedule.isNotEmpty &&
+                                            schedule.first.form == '1')) &&
+                                    extremularDates.isNotEmpty
+                                ? Container(
+                                    margin: EdgeInsets.only(
+                                        top: widget.screenType ==
+                                                ScheduleScreenType.mySchedule
+                                            ? 32
+                                            : 0),
+                                    child: DatePicker(
+                                        key: _DatePickerKey,
+                                        isSelected: datePickerIsSelected,
+                                        onDateChanged: (index) {
+                                          setState(() {
+                                            for (var i = 0;
+                                                i < datePickerIsSelected.length;
+                                                i++) {
+                                              datePickerIsSelected[i] =
+                                                  index == i;
+                                            }
+                                            daySchedule = schedule
+                                                .where((element) =>
+                                                    element.weekDay ==
+                                                    extremularDates[index])
+                                                .toList();
+                                          });
+                                        },
+                                        children: extremularDates),
+                                  )
+                                : Container(),
                       ],
                     ),
-                  ),
-                schedule.isNotEmpty && schedule.first.form == '0'
-                    ? CollapsibleCalendar(
-                        marginTop:
-                            widget.screenType != ScheduleScreenType.mySchedule
-                                ? 10
-                                : 40,
-                        key: _collapsibleCalendarKey,
-                        onDayChanged: (selectedDay) {
-                          dayChanged(selectedDay);
-                        },
-                      )
-                    : (widget.screenType ==
-                                    ScheduleScreenType.classroomSchedule ||
-                                widget.screenType ==
-                                    ScheduleScreenType.groupSchedule ||
-                                widget.screenType ==
-                                    ScheduleScreenType.lecturerSchedule ||
-                                (widget.screenType ==
-                                        ScheduleScreenType.mySchedule &&
-                                    schedule.isNotEmpty &&
-                                    schedule.first.form == '1')) &&
-                            extremularDates.isNotEmpty
-                        ? Container(
-                            margin: EdgeInsets.only(
-                                top: widget.screenType ==
-                                        ScheduleScreenType.mySchedule
-                                    ? 32
-                                    : 0),
-                            child: DatePicker(
-                                key: _DatePickerKey,
-                                isSelected: datePickerIsSelected,
-                                onDateChanged: (index) {
-                                  setState(() {
-                                    for (var i = 0;
-                                        i < datePickerIsSelected.length;
-                                        i++) {
-                                      datePickerIsSelected[i] = index == i;
-                                    }
-                                    daySchedule = schedule
-                                        .where((element) =>
-                                            element.weekDay ==
-                                            extremularDates[index])
-                                        .toList();
-                                  });
-                                },
-                                children: extremularDates),
-                          )
-                        : Container(),
-              ],
-            ),
-          )
-        ])
-      ]),
-    );
+                  )
+                ])
+              ]),
+            ));
   }
 }
