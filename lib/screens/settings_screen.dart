@@ -210,13 +210,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                 ),
                               ),
                               Text(
-                                'версия 0.4.0',
+                                'версия 0.6.0',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                     fontWeight: FontWeight.w500,
                                     color: Styles.crossColor),
                               ),
-                              
                             ],
                           ),
                         ),
