@@ -18,7 +18,6 @@ ThemeData lightTheme = ThemeData(
         unselectedItemColor: Styles.textColor,
         selectedIconTheme: const IconThemeData(size: 25),
         unselectedIconTheme: const IconThemeData(size: 20),
-        backgroundColor: Colors.white,
         type: BottomNavigationBarType.fixed));
 
 ThemeData darkTheme = ThemeData(

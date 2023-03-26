@@ -22,6 +22,7 @@ dependencies:
   shared_preferences: ^2.0.18
   alarm: ^0.2.0
   flutter_theme_provider: ^0.0.4
+  flutter_native_splash: ^2.2.19
   
 
 dev_dependencies:
@@ -48,6 +49,7 @@ flutter:
     - assets/sample2.mp3
     - assets/sample3.mp3
     - assets/push-notification.svg
+    - assets/logo.png
 
   fonts:
     - family: Montserrat
@@ -62,3 +64,11 @@ flutter:
         - weight: 400
         - asset: fonts/Montserrat-Light.ttf
         - weight: 300
+
+flutter_native_splash:
+  color: "#ffffff"
+  image: "assets/logo.png"
+  color_dark: "#211F1F"
+  image_dark: "assets/logo.png"
+  android: true
+  ios: true

@@ -24,6 +24,7 @@ import '../themes/styles.dart';
 import '../widgets/next_lesson.dart';
 import "package:collection/collection.dart";
 import 'package:provider/provider.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 enum ScheduleScreenType {
   mySchedule,
@@ -267,6 +268,9 @@ class MyScheduleScreenState extends State<MyScheduleScreen> {
   @override
   void initState() {
     getSchedule();
+    Timer(const Duration(milliseconds: 700), () {
+      FlutterNativeSplash.remove();
+    });
     super.initState();
   }
 
@@ -307,6 +311,7 @@ class MyScheduleScreenState extends State<MyScheduleScreen> {
         builder: (context, theme, child) => Scaffold(
               resizeToAvoidBottomInset: false,
               extendBodyBehindAppBar: true,
+              backgroundColor: theme.getTheme()?.scaffoldBackgroundColor,
               body: Stack(children: <Widget>[
                 Positioned.fill(
                     child: !_loading

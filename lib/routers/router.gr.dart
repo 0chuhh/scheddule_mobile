@@ -20,6 +20,7 @@ import '../screens/my_schedule_screen.dart' as _i2;
 import '../screens/root_screen.dart' as _i1;
 import '../screens/schedules_screen.dart' as _i6;
 import '../screens/settings_screen.dart' as _i5;
+import '../widgets/schedule_search_cards.dart' as _i9;
 
 class AppRouter extends _i7.RootStackRouter {
   AppRouter([_i8.GlobalKey<_i8.NavigatorState>? navigatorKey])
@@ -70,9 +71,13 @@ class AppRouter extends _i7.RootStackRouter {
       );
     },
     SchedulesRoute.name: (routeData) {
+      final args = routeData.argsAs<SchedulesRouteArgs>(
+          orElse: () => const SchedulesRouteArgs());
       return _i7.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i6.SchedulesScreen(),
+        child: _i6.SchedulesScreen(
+          key: args.key,
+        ),
       );
     },
     MyScheduleRoute.name: (routeData) {
@@ -276,14 +281,36 @@ class SettingsRouterArgs {
 
 /// generated route for
 /// [_i6.SchedulesScreen]
-class SchedulesRoute extends _i7.PageRouteInfo<void> {
-  const SchedulesRoute()
-      : super(
+class SchedulesRoute extends _i7.PageRouteInfo<SchedulesRouteArgs> {
+  SchedulesRoute({
+    _i8.Key? key,
+    _i8.GlobalKey<_i9.ScheduleSearchCardsState>? scheduleCardsKey,
+  }) : super(
           SchedulesRoute.name,
           path: '',
+          args: SchedulesRouteArgs(
+            key: key,
+            scheduleCardsKey: scheduleCardsKey,
+          ),
         );
 
   static const String name = 'SchedulesRoute';
+}
+
+class SchedulesRouteArgs {
+  const SchedulesRouteArgs({
+    this.key,
+    this.scheduleCardsKey,
+  });
+
+  final _i8.Key? key;
+
+  final _i8.GlobalKey<_i9.ScheduleSearchCardsState>? scheduleCardsKey;
+
+  @override
+  String toString() {
+    return 'SchedulesRouteArgs{key: $key, scheduleCardsKey: $scheduleCardsKey}';
+  }
 }
 
 /// generated route for

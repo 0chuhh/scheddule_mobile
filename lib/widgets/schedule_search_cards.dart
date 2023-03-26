@@ -30,11 +30,11 @@ class ScheduleSearchCards extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    return _ScheduleSearchCardsState();
+    return ScheduleSearchCardsState();
   }
 }
 
-class _ScheduleSearchCardsState extends State<ScheduleSearchCards> {
+class ScheduleSearchCardsState extends State<ScheduleSearchCards> {
   final bool fullTimeFormat = false;
   int selectedIndex = 0;
   final _animatedListKey = GlobalKey<AnimatedListState>();

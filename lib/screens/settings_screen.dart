@@ -216,14 +216,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                     fontWeight: FontWeight.w500,
                                     color: Styles.crossColor),
                               ),
-                              const Text(
-                                '(прототип)',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  color: Color.fromARGB(255, 241, 84, 84),
-                                ),
-                              ),
+                              
                             ],
                           ),
                         ),

@@ -8,8 +8,9 @@ import '../widgets/schedule_search_cards.dart';
 import 'package:provider/provider.dart';
 
 class SchedulesScreen extends StatelessWidget {
-  const SchedulesScreen({Key? key}) : super(key: key);
-
+  const SchedulesScreen({
+    Key? key,
+  }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Consumer<ThemeProvider>(
